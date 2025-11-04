@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, Filter, ChevronLeft, ChevronRight, SlidersHorizontal } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, X, Grid3x3, List } from 'lucide-react';
 import ProductModal from './ProductModal';
 import product1 from '../assets/20w504lb.png';
 import product2 from '../assets/20w504lgold.png';
@@ -18,6 +18,11 @@ interface Product {
   description: string;
   image: string;
   volume: string;
+  oilType?: string;
+  viscosity?: string;
+  apiStandard?: string;
+  technology?: string;
+  packaging?: string;
   specifications?: string[];
   features?: string[];
   price?: string;
@@ -27,10 +32,14 @@ const products: Product[] = [
   {
     id: 1,
     name: 'PO-5000 20W-50',
-    category: 'Huiles moteur',
+    category: 'Huiles Moteur',
     description: 'Huile moteur à essence multigrade offrant une excellente protection',
     image: product1,
     volume: '4L',
+    oilType: 'Minérale',
+    viscosity: '20W50',
+    apiStandard: 'API SF',
+    packaging: 'Bidon 4L',
     specifications: ['Norme API SF/CD', 'Multigrade 20W-50', 'Pour moteurs essence'],
     features: ['Protection contre l\'usure', 'Excellente stabilité thermique', 'Réduction de la consommation'],
     price: 'Sur devis',
@@ -38,10 +47,14 @@ const products: Product[] = [
   {
     id: 2,
     name: 'PO Gold 20W-50',
-    category: 'Huiles moteur',
+    category: 'Huiles Moteur',
     description: 'Huile moteur super haute qualité offrant une protection supérieure',
     image: product2,
     volume: '4L',
+    oilType: 'Semi-Synthèse',
+    viscosity: '20W50',
+    apiStandard: 'API SL/CF',
+    packaging: 'Bidon 4L',
     specifications: ['Norme API SL/CF', 'Qualité supérieure', 'Protection maximale'],
     features: ['Performance optimale', 'Nettoyage du moteur', 'Longévité accrue'],
     price: 'Sur devis',
@@ -49,10 +62,14 @@ const products: Product[] = [
   {
     id: 3,
     name: 'Flexi Oil HD 40',
-    category: 'Huiles diesel',
+    category: 'Divers',
     description: 'Huile moteur diesel haute performance pour moteurs lourds',
     image: product3,
     volume: '20L',
+    oilType: 'Minérale',
+    viscosity: '15W40',
+    apiStandard: 'API SL',
+    packaging: 'Bidon 20L',
     specifications: ['SAE 40', 'Pour moteurs diesel', 'Usage industriel'],
     features: ['Résistance aux charges élevées', 'Protection anti-corrosion', 'Durabilité exceptionnelle'],
     price: 'Sur devis',
@@ -60,10 +77,12 @@ const products: Product[] = [
   {
     id: 4,
     name: 'Flexi Oil SAE 90',
-    category: 'Huiles transmission',
+    category: 'Huiles de Boîte',
     description: 'Huile de transmission API GL1 pour boîtes de vitesses',
     image: product4,
     volume: '20L',
+    oilType: 'Minérale',
+    packaging: 'Bidon 20L',
     specifications: ['SAE 90', 'API GL1', 'Pour transmissions'],
     features: ['Changement de vitesse fluide', 'Protection des engrenages', 'Réduction du bruit'],
     price: 'Sur devis',
@@ -71,10 +90,14 @@ const products: Product[] = [
   {
     id: 5,
     name: 'PO-5000 10W-40',
-    category: 'Huiles moteur',
+    category: 'Huiles Moteur',
     description: 'Huile moteur semi-synthétique haute performance',
     image: product5,
     volume: '1L',
+    oilType: 'Semi-Synthèse',
+    viscosity: '10W40',
+    apiStandard: 'API SL/CF',
+    packaging: 'Bidon 1L',
     specifications: ['API SL/CF', '10W-40', 'Semi-synthétique'],
     features: ['Démarrage à froid facilité', 'Protection toutes saisons', 'Économie de carburant'],
     price: 'Sur devis',
@@ -82,10 +105,15 @@ const products: Product[] = [
   {
     id: 6,
     name: 'PO Gold P2 20W-50',
-    category: 'Huiles moteur',
+    category: 'Huiles Moteur',
     description: 'Huile moteur premium pour performances exceptionnelles',
     image: product6,
     volume: '1L',
+    oilType: '100% Synthèse',
+    viscosity: '20W50',
+    apiStandard: 'API SN',
+    technology: 'ESTER',
+    packaging: 'Bidon 1L',
     specifications: ['Qualité premium', 'API SL/CF', 'Additifs avancés'],
     features: ['Performance supérieure', 'Propreté maximale', 'Protection longue durée'],
     price: 'Sur devis',
@@ -93,10 +121,14 @@ const products: Product[] = [
   {
     id: 7,
     name: 'Gear Free G2 75W-80',
-    category: 'Huiles transmission',
+    category: 'Huiles de Boîte',
     description: 'Huile pour transmission manuelle et boîtier AT',
     image: product7,
     volume: '1L',
+    oilType: 'Semi-Synthèse',
+    viscosity: '2 Temps',
+    apiStandard: 'API TC',
+    packaging: 'Bidon 1L',
     specifications: ['API GL4', '75W-80', 'Multi-usage'],
     features: ['Changements précis', 'Résistance à l\'oxydation', 'Protection anti-usure'],
     price: 'Sur devis',
@@ -104,10 +136,14 @@ const products: Product[] = [
   {
     id: 8,
     name: 'PO-5000 10W-40',
-    category: 'Huiles moteur',
+    category: 'Huiles Moteur',
     description: 'Huile moteur essence et diesel semi-synthétique',
     image: product8,
     volume: '5L',
+    oilType: 'Semi-Synthèse',
+    viscosity: '10W40',
+    apiStandard: 'API SL',
+    packaging: 'Bidon 4L',
     specifications: ['API SL/CF', 'Essence et diesel', '10W-40'],
     features: ['Polyvalence maximale', 'Économique', 'Haute protection'],
     price: 'Sur devis',
@@ -115,10 +151,11 @@ const products: Product[] = [
   {
     id: 9,
     name: 'ATF A2 Dexron II',
-    category: 'Huiles transmission',
+    category: 'Huiles de Boîte',
     description: 'Huile pour transmission automatique',
     image: product9,
     volume: '1L',
+    packaging: 'Bidon 1L',
     specifications: ['Dexron II', 'Transmission automatique', 'Fluide ATF'],
     features: ['Changement fluide', 'Protection hydraulique', 'Longévité transmission'],
     price: 'Sur devis',
@@ -126,10 +163,11 @@ const products: Product[] = [
   {
     id: 10,
     name: 'Liquide de frein DOT 4',
-    category: 'Liquides de frein',
+    category: 'Liquide Refroidissement',
     description: 'Liquide de frein haute performance pour systèmes de freinage',
     image: product1,
     volume: '500ml',
+    packaging: 'Bidon 1L',
     specifications: ['Norme DOT 4', 'Point d\'ébullition élevé', 'Compatible tous véhicules'],
     features: ['Freinage sûr', 'Résistance à l\'humidité', 'Performance constante'],
     price: 'Sur devis',
@@ -137,10 +175,11 @@ const products: Product[] = [
   {
     id: 11,
     name: 'Lave-glace concentré',
-    category: 'Lave-glaces',
+    category: 'Divers',
     description: 'Solution de nettoyage efficace pour pare-brise',
     image: product2,
     volume: '2L',
+    packaging: 'Bidon 2L',
     specifications: ['Concentré dilutable', 'Toutes saisons', 'Non toxique'],
     features: ['Nettoyage parfait', 'Protection anti-gel', 'Sans traces'],
     price: 'Sur devis',
@@ -148,10 +187,11 @@ const products: Product[] = [
   {
     id: 12,
     name: 'Graisse lithium EP2',
-    category: 'Graisses',
+    category: 'Divers',
     description: 'Graisse multi-usage pour lubrification industrielle',
     image: product3,
     volume: '500g',
+    packaging: 'Bidon 1L',
     specifications: ['Lithium EP2', 'Multi-usage', 'Haute adhérence'],
     features: ['Protection extrême', 'Résistance aux charges', 'Usage universel'],
     price: 'Sur devis',
@@ -159,42 +199,254 @@ const products: Product[] = [
   {
     id: 13,
     name: 'Eau déminéralisée',
-    category: 'Eau déminéralisée',
+    category: 'Liquide Refroidissement',
     description: 'Eau purifiée pour batteries et systèmes de refroidissement',
     image: product4,
     volume: '5L',
+    packaging: 'Bidon 4L',
     specifications: ['100% pure', 'Sans minéraux', 'Usage automobile'],
     features: ['Évite les dépôts', 'Protection batteries', 'Polyvalente'],
     price: 'Sur devis',
   },
+  {
+    id: 14,
+    name: 'PO Premium 5W-40',
+    category: 'Huiles Moteur',
+    description: 'Huile moteur 100% synthèse pour performances optimales',
+    image: product5,
+    volume: '1L',
+    oilType: '100% Synthèse',
+    viscosity: '5W40',
+    apiStandard: 'API SN',
+    technology: 'ESTER',
+    packaging: 'Bidon 1L',
+    specifications: ['API SN', '5W-40', '100% Synthèse'],
+    features: ['Performance maximale', 'Protection longue durée', 'Économie de carburant'],
+    price: 'Sur devis',
+  },
+  {
+    id: 15,
+    name: 'PO Classic 10W-50',
+    category: 'Huiles Moteur',
+    description: 'Huile moteur minérale pour usage standard',
+    image: product6,
+    volume: '1L',
+    oilType: 'Minérale',
+    viscosity: '10W50',
+    apiStandard: 'API SL',
+    packaging: 'Bidon 1L',
+    specifications: ['API SL', '10W-50', 'Minérale'],
+    features: ['Protection standard', 'Économique', 'Usage quotidien'],
+    price: 'Sur devis',
+  },
+  {
+    id: 16,
+    name: 'PO Advanced 2T',
+    category: 'Huiles Moteur',
+    description: 'Huile moteur 2 temps pour motos et scooters',
+    image: product7,
+    volume: '1L',
+    oilType: 'Minérale',
+    viscosity: '2 Temps',
+    apiStandard: 'API TA',
+    packaging: 'Bidon 1L',
+    specifications: ['API TA', '2 Temps', 'Pour motos'],
+    features: ['Protection moteur 2T', 'Faible fumée', 'Performance optimale'],
+    price: 'Sur devis',
+  },
 ];
 
-const categories = ['Tous', 'Huiles moteur', 'Huiles diesel', 'Huiles transmission', 'Liquides de frein', 'Lave-glaces', 'Graisses', 'Eau déminéralisée'];
-const volumes = ['Tous', '500ml', '1L', '2L', '4L', '5L', '20L'];
+// Filter options with counts
+const filterCategories = [
+  { name: 'Divers', count: 9 },
+  { name: 'Huiles de Boîte', count: 6 },
+  { name: 'Huiles Moteur', count: 14 },
+  { name: 'Liquide Refroidissement', count: 7 },
+];
 
-const ITEMS_PER_PAGE = 8;
+const filterOilTypes = [
+  { name: '100% Synthèse', count: 2 },
+  { name: 'Minérale', count: 7 },
+  { name: 'Semi-Synthèse', count: 4 },
+  { name: 'Technologie de Synthèse', count: 1 },
+];
+
+const filterViscosities = [
+  { name: '2 Temps', count: 4 },
+  { name: '5W40', count: 1 },
+  { name: '10W40', count: 4 },
+  { name: '10W50', count: 1 },
+  { name: '15W40', count: 1 },
+  { name: '20W50', count: 3 },
+];
+
+const filterApiStandards = [
+  { name: 'API TA', count: 1 },
+  { name: 'API SL/CF', count: 1 },
+  { name: 'API SF', count: 1 },
+  { name: 'API SG', count: 1 },
+  { name: 'API SL', count: 3 },
+  { name: 'API SM', count: 1 },
+  { name: 'API SN', count: 3 },
+  { name: 'API TC', count: 2 },
+];
+
+const filterTechnologies = [
+  { name: 'ESTER', count: 2 },
+];
+
+const filterPackaging = [
+  { name: 'Bidon 1L', count: 10 },
+  { name: 'Bidon 2L', count: 1 },
+  { name: 'Bidon 4L', count: 4 },
+  { name: 'Bidon 20L', count: 1 },
+];
+
+const ITEMS_PER_PAGE = 16;
+
+interface FilterSectionProps {
+  title: string;
+  isOpen: boolean;
+  onToggle: () => void;
+  children: React.ReactNode;
+}
+
+function FilterSection({ title, isOpen, onToggle, children }: FilterSectionProps) {
+  return (
+    <div className="border-b border-gray-200">
+      <button
+        onClick={onToggle}
+        className="w-full flex items-center justify-between py-4 text-left hover:bg-gray-50 transition-colors"
+      >
+        <span className="font-semibold text-gray-800">{title}</span>
+        {isOpen ? (
+          <ChevronUp className="h-5 w-5 text-gray-600" />
+        ) : (
+          <ChevronDown className="h-5 w-5 text-gray-600" />
+        )}
+      </button>
+      {isOpen && (
+        <div className="pb-4 space-y-2">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function Products() {
-  const [selectedCategory, setSelectedCategory] = useState('Tous');
-  const [selectedVolume, setSelectedVolume] = useState('Tous');
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showFilters, setShowFilters] = useState(false);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [sortBy, setSortBy] = useState('default');
 
-  const filteredProducts = products.filter(product => {
-    const matchesCategory = selectedCategory === 'Tous' || product.category === selectedCategory;
-    const matchesVolume = selectedVolume === 'Tous' || product.volume === selectedVolume;
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         product.description.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesCategory && matchesVolume && matchesSearch;
+  // Filter states
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedOilTypes, setSelectedOilTypes] = useState<string[]>([]);
+  const [selectedViscosities, setSelectedViscosities] = useState<string[]>([]);
+  const [selectedApiStandards, setSelectedApiStandards] = useState<string[]>([]);
+  const [selectedTechnologies, setSelectedTechnologies] = useState<string[]>([]);
+  const [selectedPackaging, setSelectedPackaging] = useState<string[]>([]);
+
+  // Collapsible filter sections
+  const [openSections, setOpenSections] = useState({
+    categories: true,
+    oilType: true,
+    viscosity: true,
+    apiStandard: true,
+    technology: true,
+    packaging: true,
   });
 
-  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
+  const toggleSection = (section: keyof typeof openSections) => {
+    setOpenSections(prev => ({ ...prev, [section]: !prev[section] }));
+  };
+
+  const toggleFilter = (filterType: string, value: string) => {
+    switch (filterType) {
+      case 'category':
+        setSelectedCategories(prev =>
+          prev.includes(value) ? prev.filter(v => v !== value) : [...prev, value]
+        );
+        break;
+      case 'oilType':
+        setSelectedOilTypes(prev =>
+          prev.includes(value) ? prev.filter(v => v !== value) : [...prev, value]
+        );
+        break;
+      case 'viscosity':
+        setSelectedViscosities(prev =>
+          prev.includes(value) ? prev.filter(v => v !== value) : [...prev, value]
+        );
+        break;
+      case 'apiStandard':
+        setSelectedApiStandards(prev =>
+          prev.includes(value) ? prev.filter(v => v !== value) : [...prev, value]
+        );
+        break;
+      case 'technology':
+        setSelectedTechnologies(prev =>
+          prev.includes(value) ? prev.filter(v => v !== value) : [...prev, value]
+        );
+        break;
+      case 'packaging':
+        setSelectedPackaging(prev =>
+          prev.includes(value) ? prev.filter(v => v !== value) : [...prev, value]
+        );
+        break;
+    }
+    setCurrentPage(1);
+  };
+
+  const removeFilter = (filterType: string, value: string) => {
+    toggleFilter(filterType, value);
+  };
+
+  const clearAllFilters = () => {
+    setSelectedCategories([]);
+    setSelectedOilTypes([]);
+    setSelectedViscosities([]);
+    setSelectedApiStandards([]);
+    setSelectedTechnologies([]);
+    setSelectedPackaging([]);
+    setSearchTerm('');
+    setCurrentPage(1);
+  };
+
+  const activeFilters = [
+    ...selectedCategories.map(c => ({ type: 'category', label: c })),
+    ...selectedOilTypes.map(c => ({ type: 'oilType', label: c })),
+    ...selectedViscosities.map(c => ({ type: 'viscosity', label: c })),
+    ...selectedApiStandards.map(c => ({ type: 'apiStandard', label: c })),
+    ...selectedTechnologies.map(c => ({ type: 'technology', label: c })),
+    ...selectedPackaging.map(c => ({ type: 'packaging', label: c })),
+  ];
+
+  const filteredProducts = products.filter(product => {
+    const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(product.category);
+    const matchesOilType = selectedOilTypes.length === 0 || (product.oilType && selectedOilTypes.includes(product.oilType));
+    const matchesViscosity = selectedViscosities.length === 0 || (product.viscosity && selectedViscosities.includes(product.viscosity));
+    const matchesApiStandard = selectedApiStandards.length === 0 || (product.apiStandard && selectedApiStandards.includes(product.apiStandard));
+    const matchesTechnology = selectedTechnologies.length === 0 || (product.technology && selectedTechnologies.includes(product.technology));
+    const matchesPackaging = selectedPackaging.length === 0 || (product.packaging && selectedPackaging.includes(product.packaging));
+    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         product.description.toLowerCase().includes(searchTerm.toLowerCase());
+
+    return matchesCategory && matchesOilType && matchesViscosity && matchesApiStandard && matchesTechnology && matchesPackaging && matchesSearch;
+  });
+
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    if (sortBy === 'name') return a.name.localeCompare(b.name);
+    if (sortBy === 'name-desc') return b.name.localeCompare(a.name);
+    return 0;
+  });
+
+  const totalPages = Math.ceil(sortedProducts.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentProducts = filteredProducts.slice(startIndex, endIndex);
+  const currentProducts = sortedProducts.slice(startIndex, endIndex);
 
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product);
@@ -209,13 +461,6 @@ export default function Products() {
     }
   };
 
-  const resetFilters = () => {
-    setSelectedCategory('Tous');
-    setSelectedVolume('Tous');
-    setSearchTerm('');
-    setCurrentPage(1);
-  };
-
   return (
     <section id="produits" className="py-20 bg-gradient-to-b from-gray-50 to-white">
       <div className="container mx-auto px-4">
@@ -224,201 +469,345 @@ export default function Products() {
           <p className="text-xl text-gray-600">Découvrez notre gamme complète de lubrifiants et produits automobiles</p>
         </div>
 
-        <div className="mb-8 space-y-6">
-          <div className="relative max-w-2xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-            <input
-              type="text"
-              placeholder="Rechercher un produit par nom ou description..."
-              value={searchTerm}
-              onChange={(e) => {
-                setSearchTerm(e.target.value);
-                setCurrentPage(1);
-              }}
-              className="w-full pl-12 pr-4 py-4 rounded-full border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-all shadow-sm hover:shadow-md"
-            />
-          </div>
-
-          <div className="bg-white rounded-2xl shadow-lg p-6 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center space-x-2">
-                <SlidersHorizontal className="h-5 w-5 text-gray-600" />
-                <h3 className="text-lg font-bold text-gray-800">Filtres</h3>
-              </div>
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="lg:hidden text-blue-600 hover:text-blue-700 font-medium"
-              >
-                {showFilters ? 'Masquer' : 'Afficher'}
-              </button>
-            </div>
-
-            <div className={`space-y-6 ${showFilters ? 'block' : 'hidden lg:block'}`}>
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <label className="text-sm font-semibold text-gray-700 flex items-center">
-                    <Filter className="h-4 w-4 mr-2" />
-                    Catégorie
-                  </label>
-                  {(selectedCategory !== 'Tous' || selectedVolume !== 'Tous' || searchTerm) && (
-                    <button
-                      onClick={resetFilters}
-                      className="text-sm text-red-600 hover:text-red-700 font-medium"
-                    >
-                      Réinitialiser
-                    </button>
-                  )}
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {categories.map(category => (
-                    <button
-                      key={category}
-                      onClick={() => {
-                        setSelectedCategory(category);
-                        setCurrentPage(1);
-                      }}
-                      className={`px-4 py-2 rounded-full transition-all duration-300 transform hover:scale-105 ${
-                        selectedCategory === category
-                          ? 'bg-gradient-to-r from-blue-600 to-red-600 text-white shadow-lg'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      }`}
-                    >
-                      {category}
-                    </button>
-                  ))}
-                </div>
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Left Sidebar - Filters */}
+          <aside className="lg:w-1/4">
+            <div className="bg-white rounded-lg shadow-lg p-4 sticky top-4">
+              <div className="flex items-center justify-between mb-4 pb-4 border-b border-gray-200">
+                <h3 className="text-lg font-bold text-blue-600 bg-blue-50 px-4 py-2 rounded w-full text-center">
+                  FILTRE DE RECHERCHE
+                </h3>
               </div>
 
-              <div>
-                <label className="text-sm font-semibold text-gray-700 flex items-center mb-3">
-                  <Filter className="h-4 w-4 mr-2" />
-                  Volume (Litrage)
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {volumes.map(volume => (
-                    <button
-                      key={volume}
-                      onClick={() => {
-                        setSelectedVolume(volume);
-                        setCurrentPage(1);
-                      }}
-                      className={`px-4 py-2 rounded-full transition-all duration-300 transform hover:scale-105 ${
-                        selectedVolume === volume
-                          ? 'bg-gradient-to-r from-red-600 to-blue-600 text-white shadow-lg'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      }`}
-                    >
-                      {volume}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {filteredProducts.length > 0 && (
-                <div className="text-sm text-gray-600 pt-2 border-t border-gray-200">
-                  <span className="font-semibold">{filteredProducts.length}</span> produit{filteredProducts.length > 1 ? 's' : ''} trouvé{filteredProducts.length > 1 ? 's' : ''}
+              {activeFilters.length > 0 && (
+                <div className="mb-4 pb-4 border-b border-gray-200">
+                  <button
+                    onClick={clearAllFilters}
+                    className="text-sm text-red-600 hover:text-red-700 font-medium mb-2"
+                  >
+                    X TOUT EFFACER
+                  </button>
                 </div>
               )}
-            </div>
-          </div>
-        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          {currentProducts.map((product, index) => (
-            <div
-              key={product.id}
-              className="bg-white rounded-xl shadow-md overflow-hidden transform hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl cursor-pointer animate-fade-in-up group"
-              style={{ animationDelay: `${0.1 * (index % 4)}s` }}
-              onClick={() => handleProductClick(product)}
-            >
-              <div className="h-64 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center p-6 overflow-hidden">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="h-full w-auto object-contain transform group-hover:scale-110 transition-transform duration-500"
-                />
+              <div className="space-y-0">
+                <FilterSection
+                  title="Catégories"
+                  isOpen={openSections.categories}
+                  onToggle={() => toggleSection('categories')}
+                >
+                  {filterCategories.map((filter) => (
+                    <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-2 rounded">
+                      <span className="text-sm text-gray-700">{filter.name}</span>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-xs text-gray-500">{filter.count}</span>
+                        <input
+                          type="checkbox"
+                          checked={selectedCategories.includes(filter.name)}
+                          onChange={() => toggleFilter('category', filter.name)}
+                          className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                        />
+                      </div>
+                    </label>
+                  ))}
+                </FilterSection>
+
+                <FilterSection
+                  title="Type d'huile"
+                  isOpen={openSections.oilType}
+                  onToggle={() => toggleSection('oilType')}
+                >
+                  {filterOilTypes.map((filter) => (
+                    <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-2 rounded">
+                      <span className="text-sm text-gray-700">{filter.name}</span>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-xs text-gray-500">{filter.count}</span>
+                        <input
+                          type="checkbox"
+                          checked={selectedOilTypes.includes(filter.name)}
+                          onChange={() => toggleFilter('oilType', filter.name)}
+                          className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                        />
+                      </div>
+                    </label>
+                  ))}
+                </FilterSection>
+
+                <FilterSection
+                  title="Viscosité"
+                  isOpen={openSections.viscosity}
+                  onToggle={() => toggleSection('viscosity')}
+                >
+                  {filterViscosities.map((filter) => (
+                    <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-2 rounded">
+                      <span className="text-sm text-gray-700">{filter.name}</span>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-xs text-gray-500">{filter.count}</span>
+                        <input
+                          type="checkbox"
+                          checked={selectedViscosities.includes(filter.name)}
+                          onChange={() => toggleFilter('viscosity', filter.name)}
+                          className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                        />
+                      </div>
+                    </label>
+                  ))}
+                </FilterSection>
+
+                <FilterSection
+                  title="Normes API"
+                  isOpen={openSections.apiStandard}
+                  onToggle={() => toggleSection('apiStandard')}
+                >
+                  {filterApiStandards.map((filter) => (
+                    <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-2 rounded">
+                      <span className="text-sm text-gray-700">{filter.name}</span>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-xs text-gray-500">{filter.count}</span>
+                        <input
+                          type="checkbox"
+                          checked={selectedApiStandards.includes(filter.name)}
+                          onChange={() => toggleFilter('apiStandard', filter.name)}
+                          className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                        />
+                      </div>
+                    </label>
+                  ))}
+                </FilterSection>
+
+                <FilterSection
+                  title="Technologie"
+                  isOpen={openSections.technology}
+                  onToggle={() => toggleSection('technology')}
+                >
+                  {filterTechnologies.map((filter) => (
+                    <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-2 rounded">
+                      <span className="text-sm text-gray-700">{filter.name}</span>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-xs text-gray-500">{filter.count}</span>
+                        <input
+                          type="checkbox"
+                          checked={selectedTechnologies.includes(filter.name)}
+                          onChange={() => toggleFilter('technology', filter.name)}
+                          className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                        />
+                      </div>
+                    </label>
+                  ))}
+                </FilterSection>
+
+                <FilterSection
+                  title="Emballage"
+                  isOpen={openSections.packaging}
+                  onToggle={() => toggleSection('packaging')}
+                >
+                  {filterPackaging.map((filter) => (
+                    <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-2 rounded">
+                      <span className="text-sm text-gray-700">{filter.name}</span>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-xs text-gray-500">{filter.count}</span>
+                        <input
+                          type="checkbox"
+                          checked={selectedPackaging.includes(filter.name)}
+                          onChange={() => toggleFilter('packaging', filter.name)}
+                          className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                        />
+                      </div>
+                    </label>
+                  ))}
+                </FilterSection>
               </div>
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
-                    {product.category}
-                  </span>
-                  <span className="inline-block px-3 py-1 bg-red-100 text-red-700 text-xs font-semibold rounded-full">
-                    {product.volume}
-                  </span>
+            </div>
+          </aside>
+
+          {/* Right Side - Products */}
+          <div className="lg:w-3/4">
+            {/* Search Bar */}
+            <div className="relative mb-6">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <input
+                type="text"
+                placeholder="Rechercher un produit..."
+                value={searchTerm}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="w-full pl-12 pr-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-all shadow-sm"
+              />
+            </div>
+
+            {/* Active Filters */}
+            {activeFilters.length > 0 && (
+              <div className="mb-4 p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center flex-wrap gap-2">
+                  <span className="text-sm font-semibold text-gray-700">FILTRES ACTIFS:</span>
+                  {activeFilters.map((filter) => (
+                    <span
+                      key={`${filter.type}-${filter.label}`}
+                      className="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm"
+                    >
+                      {filter.label === 'Huiles Moteur' ? 'Catégories: Huiles Moteur' : filter.label}
+                      <button
+                        onClick={() => removeFilter(filter.type, filter.label)}
+                        className="ml-2 hover:text-blue-900"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    </span>
+                  ))}
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-blue-600 transition-colors">
-                  {product.name}
-                </h3>
-                <p className="text-gray-600 mb-4 line-clamp-2">{product.description}</p>
-                <button className="w-full bg-gradient-to-r from-blue-600 to-red-600 text-white py-3 rounded-lg hover:shadow-lg transition-all duration-300 font-medium group-hover:from-blue-700 group-hover:to-red-700">
-                  Voir plus
+              </div>
+            )}
+
+            {/* Products Header */}
+            <div className="mb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="text-sm text-gray-600">
+                Affichage {startIndex + 1}-{Math.min(endIndex, sortedProducts.length)} de {sortedProducts.length} article(s)
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 border border-gray-300 rounded-lg p-1">
+                  <button
+                    onClick={() => setViewMode('grid')}
+                    className={`p-2 rounded ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+                  >
+                    <Grid3x3 className="h-5 w-5" />
+                  </button>
+                  <button
+                    onClick={() => setViewMode('list')}
+                    className={`p-2 rounded ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+                  >
+                    <List className="h-5 w-5" />
+                  </button>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-gray-700">TRIER PAR:</span>
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="default">Par défaut</option>
+                    <option value="name">Nom (A-Z)</option>
+                    <option value="name-desc">Nom (Z-A)</option>
+                  </select>
+                </div>
+                <button className="bg-gradient-to-r from-blue-600 to-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:from-blue-700 hover:to-red-700 transition-colors">
+                  COMPARER
                 </button>
               </div>
             </div>
-          ))}
-        </div>
 
-        {filteredProducts.length === 0 && (
-          <div className="text-center py-12 animate-fade-in">
-            <div className="text-6xl mb-4">🔍</div>
-            <p className="text-2xl font-bold text-gray-700 mb-2">Aucun produit trouvé</p>
-            <p className="text-gray-500 mb-4">Essayez de modifier vos critères de recherche</p>
-            <button
-              onClick={resetFilters}
-              className="bg-gradient-to-r from-blue-600 to-red-600 text-white px-6 py-3 rounded-full hover:shadow-lg transition-all duration-300 font-medium"
-            >
-              Réinitialiser les filtres
-            </button>
-          </div>
-        )}
-
-        {totalPages > 1 && (
-          <div className="flex items-center justify-center space-x-2 mt-12 animate-fade-in-up">
-            <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-              className={`p-3 rounded-lg transition-all duration-300 ${
-                currentPage === 1
-                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                  : 'bg-white text-blue-600 hover:bg-blue-50 shadow-md hover:shadow-lg'
-              }`}
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
-
-            <div className="flex space-x-2">
-              {[...Array(totalPages)].map((_, index) => {
-                const page = index + 1;
-                return (
-                  <button
-                    key={page}
-                    onClick={() => handlePageChange(page)}
-                    className={`px-4 py-2 rounded-lg transition-all duration-300 font-medium ${
-                      currentPage === page
-                        ? 'bg-gradient-to-r from-blue-600 to-red-600 text-white shadow-lg scale-110'
-                        : 'bg-white text-gray-700 hover:bg-gray-100 shadow-md'
+            {/* Products Grid */}
+            {currentProducts.length > 0 ? (
+              <div className={viewMode === 'grid' 
+                ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12'
+                : 'space-y-4 mb-12'
+              }>
+                {currentProducts.map((product) => (
+                  <div
+                    key={product.id}
+                    className={`bg-white rounded-xl shadow-md overflow-hidden transform hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl cursor-pointer group ${
+                      viewMode === 'list' ? 'flex flex-row' : ''
                     }`}
+                    onClick={() => handleProductClick(product)}
                   >
-                    {page}
-                  </button>
-                );
-              })}
-            </div>
+                    <div className={`bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center p-6 overflow-hidden ${
+                      viewMode === 'list' ? 'w-48 h-48 flex-shrink-0' : 'h-64'
+                    }`}>
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className={`w-auto object-contain transform group-hover:scale-110 transition-transform duration-500 ${
+                          viewMode === 'list' ? 'h-full' : 'h-full'
+                        }`}
+                      />
+                    </div>
+                    <div className={`p-6 ${viewMode === 'list' ? 'flex-1' : ''}`}>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
+                          {product.category}
+                        </span>
+                        {product.packaging && (
+                          <span className="inline-block px-3 py-1 bg-red-100 text-red-700 text-xs font-semibold rounded-full">
+                            {product.packaging.replace('Bidon ', '')}
+                          </span>
+                        )}
+                      </div>
+                      <h3 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-blue-600 transition-colors">
+                        {product.name}
+                      </h3>
+                      <p className="text-gray-600 mb-4 line-clamp-2">{product.description}</p>
+                      <button className="w-full bg-gradient-to-r from-blue-600 to-red-600 text-white py-3 rounded-lg hover:shadow-lg transition-all duration-300 font-medium group-hover:from-blue-700 group-hover:to-red-700">
+                        Voir plus
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <div className="text-6xl mb-4">🔍</div>
+                <p className="text-2xl font-bold text-gray-700 mb-2">Aucun produit trouvé</p>
+                <p className="text-gray-500 mb-4">Essayez de modifier vos critères de recherche</p>
+                <button
+                  onClick={clearAllFilters}
+                  className="bg-gradient-to-r from-blue-600 to-red-600 text-white px-6 py-3 rounded-full hover:shadow-lg transition-all duration-300 font-medium"
+                >
+                  Réinitialiser les filtres
+                </button>
+              </div>
+            )}
 
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className={`p-3 rounded-lg transition-all duration-300 ${
-                currentPage === totalPages
-                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                  : 'bg-white text-blue-600 hover:bg-blue-50 shadow-md hover:shadow-lg'
-              }`}
-            >
-              <ChevronRight className="h-5 w-5" />
-            </button>
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center space-x-2 mt-12">
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className={`p-3 rounded-lg transition-all duration-300 ${
+                    currentPage === 1
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      : 'bg-white text-blue-600 hover:bg-blue-50 shadow-md hover:shadow-lg'
+                  }`}
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+
+                <div className="flex space-x-2">
+                  {[...Array(totalPages)].map((_, index) => {
+                    const page = index + 1;
+                    return (
+                      <button
+                        key={page}
+                        onClick={() => handlePageChange(page)}
+                        className={`px-4 py-2 rounded-lg transition-all duration-300 font-medium ${
+                          currentPage === page
+                            ? 'bg-gradient-to-r from-blue-600 to-red-600 text-white shadow-lg scale-110'
+                            : 'bg-white text-gray-700 hover:bg-gray-100 shadow-md'
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className={`p-3 rounded-lg transition-all duration-300 ${
+                    currentPage === totalPages
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      : 'bg-white text-blue-600 hover:bg-blue-50 shadow-md hover:shadow-lg'
+                  }`}
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
 
       <ProductModal

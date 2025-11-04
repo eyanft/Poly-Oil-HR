@@ -3,9 +3,8 @@ import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const carouselImages = [
   'https://images.pexels.com/photos/13065690/pexels-photo-13065690.jpeg?auto=compress&cs=tinysrgb&w=1920',
-  'https://images.pexels.com/photos/279949/pexels-photo-279949.jpeg?auto=compress&cs=tinysrgb&w=1920',
   'https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=1920',
-  'https://images.pexels.com/photos/3807629/pexels-photo-3807629.jpeg?auto=compress&cs=tinysrgb&w=1920',
+  'https://images.pexels.com/photos/279949/pexels-photo-279949.jpeg?auto=compress&cs=tinysrgb&w=1920',
 ];
 
 export default function Hero() {
@@ -41,7 +40,7 @@ export default function Hero() {
           <div
             key={index}
             className={`absolute inset-0 transition-opacity duration-1000 ${
-              index === currentSlide ? 'opacity-30' : 'opacity-0'
+              index === currentSlide ? 'opacity-50' : 'opacity-0'
             }`}
           >
             <img
