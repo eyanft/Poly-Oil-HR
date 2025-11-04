@@ -329,7 +329,7 @@ function FilterSection({ title, isOpen, onToggle, children }: FilterSectionProps
     <div className="border-b border-gray-200">
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between py-4 text-left hover:bg-gray-50 transition-colors"
+        className="w-full flex items-center justify-between py-1 text-left hover:bg-gray-50 transition-colors"
       >
         <span className="font-semibold text-gray-800">{title}</span>
         {isOpen ? (
@@ -498,28 +498,28 @@ export default function Products() {
   };
 
   return (
-    <section id="produits" className="py-20 bg-gradient-to-b from-gray-50 to-white">
+    <section id="produits" className="py-12 bg-gradient-to-b from-gray-50 to-white">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12 animate-fade-in-up">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Nos Produits</h2>
+        <div className="text-center mb-8 animate-fade-in-up">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-3">Nos Produits</h2>
           <p className="text-xl text-gray-600">Découvrez notre gamme complète de lubrifiants et produits automobiles</p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Left Sidebar - Filters */}
           <aside className="lg:w-1/4">
-            <div className="bg-white rounded-lg shadow-lg p-4 sticky top-4">
-              <div className="flex items-center justify-between mb-4 pb-4 border-b border-gray-200">
-                <h3 className="text-lg font-bold text-blue-600 bg-blue-50 px-4 py-2 rounded w-full text-center">
+            <div className="bg-white rounded-lg shadow-lg p-3 sticky top-4">
+              <div className="flex items-center justify-between mb-3 pb-3 border-b border-gray-200">
+                <h3 className="text-base font-bold text-blue-600 bg-blue-50 px-3 py-1.5 rounded w-full text-center">
                   FILTRE DE RECHERCHE
                 </h3>
               </div>
 
               {activeFilters.length > 0 && (
-                <div className="mb-4 pb-4 border-b border-gray-200">
+                <div className="mb-3 pb-3 border-b border-gray-200">
                   <button
                     onClick={clearAllFilters}
-                    className="text-sm text-red-600 hover:text-red-700 font-medium mb-2"
+                    className="text-sm text-red-600 hover:text-red-700 font-medium"
                   >
                     X TOUT EFFACER
                   </button>
@@ -533,7 +533,7 @@ export default function Products() {
                   onToggle={() => toggleSection('categories')}
                 >
                   {filterCategories.map((filter) => (
-                    <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-2 rounded">
+                    <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-1.5 rounded">
                       <span className="text-sm text-gray-700">{filter.name}</span>
                       <div className="flex items-center space-x-2">
                         <span className="text-xs text-gray-500">{filter.count}</span>
@@ -554,7 +554,7 @@ export default function Products() {
                   onToggle={() => toggleSection('oilType')}
                 >
                   {filterOilTypes.map((filter) => (
-                    <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-2 rounded">
+                    <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-1.5 rounded">
                       <span className="text-sm text-gray-700">{filter.name}</span>
                       <div className="flex items-center space-x-2">
                         <span className="text-xs text-gray-500">{filter.count}</span>
@@ -575,7 +575,7 @@ export default function Products() {
                   onToggle={() => toggleSection('viscosity')}
                 >
                   {filterViscosities.map((filter) => (
-                    <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-2 rounded">
+                    <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-1.5 rounded">
                       <span className="text-sm text-gray-700">{filter.name}</span>
                       <div className="flex items-center space-x-2">
                         <span className="text-xs text-gray-500">{filter.count}</span>
@@ -596,7 +596,7 @@ export default function Products() {
                   onToggle={() => toggleSection('apiStandard')}
                 >
                   {filterApiStandards.map((filter) => (
-                    <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-2 rounded">
+                    <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-1.5 rounded">
                       <span className="text-sm text-gray-700">{filter.name}</span>
                       <div className="flex items-center space-x-2">
                         <span className="text-xs text-gray-500">{filter.count}</span>
@@ -617,7 +617,7 @@ export default function Products() {
                   onToggle={() => toggleSection('technology')}
                 >
                   {filterTechnologies.map((filter) => (
-                    <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-2 rounded">
+                    <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-1.5 rounded">
                       <span className="text-sm text-gray-700">{filter.name}</span>
                       <div className="flex items-center space-x-2">
                         <span className="text-xs text-gray-500">{filter.count}</span>
@@ -638,7 +638,7 @@ export default function Products() {
                   onToggle={() => toggleSection('packaging')}
                 >
                   {filterPackaging.map((filter) => (
-                    <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-2 rounded">
+                    <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-1.5 rounded">
                       <span className="text-sm text-gray-700">{filter.name}</span>
                       <div className="flex items-center space-x-2">
                         <span className="text-xs text-gray-500">{filter.count}</span>
@@ -659,7 +659,7 @@ export default function Products() {
           {/* Right Side - Products */}
           <div className="lg:w-3/4">
             {/* Search Bar */}
-            <div className="relative mb-6">
+            <div className="relative mb-4">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
               <input
                 type="text"
@@ -669,13 +669,13 @@ export default function Products() {
                   setSearchTerm(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="w-full pl-12 pr-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-all shadow-sm"
+                className="w-full pl-12 pr-4 py-2.5 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:outline-none transition-all shadow-sm"
               />
             </div>
 
             {/* Active Filters */}
             {activeFilters.length > 0 && (
-              <div className="mb-4 p-4 bg-gray-50 rounded-lg">
+              <div className="mb-4 p-3 bg-gray-50 rounded-lg">
                 <div className="flex items-center flex-wrap gap-2">
                   <span className="text-sm font-semibold text-gray-700">FILTRES ACTIFS:</span>
                   {activeFilters.map((filter) => (
@@ -697,7 +697,7 @@ export default function Products() {
             )}
 
             {/* Products Header */}
-            <div className="mb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="mb-4 flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="text-sm text-gray-600">
                 Affichage {startIndex + 1}-{Math.min(endIndex, sortedProducts.length)} de {sortedProducts.length} article(s)
               </div>
@@ -745,8 +745,8 @@ export default function Products() {
             {/* Products Grid */}
             {currentProducts.length > 0 ? (
               <div className={viewMode === 'grid' 
-                ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12'
-                : 'space-y-4 mb-12'
+                ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8'
+                : 'space-y-4 mb-8'
               }>
                 {currentProducts.map((product) => {
                   const isSelected = productsToCompare.some(p => p.id === product.id);
@@ -754,8 +754,8 @@ export default function Products() {
                   return (
                   <div
                     key={product.id}
-                    className={`bg-white rounded-xl shadow-md overflow-hidden transform hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl cursor-pointer group relative ${
-                      viewMode === 'list' ? 'flex flex-row' : ''
+                    className={`bg-white rounded-xl shadow-md overflow-hidden transform hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl cursor-pointer group relative flex flex-col ${
+                      viewMode === 'list' ? 'flex-row' : ''
                     } ${isSelected ? 'ring-2 ring-blue-600' : ''}`}
                     onClick={(e) => handleProductClick(product, e as React.MouseEvent)}
                   >
@@ -785,8 +785,8 @@ export default function Products() {
                         )}
                       </button>
                     </div>
-                    <div className={`bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center p-6 overflow-hidden ${
-                      viewMode === 'list' ? 'w-48 h-48 flex-shrink-0' : 'h-64'
+                    <div className={`bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden ${
+                      viewMode === 'list' ? 'w-48 h-48 flex-shrink-0 p-4' : 'h-48 p-4'
                     }`}>
                       <img
                         src={product.image}
@@ -796,22 +796,22 @@ export default function Products() {
                         }`}
                       />
                     </div>
-                    <div className={`p-6 ${viewMode === 'list' ? 'flex-1' : ''}`}>
+                    <div className={`p-4 flex flex-col flex-1 ${viewMode === 'list' ? '' : ''}`}>
                       <div className="flex items-center justify-between mb-2">
-                        <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
+                        <span className="inline-block px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
                           {product.category}
                         </span>
                         {product.packaging && (
-                          <span className="inline-block px-3 py-1 bg-red-100 text-red-700 text-xs font-semibold rounded-full">
+                          <span className="inline-block px-2 py-0.5 bg-red-100 text-red-700 text-xs font-semibold rounded-full">
                             {product.packaging.replace('Bidon ', '')}
                           </span>
                         )}
                       </div>
-                      <h3 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-blue-600 transition-colors">
+                      <h3 className="text-lg font-bold text-gray-800 mb-1.5 group-hover:text-blue-600 transition-colors">
                         {product.name}
                       </h3>
-                      <p className="text-gray-600 mb-4 line-clamp-2">{product.description}</p>
-                      <button className="w-full bg-gradient-to-r from-blue-600 to-red-600 text-white py-3 rounded-lg hover:shadow-lg transition-all duration-300 font-medium group-hover:from-blue-700 group-hover:to-red-700">
+                      <p className="text-gray-600 mb-3 line-clamp-2 text-sm flex-1">{product.description}</p>
+                      <button className="w-full bg-gradient-to-r from-blue-600 to-red-600 text-white py-2.5 rounded-lg hover:shadow-lg transition-all duration-300 font-medium group-hover:from-blue-700 group-hover:to-red-700 mt-auto">
                         Voir plus
                       </button>
                     </div>
@@ -820,8 +820,8 @@ export default function Products() {
                 })}
               </div>
             ) : (
-              <div className="text-center py-12">
-                <div className="text-6xl mb-4">🔍</div>
+              <div className="text-center py-8">
+                <div className="text-6xl mb-3">🔍</div>
                 <p className="text-2xl font-bold text-gray-700 mb-2">Aucun produit trouvé</p>
                 <p className="text-gray-500 mb-4">Essayez de modifier vos critères de recherche</p>
                 <button
@@ -835,7 +835,7 @@ export default function Products() {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex items-center justify-center space-x-2 mt-12">
+              <div className="flex items-center justify-center space-x-2 mt-8">
                 <button
                   onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 1}
