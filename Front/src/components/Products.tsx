@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Search, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, X, Grid3x3, List } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, X, Grid3x3, List, Check } from 'lucide-react';
 import ProductModal from './ProductModal';
+import CompareModal from './CompareModal';
 import product1 from '../assets/20w504lb.png';
 import product2 from '../assets/20w504lgold.png';
 import product3 from '../assets/40fl20l.png';
@@ -21,6 +22,9 @@ interface Product {
   oilType?: string;
   viscosity?: string;
   apiStandard?: string;
+  aceaStandard?: string;
+  manufacturerStandards?: string;
+  applications?: string;
   technology?: string;
   packaging?: string;
   specifications?: string[];
@@ -39,6 +43,9 @@ const products: Product[] = [
     oilType: 'Minérale',
     viscosity: '20W50',
     apiStandard: 'API SF',
+    aceaStandard: '',
+    manufacturerStandards: '',
+    applications: 'Automobile; Poids lourds',
     packaging: 'Bidon 4L',
     specifications: ['Norme API SF/CD', 'Multigrade 20W-50', 'Pour moteurs essence'],
     features: ['Protection contre l\'usure', 'Excellente stabilité thermique', 'Réduction de la consommation'],
@@ -54,6 +61,9 @@ const products: Product[] = [
     oilType: 'Semi-Synthèse',
     viscosity: '20W50',
     apiStandard: 'API SL/CF',
+    aceaStandard: 'ACEA A3/B3',
+    manufacturerStandards: 'MB 229.1; VW 505.00/501.01',
+    applications: 'Automobile; Poids lourds; Travaux publics; Agricole',
     packaging: 'Bidon 4L',
     specifications: ['Norme API SL/CF', 'Qualité supérieure', 'Protection maximale'],
     features: ['Performance optimale', 'Nettoyage du moteur', 'Longévité accrue'],
@@ -67,8 +77,11 @@ const products: Product[] = [
     image: product3,
     volume: '20L',
     oilType: 'Minérale',
-    viscosity: '15W40',
-    apiStandard: 'API SL',
+    viscosity: 'SAE 40',
+    apiStandard: '',
+    aceaStandard: '',
+    manufacturerStandards: '',
+    applications: 'Poids lourds; Travaux publics; Marine',
     packaging: 'Bidon 20L',
     specifications: ['SAE 40', 'Pour moteurs diesel', 'Usage industriel'],
     features: ['Résistance aux charges élevées', 'Protection anti-corrosion', 'Durabilité exceptionnelle'],
@@ -341,6 +354,8 @@ export default function Products() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState('default');
+  const [productsToCompare, setProductsToCompare] = useState<Product[]>([]);
+  const [isCompareModalOpen, setIsCompareModalOpen] = useState(false);
 
   // Filter states
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -448,9 +463,30 @@ export default function Products() {
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const currentProducts = sortedProducts.slice(startIndex, endIndex);
 
-  const handleProductClick = (product: Product) => {
+  const handleProductClick = (product: Product, e: React.MouseEvent) => {
+    // Si on clique sur la checkbox, ne pas ouvrir le modal
+    if ((e.target as HTMLElement).closest('.compare-checkbox')) {
+      return;
+    }
     setSelectedProduct(product);
     setIsModalOpen(true);
+  };
+
+  const toggleProductCompare = (product: Product) => {
+    const isSelected = productsToCompare.some(p => p.id === product.id);
+    if (isSelected) {
+      setProductsToCompare(productsToCompare.filter(p => p.id !== product.id));
+    } else {
+      if (productsToCompare.length < 2) {
+        setProductsToCompare([...productsToCompare, product]);
+      }
+    }
+  };
+
+  const handleCompare = () => {
+    if (productsToCompare.length === 2) {
+      setIsCompareModalOpen(true);
+    }
   };
 
   const handlePageChange = (page: number) => {
@@ -692,8 +728,16 @@ export default function Products() {
                     <option value="name-desc">Nom (Z-A)</option>
                   </select>
                 </div>
-                <button className="bg-gradient-to-r from-blue-600 to-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:from-blue-700 hover:to-red-700 transition-colors">
-                  COMPARER
+                <button
+                  onClick={handleCompare}
+                  disabled={productsToCompare.length !== 2}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    productsToCompare.length === 2
+                      ? 'bg-gradient-to-r from-blue-600 to-red-600 text-white hover:from-blue-700 hover:to-red-700 cursor-pointer'
+                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  }`}
+                >
+                  COMPARER {productsToCompare.length > 0 && `(${productsToCompare.length}/2)`}
                 </button>
               </div>
             </div>
@@ -704,14 +748,43 @@ export default function Products() {
                 ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12'
                 : 'space-y-4 mb-12'
               }>
-                {currentProducts.map((product) => (
+                {currentProducts.map((product) => {
+                  const isSelected = productsToCompare.some(p => p.id === product.id);
+                  const canSelect = productsToCompare.length < 2 || isSelected;
+                  return (
                   <div
                     key={product.id}
-                    className={`bg-white rounded-xl shadow-md overflow-hidden transform hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl cursor-pointer group ${
+                    className={`bg-white rounded-xl shadow-md overflow-hidden transform hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl cursor-pointer group relative ${
                       viewMode === 'list' ? 'flex flex-row' : ''
-                    }`}
-                    onClick={() => handleProductClick(product)}
+                    } ${isSelected ? 'ring-2 ring-blue-600' : ''}`}
+                    onClick={(e) => handleProductClick(product, e as React.MouseEvent)}
                   >
+                    {/* Compare Checkbox */}
+                    <div className="absolute top-2 right-2 z-10">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (canSelect) {
+                            toggleProductCompare(product);
+                          }
+                        }}
+                        disabled={!canSelect}
+                        className={`compare-checkbox p-2 rounded-full transition-all ${
+                          isSelected
+                            ? 'bg-blue-600 text-white'
+                            : canSelect
+                            ? 'bg-white/80 hover:bg-blue-100 text-gray-600'
+                            : 'bg-gray-300 text-gray-400 cursor-not-allowed'
+                        }`}
+                        title={isSelected ? 'Désélectionner pour comparaison' : canSelect ? 'Sélectionner pour comparaison' : 'Maximum 2 produits'}
+                      >
+                        {isSelected ? (
+                          <Check className="h-4 w-4" />
+                        ) : (
+                          <span className="text-xs font-bold">+</span>
+                        )}
+                      </button>
+                    </div>
                     <div className={`bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center p-6 overflow-hidden ${
                       viewMode === 'list' ? 'w-48 h-48 flex-shrink-0' : 'h-64'
                     }`}>
@@ -743,7 +816,8 @@ export default function Products() {
                       </button>
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             ) : (
               <div className="text-center py-12">
@@ -814,6 +888,12 @@ export default function Products() {
         product={selectedProduct}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+      />
+
+      <CompareModal
+        products={productsToCompare}
+        isOpen={isCompareModalOpen}
+        onClose={() => setIsCompareModalOpen(false)}
       />
     </section>
   );
