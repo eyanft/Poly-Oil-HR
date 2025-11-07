@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import logo from '../assets/po.png';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -11,6 +13,11 @@ export default function Header() {
       element.scrollIntoView({ behavior: 'smooth' });
       setIsMenuOpen(false);
     }
+  };
+
+  const goToAdmin = () => {
+    setIsMenuOpen(false);
+    navigate('/admin');
   };
 
   return (
@@ -38,6 +45,7 @@ export default function Header() {
             <button onClick={() => scrollToSection('contact')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
               Contact
             </button>
+          
           </nav>
 
           <button
@@ -72,6 +80,9 @@ export default function Header() {
             </button>
             <button onClick={() => scrollToSection('contact')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium text-left">
               Contact
+            </button>
+            <button onClick={goToAdmin} className="text-gray-700 hover:text-blue-600 transition-colors font-medium text-left">
+              Espace Admin
             </button>
             <button
               onClick={() => scrollToSection('contact')}

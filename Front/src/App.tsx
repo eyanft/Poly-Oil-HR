@@ -1,23 +1,41 @@
-import Header from './components/Header';
-import Hero from './components/Hero';
-import Products from './components/Products';
-import Mission from './components/Mission';
-import Blog from './components/Blog';
-import Contact from './components/Contact';
-import Footer from './components/Footer';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import HomePage from './pages/Home';
+import AdminLoginPage from './pages/AdminLogin';
+import AdminDashboardPage from './pages/AdminDashboard';
+import { useAuth } from './contexts/AuthContext';
 
-function App() {
-  return (
-    <div className="min-h-screen bg-white">
-      <Header />
-      <Hero />
-      <Products />
-      <Mission />
-      <Blog />
-      <Contact />
-      <Footer />
-    </div>
-  );
+function PrivateRoute({ children }: { children: JSX.Element }) {
+  const { user, status } = useAuth();
+
+  if (status === 'idle' || status === 'loading') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-900 text-white">
+        <p className="text-sm text-slate-300">Chargement de votre session...</p>
+      </div>
+    );
+  }
+
+  if (!user || user.role !== 'admin') {
+    return <Navigate to="/admin" replace />;
+  }
+
+  return children;
 }
 
-export default App;
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/admin" element={<AdminLoginPage />} />
+      <Route
+        path="/admin/dashboard"
+        element={
+          <PrivateRoute>
+            <AdminDashboardPage />
+          </PrivateRoute>
+        }
+      />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
+}
