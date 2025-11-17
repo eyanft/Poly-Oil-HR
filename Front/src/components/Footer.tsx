@@ -1,7 +1,9 @@
 import { Facebook, Instagram, Linkedin } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import logo from '../assets/po.png';
 
 export default function Footer() {
+  const { t } = useTranslation();
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -16,48 +18,48 @@ export default function Footer() {
           <div>
             <img src={logo} alt="Poly Oil Logo" className="h-16 w-auto mb-4" />
             <p className="text-gray-300 text-sm">
-              Performance, protection et longévité pour votre moteur depuis plus de 10 ans.
+              {t('footer.description')}
             </p>
           </div>
 
           <div>
-            <h3 className="text-lg font-bold mb-4">Liens rapides</h3>
+            <h3 className="text-lg font-bold mb-4">{t('footer.quickLinks')}</h3>
             <ul className="space-y-2">
               <li>
                 <button onClick={() => scrollToSection('accueil')} className="text-gray-300 hover:text-white transition-colors">
-                  Accueil
+                  {t('header.home')}
                 </button>
               </li>
               <li>
                 <button onClick={() => scrollToSection('produits')} className="text-gray-300 hover:text-white transition-colors">
-                  Produits
+                  {t('header.products')}
                 </button>
               </li>
               <li>
                 <button onClick={() => scrollToSection('blog')} className="text-gray-300 hover:text-white transition-colors">
-                  Blog
+                  {t('header.blog')}
                 </button>
               </li>
               <li>
                 <button onClick={() => scrollToSection('contact')} className="text-gray-300 hover:text-white transition-colors">
-                  Contact
+                  {t('header.contact')}
                 </button>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="text-lg font-bold mb-4">Catégories</h3>
+            <h3 className="text-lg font-bold mb-4">{t('footer.categories')}</h3>
             <ul className="space-y-2 text-gray-300 text-sm">
-              <li>Huiles moteur</li>
-              <li>Liquides de frein</li>
-              <li>Lave-glaces</li>
-              <li>Graisses industrielles</li>
+              <li>{t('footer.engineOil')}</li>
+              <li>{t('footer.brakeFluid')}</li>
+              <li>{t('footer.washerFluid')}</li>
+              <li>{t('footer.industrialGrease')}</li>
             </ul>
           </div>
 
           <div>
-            <h3 className="text-lg font-bold mb-4">Suivez-nous</h3>
+            <h3 className="text-lg font-bold mb-4">{t('footer.followUs')}</h3>
             <div className="flex space-x-4">
               <a
                 href="#"
@@ -86,7 +88,7 @@ export default function Footer() {
 
         <div className="border-t border-gray-700 pt-6 text-center">
           <p className="text-gray-400 text-sm">
-            &copy; {new Date().getFullYear()} Poly Oil Plus. Tous droits réservés. | Mentions légales
+            &copy; {new Date().getFullYear()} Poly Oil Plus. {t('footer.copyright')} | {t('footer.legal')}
           </p>
         </div>
       </div>

@@ -1,8 +1,10 @@
 import { FormEvent, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function AdminLoginPage() {
+  const { t } = useTranslation();
   const { user, status, error, login } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -22,7 +24,7 @@ export default function AdminLoginPage() {
     setSuccessMessage(null);
     try {
       await login(email, password);
-      setSuccessMessage('Connexion réussie. Redirection vers le tableau de bord...');
+      setSuccessMessage(t('admin.login.successMessage'));
       setEmail('');
       setPassword('');
       navigate('/admin/dashboard', { replace: true });
@@ -35,13 +37,13 @@ export default function AdminLoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 px-4">
       <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8 sm:p-10">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Espace Administrateur</h1>
-          <p className="text-gray-500 mt-2">Connectez-vous pour gérer le catalogue produits.</p>
+          <h1 className="text-3xl font-bold text-gray-900">{t('admin.login.title')}</h1>
+          <p className="text-gray-500 mt-2">{t('admin.login.subtitle')}</p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-              Email professionnel
+              {t('admin.login.email')}
             </label>
             <input
               id="email"
@@ -49,7 +51,7 @@ export default function AdminLoginPage() {
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               className="w-full px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="admin@poly-oil.com"
+              placeholder={t('admin.login.emailPlaceholder')}
               required
               disabled={isLoading}
             />
@@ -57,7 +59,7 @@ export default function AdminLoginPage() {
 
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-              Mot de passe
+              {t('admin.login.password')}
             </label>
             <input
               id="password"
@@ -65,7 +67,7 @@ export default function AdminLoginPage() {
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               className="w-full px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="••••••••"
+              placeholder={t('admin.login.passwordPlaceholder')}
               required
               disabled={isLoading}
             />
@@ -79,11 +81,11 @@ export default function AdminLoginPage() {
             className="w-full bg-gradient-to-r from-blue-600 to-red-600 text-white py-3 rounded-full font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={isLoading}
           >
-            {isLoading ? 'Connexion...' : 'Se connecter'}
+            {isLoading ? t('admin.login.loggingIn') : t('admin.login.loginButton')}
           </button>
 
           <p className="text-xs text-center text-gray-400">
-            Un cookie sécurisé permet de maintenir votre session administrateur.
+            {t('admin.login.cookieNotice')}
           </p>
         </form>
       </div>

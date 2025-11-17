@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const carouselImages = [
   'https://images.pexels.com/photos/13065690/pexels-photo-13065690.jpeg?auto=compress&cs=tinysrgb&w=1920',
@@ -8,6 +9,7 @@ const carouselImages = [
 ];
 
 export default function Hero() {
+  const { t } = useTranslation();
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const scrollToSection = (id: string) => {
@@ -58,17 +60,17 @@ export default function Hero() {
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center py-20">
           <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight animate-fade-in-up">
-            Performance, Protection et Longévité pour votre moteur
+            {t('hero.title')}
           </h1>
           <p className="text-xl md:text-2xl mb-8 text-blue-100 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-            Des lubrifiants de haute qualité pour optimiser les performances de votre véhicule
+            {t('hero.subtitle')}
           </p>
           <button
             onClick={() => scrollToSection('produits')}
             className="bg-white text-blue-900 px-8 py-4 rounded-full font-bold text-lg hover:bg-blue-50 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 inline-flex items-center space-x-2 animate-fade-in-up"
             style={{ animationDelay: '0.4s' }}
           >
-            <span>Voir nos produits</span>
+            <span>{t('hero.cta')}</span>
             <ArrowRight className="h-5 w-5" />
           </button>
         </div>

@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Search, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, X, Grid3x3, List, Check } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import ProductModal from './ProductModal';
 import CompareModal from './CompareModal';
 import { fetchProducts, type Product as ApiProduct } from '../services/products';
@@ -387,6 +388,7 @@ function FilterSection({ title, isOpen, onToggle, children }: FilterSectionProps
 }
 
 export default function Products() {
+  const { t } = useTranslation();
   const [apiProducts, setApiProducts] = useState<ApiProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -409,7 +411,7 @@ export default function Products() {
         setApiProducts(data);
       } catch (err) {
         console.error('Failed to load products:', err);
-        setError(err instanceof Error ? err.message : 'Erreur lors du chargement des produits');
+        setError(err instanceof Error ? err.message : t('errors.generic'));
       } finally {
         setLoading(false);
       }
@@ -571,8 +573,8 @@ export default function Products() {
     <section id="produits" className="py-12 bg-gradient-to-b from-gray-50 to-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-8 animate-fade-in-up">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-3">Nos Produits</h2>
-          <p className="text-xl text-gray-600">Découvrez notre gamme complète de lubrifiants et produits automobiles</p>
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-3">{t('products.title')}</h2>
+          <p className="text-xl text-gray-600">{t('products.subtitle')}</p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6">
@@ -581,7 +583,7 @@ export default function Products() {
             <div className="bg-white rounded-lg shadow-lg p-3 sticky top-4">
               <div className="flex items-center justify-between mb-3 pb-3 border-b border-gray-200">
                 <h3 className="text-base font-bold text-blue-600 bg-blue-50 px-3 py-1.5 rounded w-full text-center">
-                  FILTRE DE RECHERCHE
+                  {t('products.filterByCategory').toUpperCase()}
                 </h3>
               </div>
 
@@ -591,14 +593,14 @@ export default function Products() {
                     onClick={clearAllFilters}
                     className="text-sm text-red-600 hover:text-red-700 font-medium"
                   >
-                    X TOUT EFFACER
+                    X {t('common.reset').toUpperCase()}
                   </button>
                 </div>
               )}
 
               <div className="space-y-0">
                 <FilterSection
-                  title="Catégories"
+                  title={t('products.filterByCategory')}
                   isOpen={openSections.categories}
                   onToggle={() => toggleSection('categories')}
                 >
@@ -619,7 +621,7 @@ export default function Products() {
                 </FilterSection>
 
                 <FilterSection
-                  title="Type d'huile"
+                  title={t('products.filterByType')}
                   isOpen={openSections.oilType}
                   onToggle={() => toggleSection('oilType')}
                 >
@@ -640,7 +642,7 @@ export default function Products() {
                 </FilterSection>
 
                 <FilterSection
-                  title="Viscosité"
+                  title={t('products.filterByViscosity')}
                   isOpen={openSections.viscosity}
                   onToggle={() => toggleSection('viscosity')}
                 >
@@ -661,7 +663,7 @@ export default function Products() {
                 </FilterSection>
 
                 <FilterSection
-                  title="Normes API"
+                  title={t('products.filterByStandard')}
                   isOpen={openSections.apiStandard}
                   onToggle={() => toggleSection('apiStandard')}
                 >
@@ -733,7 +735,7 @@ export default function Products() {
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
               <input
                 type="text"
-                placeholder="Rechercher un produit..."
+                placeholder={t('products.searchPlaceholder')}
                 value={searchTerm}
                 onChange={(e) => {
                   setSearchTerm(e.target.value);

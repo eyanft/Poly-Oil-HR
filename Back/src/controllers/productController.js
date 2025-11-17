@@ -1,4 +1,5 @@
 import Product from '../models/Product.js';
+import { translate } from '../i18n/index.js';
 
 const ARRAY_FIELDS = ['specifications', 'features'];
 
@@ -60,17 +61,19 @@ export async function listProducts(req, res) {
     const products = await Product.find().sort({ createdAt: -1 });
     return res.json(products);
   } catch (err) {
-    return res.status(500).json({ message: 'failed to fetch products' });
+    return res.status(500).json({ message: translate(req, 'products.fetchFailed') });
   }
 }
 
 export async function getProduct(req, res) {
   try {
     const product = await Product.findById(req.params.id);
-    if (!product) return res.status(404).json({ message: 'product not found' });
+    if (!product) {
+      return res.status(404).json({ message: translate(req, 'products.notFound') });
+    }
     return res.json(product);
   } catch (err) {
-    return res.status(500).json({ message: 'failed to fetch product' });
+    return res.status(500).json({ message: translate(req, 'products.fetchFailed') });
   }
 }
 
@@ -81,9 +84,9 @@ export async function createProduct(req, res) {
     return res.status(201).json(product);
   } catch (err) {
     if (err.name === 'ValidationError') {
-      return res.status(400).json({ message: 'validation error', details: err.errors });
+      return res.status(400).json({ message: translate(req, 'products.validationError'), details: err.errors });
     }
-    return res.status(500).json({ message: 'failed to create product' });
+    return res.status(500).json({ message: translate(req, 'products.createFailed') });
   }
 }
 
@@ -95,23 +98,27 @@ export async function updateProduct(req, res) {
       runValidators: true,
     });
 
-    if (!product) return res.status(404).json({ message: 'product not found' });
+    if (!product) {
+      return res.status(404).json({ message: translate(req, 'products.notFound') });
+    }
     return res.json(product);
   } catch (err) {
     if (err.name === 'ValidationError') {
-      return res.status(400).json({ message: 'validation error', details: err.errors });
+      return res.status(400).json({ message: translate(req, 'products.validationError'), details: err.errors });
     }
-    return res.status(500).json({ message: 'failed to update product' });
+    return res.status(500).json({ message: translate(req, 'products.updateFailed') });
   }
 }
 
 export async function deleteProduct(req, res) {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
-    if (!product) return res.status(404).json({ message: 'product not found' });
+    if (!product) {
+      return res.status(404).json({ message: translate(req, 'products.notFound') });
+    }
     return res.status(204).send();
   } catch (err) {
-    return res.status(500).json({ message: 'failed to delete product' });
+    return res.status(500).json({ message: translate(req, 'products.deleteFailed') });
   }
 }
 

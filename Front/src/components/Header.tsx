@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import logo from '../assets/po.png';
+import LanguageSelector from './LanguageSelector';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -30,30 +33,33 @@ export default function Header() {
 
           <nav className="hidden lg:flex items-center space-x-8">
             <button onClick={() => scrollToSection('accueil')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
-              Accueil
+              {t('header.home')}
             </button>
             <button onClick={() => scrollToSection('produits')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
-              Produits
+              {t('header.products')}
             </button>
            
             <button onClick={() => scrollToSection('mission')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
-              Mission & Vision
+              {t('header.mission')}
             </button>
             <button onClick={() => scrollToSection('blog')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
-              Blog
+              {t('header.blog')}
             </button>
             <button onClick={() => scrollToSection('contact')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
-              Contact
+              {t('header.contact')}
             </button>
           
           </nav>
 
-          <button
-            onClick={() => scrollToSection('contact')}
-            className="hidden lg:block bg-gradient-to-r from-blue-600 to-red-600 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300 font-medium"
-          >
-            Demander un devis
-          </button>
+          <div className="hidden lg:flex items-center space-x-4">
+            <LanguageSelector />
+            <button
+              onClick={() => scrollToSection('contact')}
+              className="bg-gradient-to-r from-blue-600 to-red-600 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300 font-medium"
+            >
+              {t('header.requestQuote')}
+            </button>
+          </div>
 
           <button
             className="lg:hidden text-gray-700"
@@ -66,30 +72,33 @@ export default function Header() {
         {isMenuOpen && (
           <nav className="lg:hidden mt-4 pb-4 flex flex-col space-y-3">
             <button onClick={() => scrollToSection('accueil')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium text-left">
-              Accueil
+              {t('header.home')}
             </button>
             <button onClick={() => scrollToSection('produits')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium text-left">
-              Produits
+              {t('header.products')}
             </button>
            
             <button onClick={() => scrollToSection('mission')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium text-left">
-              Mission & Vision
+              {t('header.mission')}
             </button>
             <button onClick={() => scrollToSection('blog')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium text-left">
-              Blog
+              {t('header.blog')}
             </button>
             <button onClick={() => scrollToSection('contact')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium text-left">
-              Contact
+              {t('header.contact')}
             </button>
             <button onClick={goToAdmin} className="text-gray-700 hover:text-blue-600 transition-colors font-medium text-left">
-              Espace Admin
+              {t('header.admin')}
             </button>
-            <button
-              onClick={() => scrollToSection('contact')}
-              className="bg-gradient-to-r from-blue-600 to-red-600 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300 font-medium"
-            >
-              Demander un devis
-            </button>
+            <div className="flex items-center space-x-3">
+              <LanguageSelector />
+              <button
+                onClick={() => scrollToSection('contact')}
+                className="bg-gradient-to-r from-blue-600 to-red-600 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300 font-medium"
+              >
+                {t('header.requestQuote')}
+              </button>
+            </div>
           </nav>
         )}
       </div>

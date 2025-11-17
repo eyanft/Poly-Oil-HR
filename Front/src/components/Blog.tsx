@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Calendar, ArrowRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import BlogPostModal from './BlogPostModal';
 
 import huileImg from "../assets/huile.png";
@@ -107,6 +108,7 @@ const blogPosts: BlogPost[] = [
 ];
 
 export default function Blog() {
+  const { t } = useTranslation();
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -120,8 +122,8 @@ export default function Blog() {
       <section id="blog" className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-800 mb-4">Notre Blog</h2>
-            <p className="text-xl text-gray-600">Conseils et actualités sur l'entretien automobile</p>
+            <h2 className="text-4xl font-bold text-gray-800 mb-4">{t('blog.title')}</h2>
+            <p className="text-xl text-gray-600">{t('blog.subtitle')}</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -148,7 +150,7 @@ export default function Blog() {
                     onClick={() => handleReadMore(post)}
                     className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 font-medium transition-colors group"
                   >
-                    <span>Lire plus</span>
+                    <span>{t('blog.readMore')}</span>
                     <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </button>
                 </div>

@@ -1,16 +1,18 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import HomePage from './pages/Home';
 import AdminLoginPage from './pages/AdminLogin';
 import AdminDashboardPage from './pages/AdminDashboard';
 import { useAuth } from './contexts/AuthContext';
 
 function PrivateRoute({ children }: { children: JSX.Element }) {
+  const { t } = useTranslation();
   const { user, status } = useAuth();
 
   if (status === 'idle' || status === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-900 text-white">
-        <p className="text-sm text-slate-300">Chargement de votre session...</p>
+        <p className="text-sm text-slate-300">{t('admin.dashboard.loadingProducts')}</p>
       </div>
     );
   }
