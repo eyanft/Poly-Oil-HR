@@ -2,6 +2,21 @@ import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import * as productService from '../services/products';
+import { 
+  LayoutDashboard, 
+  Package, 
+  Plus, 
+  Edit, 
+  Trash2, 
+  LogOut, 
+  Menu, 
+  X, 
+  User,
+  TrendingUp,
+  AlertCircle,
+  Upload,
+  Image as ImageIcon
+} from 'lucide-react';
 
 type ProductFormData = {
   name: string;
@@ -82,12 +97,28 @@ export default function AdminDashboardPage() {
   const [activeProductId, setActiveProductId] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   useEffect(() => {
     if (user?.role !== 'admin') {
       navigate('/admin', { replace: true });
     }
   }, [user, navigate]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024);
+      if (window.innerWidth >= 1024) {
+        setSidebarOpen(true);
+      } else {
+        setSidebarOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const loadProducts = useCallback(async () => {
     try {
@@ -117,6 +148,7 @@ export default function AdminDashboardPage() {
     setFormData(EMPTY_FORM);
     setActiveProductId(null);
     setFormError(null);
+    setImagePreview(null);
     setIsFormOpen(true);
   };
 
@@ -125,6 +157,7 @@ export default function AdminDashboardPage() {
     setActiveProductId(product._id);
     setFormData(toFormData(product));
     setFormError(null);
+    setImagePreview(product.image || null);
     setIsFormOpen(true);
   };
 
@@ -133,6 +166,7 @@ export default function AdminDashboardPage() {
     setFormData(EMPTY_FORM);
     setActiveProductId(null);
     setIsSubmitting(false);
+    setImagePreview(null);
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -140,46 +174,165 @@ export default function AdminDashboardPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const compressImage = (file: File, maxWidth: number = 800, quality: number = 0.8): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+
+          // Redimensionner si nécessaire
+          if (width > maxWidth) {
+            height = (height * maxWidth) / width;
+            width = maxWidth;
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            reject(new Error('Impossible de créer le contexte canvas'));
+            return;
+          }
+
+          ctx.drawImage(img, 0, 0, width, height);
+          const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+          resolve(compressedBase64);
+        };
+        img.onerror = () => reject(new Error('Erreur lors du chargement de l\'image'));
+        img.src = e.target?.result as string;
+      };
+      reader.onerror = () => reject(new Error('Erreur lors de la lecture du fichier'));
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      setFormError('Veuillez sélectionner un fichier image valide');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      setFormError('L\'image ne doit pas dépasser 5MB');
+      return;
+    }
+
+    try {
+      setFormError(null);
+      // Compresser l'image pour réduire la taille
+      const compressedBase64 = await compressImage(file);
+      setFormData((prev) => ({ ...prev, image: compressedBase64 }));
+      setImagePreview(compressedBase64);
+    } catch (err) {
+      setFormError(err instanceof Error ? err.message : 'Erreur lors du traitement de l\'image');
+    }
+  };
+
   const submitForm = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    
+    // Validation de base
     if (!accessToken) {
       setFormError('Votre session a expiré. Merci de vous reconnecter.');
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Validate required fields
+    if (!formData.name.trim()) {
+      setFormError('Le nom du produit est requis');
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!formData.category.trim()) {
+      setFormError('La catégorie est requise');
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!formData.description.trim()) {
+      setFormError('La description est requise');
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Validate image
+    if (!formData.image.trim()) {
+      setFormError('Veuillez uploader une image ou entrer une URL d\'image');
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!formData.volume.trim()) {
+      setFormError('Le volume est requis');
+      setIsSubmitting(false);
       return;
     }
 
     setIsSubmitting(true);
     setFormError(null);
 
-    const payload: productService.ProductPayload = {
-      name: formData.name.trim(),
-      category: formData.category.trim(),
-      description: formData.description.trim(),
-      image: formData.image.trim(),
-      volume: formData.volume.trim(),
-      oilType: formData.oilType.trim() || undefined,
-      viscosity: formData.viscosity.trim() || undefined,
-      apiStandard: formData.apiStandard.trim() || undefined,
-      aceaStandard: formData.aceaStandard.trim() || undefined,
-      manufacturerStandards: formData.manufacturerStandards.trim() || undefined,
-      applications: formData.applications.trim() || undefined,
-      technology: formData.technology.trim() || undefined,
-      packaging: formData.packaging.trim() || undefined,
-      price: formData.price.trim() || undefined,
-      specifications: parseMultiline(formData.specifications),
-      features: parseMultiline(formData.features),
-    };
-
     try {
+      const payload: productService.ProductPayload = {
+        name: formData.name.trim(),
+        category: formData.category.trim(),
+        description: formData.description.trim(),
+        image: formData.image.trim(),
+        volume: formData.volume.trim(),
+        oilType: formData.oilType.trim() || undefined,
+        viscosity: formData.viscosity.trim() || undefined,
+        apiStandard: formData.apiStandard.trim() || undefined,
+        aceaStandard: formData.aceaStandard.trim() || undefined,
+        manufacturerStandards: formData.manufacturerStandards.trim() || undefined,
+        applications: formData.applications.trim() || undefined,
+        technology: formData.technology.trim() || undefined,
+        packaging: formData.packaging.trim() || undefined,
+        price: formData.price.trim() || undefined,
+        specifications: parseMultiline(formData.specifications),
+        features: parseMultiline(formData.features),
+      };
+
+      console.log('Submitting product:', { formMode, payload: { ...payload, image: payload.image.substring(0, 50) + '...' } });
+
       if (formMode === 'create') {
         await productService.createProduct(payload, accessToken);
+        console.log('Product created successfully');
       } else if (activeProductId) {
         await productService.updateProduct(activeProductId, payload, accessToken);
+        console.log('Product updated successfully');
+      } else {
+        throw new Error('Mode de formulaire invalide');
       }
+
+      // Recharger les produits
       await loadProducts();
+      console.log('Products reloaded');
+      
+      // Fermer le formulaire
       closeForm();
     } catch (err) {
       console.error('Failed to submit product form', err);
-      setFormError(err instanceof Error ? err.message : 'Impossible de sauvegarder le produit');
+      let errorMessage = 'Impossible de sauvegarder le produit';
+      
+      if (err instanceof Error) {
+        errorMessage = err.message;
+      } else if (typeof err === 'object' && err !== null) {
+        const errorObj = err as { message?: string; error?: string };
+        errorMessage = errorObj.message || errorObj.error || errorMessage;
+      }
+      
+      setFormError(errorMessage);
       setIsSubmitting(false);
     }
   };
@@ -207,351 +360,593 @@ export default function AdminDashboardPage() {
   const productCount = useMemo(() => products.length, [products]);
 
   return (
-    <div className="min-h-screen bg-slate-900 text-white">
-      <header className="bg-slate-950 border-b border-slate-800">
-        <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold">Poly Oil — Tableau de bord</h1>
-            <p className="text-sm text-slate-400">Gestion du catalogue produits</p>
+    <div className="min-h-screen bg-gray-50 flex">
+      {/* Sidebar */}
+      <aside
+        className={`${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        } fixed lg:static inset-y-0 left-0 z-50 w-64 bg-gradient-to-b from-slate-900 to-slate-800 text-white transition-transform duration-300 ease-in-out lg:translate-x-0`}
+      >
+        <div className="flex flex-col h-full">
+          {/* Sidebar Header */}
+          <div className="p-6 border-b border-slate-700">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
+                  <Package className="w-6 h-6" />
+                </div>
+                <div>
+                  <h1 className="text-lg font-bold">Poly Oil</h1>
+                  <p className="text-xs text-slate-400">Admin Panel</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setSidebarOpen(false)}
+                className="lg:hidden text-slate-400 hover:text-white"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="text-right">
-              <p className="font-medium">{user?.email}</p>
-              <p className="text-xs text-slate-400">Administrateur</p>
+
+          {/* Navigation */}
+          <nav className="flex-1 p-4 space-y-2">
+            <button
+              onClick={() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                if (isMobile) setSidebarOpen(false);
+              }}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-blue-600 text-white transition-colors"
+            >
+              <LayoutDashboard className="w-5 h-5" />
+              <span className="font-medium">Tableau de bord</span>
+            </button>
+            <button
+              onClick={() => {
+                const productsSection = document.querySelector('[data-section="products"]');
+                if (productsSection) {
+                  productsSection.scrollIntoView({ behavior: 'smooth' });
+                }
+                if (isMobile) setSidebarOpen(false);
+              }}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors"
+            >
+              <Package className="w-5 h-5" />
+              <span className="font-medium">Produits</span>
+            </button>
+          </nav>
+
+          {/* Sidebar Footer */}
+          <div className="p-4 border-t border-slate-700">
+            <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-slate-800/50">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
+                <User className="w-5 h-5" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium truncate">{user?.email}</p>
+                <p className="text-xs text-slate-400">Administrateur</p>
+              </div>
             </div>
             <button
               onClick={handleLogout}
-              className="px-4 py-2 rounded-full bg-red-500 hover:bg-red-600 transition-colors text-sm font-medium"
+              className="w-full mt-3 flex items-center gap-3 px-4 py-3 rounded-lg text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors"
             >
-              Se déconnecter
+              <LogOut className="w-5 h-5" />
+              <span className="font-medium">Déconnexion</span>
             </button>
           </div>
         </div>
-      </header>
+      </aside>
 
-      <main className="max-w-6xl mx-auto px-6 py-10">
-        <section className="bg-slate-950/60 border border-slate-800 rounded-3xl p-8 mb-8">
-          <h2 className="text-xl font-semibold mb-3">Vue d'ensemble</h2>
-          <div className="flex flex-wrap gap-6">
-            <div className="bg-slate-900/70 border border-slate-800 rounded-2xl px-6 py-4">
-              <p className="text-sm text-slate-400">Produits catalogue</p>
-              <p className="text-2xl font-semibold mt-2">{productCount}</p>
-            </div>
-          </div>
-        </section>
+      {/* Overlay for mobile */}
+      {sidebarOpen && isMobile && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
 
-        <section className="bg-slate-950/60 border border-slate-800 rounded-3xl p-8">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2 className="text-xl font-semibold">Produits</h2>
-              <p className="text-sm text-slate-400">Gérez la publication et la mise à jour des fiches produits.</p>
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col min-w-0">
+        {/* Top Header */}
+        <header className="bg-white border-b border-gray-200 sticky top-0 z-30">
+          <div className="px-4 lg:px-8 py-4 flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => setSidebarOpen(true)}
+                className="lg:hidden text-gray-600 hover:text-gray-900"
+              >
+                <Menu className="w-6 h-6" />
+              </button>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">Gestion des Produits</h1>
+                <p className="text-sm text-gray-500">Gérez votre catalogue de produits</p>
+              </div>
             </div>
             <button
               onClick={openCreateForm}
-              className="px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-500 transition-colors text-sm font-medium"
+              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all shadow-md hover:shadow-lg"
             >
-              Ajouter un produit
+              <Plus className="w-5 h-5" />
+              <span className="font-medium">Nouveau produit</span>
             </button>
           </div>
+        </header>
 
-          {status === 'loading' && (
-            <div className="border border-dashed border-slate-700 rounded-2xl p-6 text-sm text-slate-400">
-              Chargement des produits...
-            </div>
-          )}
-
-          {status === 'error' && error && (
-            <div className="border border-red-500/40 bg-red-500/10 text-red-200 rounded-2xl p-4 mb-4 text-sm">
-              {error}
-            </div>
-          )}
-
-          {status !== 'loading' && products.length === 0 && (
-            <div className="border border-dashed border-slate-700 rounded-2xl p-6 text-sm text-slate-400">
-              Aucun produit n'est encore enregistré.
-            </div>
-          )}
-
-          {products.length > 0 && (
-            <div className="overflow-hidden border border-slate-800 rounded-2xl">
-              <table className="w-full text-left">
-                <thead className="bg-slate-950/80">
-                  <tr className="text-sm text-slate-400">
-                    <th className="px-6 py-3 font-medium">Produit</th>
-                    <th className="px-6 py-3 font-medium">Catégorie</th>
-                    <th className="px-6 py-3 font-medium">Volume</th>
-                    <th className="px-6 py-3 font-medium">Prix</th>
-                    <th className="px-6 py-3 font-medium">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {products.map((product) => (
-                    <tr key={product._id} className="border-t border-slate-800 text-sm">
-                      <td className="px-6 py-4 font-medium text-white">
-                        <p>{product.name}</p>
-                        <p className="text-xs text-slate-400 mt-1 line-clamp-1">{product.description}</p>
-                      </td>
-                      <td className="px-6 py-4 text-slate-300">{product.category}</td>
-                      <td className="px-6 py-4 text-slate-300">{product.volume}</td>
-                      <td className="px-6 py-4 text-slate-300">{product.price ?? '—'}</td>
-                      <td className="px-6 py-4 space-x-3">
-                        <button
-                          onClick={() => openEditForm(product)}
-                          className="text-blue-400 hover:text-blue-300 text-sm font-medium"
-                        >
-                          Modifier
-                        </button>
-                        <button
-                          onClick={() => handleDelete(product._id)}
-                          className="text-red-400 hover:text-red-300 text-sm font-medium disabled:opacity-50 disabled:pointer-events-none"
-                          disabled={deletingId === product._id}
-                        >
-                          {deletingId === product._id ? 'Suppression...' : 'Supprimer'}
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-
-          {isFormOpen && (
-            <div className="mt-8 border border-slate-800 rounded-2xl p-6 bg-slate-950/70">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold">
-                  {formMode === 'create' ? 'Ajouter un produit' : 'Modifier le produit'}
-                </h3>
-                <button onClick={closeForm} className="text-sm text-slate-400 hover:text-slate-200">
-                  Fermer
-                </button>
+        {/* Main Body */}
+        <main className="flex-1 p-4 lg:p-8 overflow-y-auto">
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Total Produits</p>
+                  <p className="text-3xl font-bold text-gray-900 mt-2">{productCount}</p>
+                </div>
+                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <Package className="w-6 h-6 text-blue-600" />
+                </div>
               </div>
+            </div>
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Statut</p>
+                  <p className="text-3xl font-bold text-green-600 mt-2">Actif</p>
+                </div>
+                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                  <TrendingUp className="w-6 h-6 text-green-600" />
+                </div>
+              </div>
+            </div>
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Dernière mise à jour</p>
+                  <p className="text-lg font-semibold text-gray-900 mt-2">Aujourd'hui</p>
+                </div>
+                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                  <LayoutDashboard className="w-6 h-6 text-purple-600" />
+                </div>
+              </div>
+            </div>
+          </div>
 
-              {formError && (
-                <div className="border border-red-500/40 bg-red-500/10 text-red-200 rounded-xl p-3 text-sm mb-4">
-                  {formError}
+          {/* Products Section */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200" data-section="products">
+            <div className="p-6 border-b border-gray-200">
+              <h2 className="text-xl font-bold text-gray-900">Liste des Produits</h2>
+              <p className="text-sm text-gray-500 mt-1">Gérez la publication et la mise à jour des fiches produits</p>
+            </div>
+
+            <div className="p-6">
+              {status === 'loading' && (
+                <div className="flex flex-col items-center justify-center py-12">
+                  <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"></div>
+                  <p className="text-gray-500">Chargement des produits...</p>
                 </div>
               )}
 
-              <form className="grid grid-cols-1 md:grid-cols-2 gap-6" onSubmit={submitForm}>
-                <div className="space-y-2">
-                  <label className="text-sm text-slate-400" htmlFor="name">
-                    Nom du produit*
-                  </label>
-                  <input
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
+              {status === 'error' && error && (
+                <div className="flex items-center gap-3 p-4 bg-red-50 border border-red-200 rounded-lg mb-4">
+                  <AlertCircle className="w-5 h-5 text-red-600" />
+                  <p className="text-red-600 text-sm">{error}</p>
                 </div>
-                <div className="space-y-2">
-                  <label className="text-sm text-slate-400" htmlFor="category">
-                    Catégorie*
-                  </label>
-                  <input
-                    id="category"
-                    name="category"
-                    value={formData.category}
-                    onChange={handleInputChange}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
+              )}
+
+              {status !== 'loading' && products.length === 0 && (
+                <div className="flex flex-col items-center justify-center py-12">
+                  <Package className="w-16 h-16 text-gray-300 mb-4" />
+                  <p className="text-gray-500 font-medium">Aucun produit enregistré</p>
+                  <p className="text-gray-400 text-sm mt-1">Commencez par ajouter votre premier produit</p>
                 </div>
-                <div className="md:col-span-2 space-y-2">
-                  <label className="text-sm text-slate-400" htmlFor="description">
-                    Description*
-                  </label>
-                  <textarea
-                    id="description"
-                    name="description"
-                    value={formData.description}
-                    onChange={handleInputChange}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm h-28 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
+              )}
+
+              {products.length > 0 && (
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-gray-200">
+                        <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          Produit
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          Catégorie
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          Volume
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          Prix
+                        </th>
+                        <th className="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      {products.map((product) => (
+                        <tr key={product._id} className="hover:bg-gray-50 transition-colors">
+                          <td className="px-6 py-4">
+                            <p className="font-semibold text-gray-900">{product.name}</p>
+                            <p className="text-sm text-gray-500 mt-1 line-clamp-1">{product.description}</p>
+                          </td>
+                          <td className="px-6 py-4">
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                              {product.category}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 text-gray-700">{product.volume}</td>
+                          <td className="px-6 py-4 text-gray-700">{product.price ?? '—'}</td>
+                          <td className="px-6 py-4">
+                            <div className="flex items-center justify-end gap-2">
+                              <button
+                                onClick={() => openEditForm(product)}
+                                className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                              >
+                                <Edit className="w-4 h-4" />
+                                Modifier
+                              </button>
+                              <button
+                                onClick={() => handleDelete(product._id)}
+                                className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50 disabled:pointer-events-none"
+                                disabled={deletingId === product._id}
+                              >
+                                <Trash2 className="w-4 h-4" />
+                                {deletingId === product._id ? 'Suppression...' : 'Supprimer'}
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
-                <div className="space-y-2">
-                  <label className="text-sm text-slate-400" htmlFor="image">
-                    URL de l'image*
-                  </label>
-                  <input
-                    id="image"
-                    name="image"
-                    value={formData.image}
-                    onChange={handleInputChange}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm text-slate-400" htmlFor="volume">
-                    Volume*
-                  </label>
-                  <input
-                    id="volume"
-                    name="volume"
-                    value={formData.volume}
-                    onChange={handleInputChange}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm text-slate-400" htmlFor="oilType">
-                    Type d'huile
-                  </label>
-                  <input
-                    id="oilType"
-                    name="oilType"
-                    value={formData.oilType}
-                    onChange={handleInputChange}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm text-slate-400" htmlFor="viscosity">
-                    Viscosité
-                  </label>
-                  <input
-                    id="viscosity"
-                    name="viscosity"
-                    value={formData.viscosity}
-                    onChange={handleInputChange}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm text-slate-400" htmlFor="apiStandard">
-                    Norme API
-                  </label>
-                  <input
-                    id="apiStandard"
-                    name="apiStandard"
-                    value={formData.apiStandard}
-                    onChange={handleInputChange}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm text-slate-400" htmlFor="aceaStandard">
-                    Norme ACEA
-                  </label>
-                  <input
-                    id="aceaStandard"
-                    name="aceaStandard"
-                    value={formData.aceaStandard}
-                    onChange={handleInputChange}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm text-slate-400" htmlFor="manufacturerStandards">
-                    Normes constructeurs
-                  </label>
-                  <input
-                    id="manufacturerStandards"
-                    name="manufacturerStandards"
-                    value={formData.manufacturerStandards}
-                    onChange={handleInputChange}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm text-slate-400" htmlFor="applications">
-                    Applications
-                  </label>
-                  <input
-                    id="applications"
-                    name="applications"
-                    value={formData.applications}
-                    onChange={handleInputChange}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm text-slate-400" htmlFor="technology">
-                    Technologie
-                  </label>
-                  <input
-                    id="technology"
-                    name="technology"
-                    value={formData.technology}
-                    onChange={handleInputChange}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm text-slate-400" htmlFor="packaging">
-                    Conditionnement
-                  </label>
-                  <input
-                    id="packaging"
-                    name="packaging"
-                    value={formData.packaging}
-                    onChange={handleInputChange}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                <div className="md:col-span-2 space-y-2">
-                  <label className="text-sm text-slate-400" htmlFor="specifications">
-                    Spécifications (une par ligne)
-                  </label>
-                  <textarea
-                    id="specifications"
-                    name="specifications"
-                    value={formData.specifications}
-                    onChange={handleInputChange}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm h-24 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                <div className="md:col-span-2 space-y-2">
-                  <label className="text-sm text-slate-400" htmlFor="features">
-                    Points forts (un par ligne)
-                  </label>
-                  <textarea
-                    id="features"
-                    name="features"
-                    value={formData.features}
-                    onChange={handleInputChange}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm h-24 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm text-slate-400" htmlFor="price">
-                    Prix / commercialisation
-                  </label>
-                  <input
-                    id="price"
-                    name="price"
-                    value={formData.price}
-                    onChange={handleInputChange}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                <div className="md:col-span-2 flex items-center justify-end gap-3">
+              )}
+            </div>
+          </div>
+
+          {/* Product Form Modal */}
+          {isFormOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+              <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between rounded-t-2xl z-10">
+                  <h3 className="text-2xl font-bold text-gray-900">
+                    {formMode === 'create' ? 'Ajouter un produit' : 'Modifier le produit'}
+                  </h3>
                   <button
-                    type="button"
                     onClick={closeForm}
-                    className="px-4 py-2 rounded-full border border-slate-700 text-sm text-slate-300 hover:bg-slate-800"
+                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
                   >
-                    Annuler
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 rounded-full bg-blue-600 hover:bg-blue-500 transition-colors text-sm font-medium disabled:opacity-50 disabled:pointer-events-none"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? 'Enregistrement...' : 'Enregistrer'}
+                    <X className="w-5 h-5 text-gray-600" />
                   </button>
                 </div>
-              </form>
+
+                <div className="p-6">
+                  {formError && (
+                    <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-lg mb-6 animate-fade-in">
+                      <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                      <div className="flex-1">
+                        <p className="text-red-800 font-medium text-sm mb-1">Erreur</p>
+                        <p className="text-red-600 text-sm">{formError}</p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setFormError(null)}
+                        className="text-red-400 hover:text-red-600 transition-colors"
+                        aria-label="Fermer l'erreur"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  )}
+
+                  {isSubmitting && (
+                    <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                        <p className="text-blue-700 text-sm font-medium">Enregistrement du produit en cours...</p>
+                      </div>
+                    </div>
+                  )}
+
+                  <form className="grid grid-cols-1 md:grid-cols-2 gap-6" onSubmit={submitForm} noValidate>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700" htmlFor="name">
+                        Nom du produit <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700" htmlFor="category">
+                        Catégorie <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        id="category"
+                        name="category"
+                        value={formData.category}
+                        onChange={handleInputChange}
+                        className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        required
+                      />
+                    </div>
+                    <div className="md:col-span-2 space-y-2">
+                      <label className="text-sm font-medium text-gray-700" htmlFor="description">
+                        Description <span className="text-red-500">*</span>
+                      </label>
+                      <textarea
+                        id="description"
+                        name="description"
+                        value={formData.description}
+                        onChange={handleInputChange}
+                        className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm h-28 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        required
+                      />
+                    </div>
+                    <div className="md:col-span-2 space-y-2">
+                      <label className="text-sm font-medium text-gray-700" htmlFor="image">
+                        Image du produit <span className="text-red-500">*</span>
+                      </label>
+                      
+                      {/* Image Preview */}
+                      {imagePreview && (
+                        <div className="mb-4">
+                          <div className="relative inline-block">
+                            <img
+                              src={imagePreview}
+                              alt="Aperçu"
+                              className="w-48 h-48 object-contain border border-gray-300 rounded-lg bg-gray-50"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setImagePreview(null);
+                                setFormData((prev) => ({ ...prev, image: '' }));
+                              }}
+                              className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Upload Input */}
+                      <div className="relative">
+                        <input
+                          type="file"
+                          id="image"
+                          name="image"
+                          accept="image/*"
+                          onChange={handleImageUpload}
+                          className="hidden"
+                        />
+                        <label
+                          htmlFor="image"
+                          className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 hover:border-blue-400 transition-colors"
+                        >
+                          <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                            {imagePreview ? (
+                              <>
+                                <ImageIcon className="w-10 h-10 text-blue-500 mb-2" />
+                                <p className="text-sm text-gray-600">Cliquez pour changer l'image</p>
+                              </>
+                            ) : (
+                              <>
+                                <Upload className="w-10 h-10 text-gray-400 mb-2" />
+                                <p className="mb-2 text-sm text-gray-500">
+                                  <span className="font-semibold">Cliquez pour uploader</span> ou glissez-déposez
+                                </p>
+                                <p className="text-xs text-gray-500">PNG, JPG, GIF jusqu'à 5MB</p>
+                              </>
+                            )}
+                          </div>
+                        </label>
+                      </div>
+                      
+                      {/* Fallback URL input */}
+                      <div className="mt-3">
+                        <label className="text-xs text-gray-500 mb-1 block">Ou entrez une URL d'image</label>
+                        <input
+                          type="text"
+                          name="imageUrl"
+                          value={formData.image.startsWith('data:') ? '' : formData.image}
+                          onChange={(e) => {
+                            const url = e.target.value;
+                            setFormData((prev) => ({ ...prev, image: url }));
+                            if (url && !url.startsWith('data:')) {
+                              setImagePreview(url);
+                            } else if (!url) {
+                              setImagePreview(null);
+                            }
+                          }}
+                          placeholder="https://exemple.com/image.jpg"
+                          className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700" htmlFor="volume">
+                        Volume <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        id="volume"
+                        name="volume"
+                        value={formData.volume}
+                        onChange={handleInputChange}
+                        className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700" htmlFor="oilType">
+                        Type d'huile
+                      </label>
+                      <input
+                        id="oilType"
+                        name="oilType"
+                        value={formData.oilType}
+                        onChange={handleInputChange}
+                        className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700" htmlFor="viscosity">
+                        Viscosité
+                      </label>
+                      <input
+                        id="viscosity"
+                        name="viscosity"
+                        value={formData.viscosity}
+                        onChange={handleInputChange}
+                        className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700" htmlFor="apiStandard">
+                        Norme API
+                      </label>
+                      <input
+                        id="apiStandard"
+                        name="apiStandard"
+                        value={formData.apiStandard}
+                        onChange={handleInputChange}
+                        className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700" htmlFor="aceaStandard">
+                        Norme ACEA
+                      </label>
+                      <input
+                        id="aceaStandard"
+                        name="aceaStandard"
+                        value={formData.aceaStandard}
+                        onChange={handleInputChange}
+                        className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700" htmlFor="manufacturerStandards">
+                        Normes constructeurs
+                      </label>
+                      <input
+                        id="manufacturerStandards"
+                        name="manufacturerStandards"
+                        value={formData.manufacturerStandards}
+                        onChange={handleInputChange}
+                        className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700" htmlFor="applications">
+                        Applications
+                      </label>
+                      <input
+                        id="applications"
+                        name="applications"
+                        value={formData.applications}
+                        onChange={handleInputChange}
+                        className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700" htmlFor="technology">
+                        Technologie
+                      </label>
+                      <input
+                        id="technology"
+                        name="technology"
+                        value={formData.technology}
+                        onChange={handleInputChange}
+                        className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700" htmlFor="packaging">
+                        Conditionnement
+                      </label>
+                      <input
+                        id="packaging"
+                        name="packaging"
+                        value={formData.packaging}
+                        onChange={handleInputChange}
+                        className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+                    <div className="md:col-span-2 space-y-2">
+                      <label className="text-sm font-medium text-gray-700" htmlFor="specifications">
+                        Spécifications (une par ligne)
+                      </label>
+                      <textarea
+                        id="specifications"
+                        name="specifications"
+                        value={formData.specifications}
+                        onChange={handleInputChange}
+                        className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm h-24 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+                    <div className="md:col-span-2 space-y-2">
+                      <label className="text-sm font-medium text-gray-700" htmlFor="features">
+                        Points forts (un par ligne)
+                      </label>
+                      <textarea
+                        id="features"
+                        name="features"
+                        value={formData.features}
+                        onChange={handleInputChange}
+                        className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm h-24 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-gray-700" htmlFor="price">
+                        Prix / commercialisation
+                      </label>
+                      <input
+                        id="price"
+                        name="price"
+                        value={formData.price}
+                        onChange={handleInputChange}
+                        className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    </div>
+                    <div className="md:col-span-2 flex items-center justify-end gap-3 pt-4 border-t border-gray-200">
+                      <button
+                        type="button"
+                        onClick={closeForm}
+                        className="px-6 py-2.5 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                      >
+                        Annuler
+                      </button>
+                      <button
+                        type="submit"
+                        className="px-6 py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 text-white text-sm font-medium hover:from-blue-700 hover:to-blue-800 transition-all shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                            <span>Enregistrement...</span>
+                          </>
+                        ) : (
+                          <span>Enregistrer</span>
+                        )}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
             </div>
           )}
-        </section>
-      </main>
+        </main>
+      </div>
     </div>
   );
 }

@@ -17,7 +17,9 @@ const clientOrigin = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
 
 app.use(cors({ origin: clientOrigin, credentials: true }));
 app.use(cookieParser());
-app.use(express.json());
+// Augmenter la limite pour permettre l'upload d'images en base64 (max 10MB)
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 app.get('/api/health', (req, res) => {
   res.json({ ok: true });

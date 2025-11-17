@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Calendar, ArrowRight } from 'lucide-react';
 import BlogPostModal from './BlogPostModal';
 
+import huileImg from "../assets/huile.png";
 interface BlogPost {
   id: number;
   title: string;
@@ -48,7 +49,7 @@ const blogPosts: BlogPost[] = [
     title: "L'importance du graissage régulier",
     summary: "Le graissage préventif est crucial pour la longévité de votre véhicule. Apprenez quand et comment effectuer cette maintenance.",
     date: "10 Mars 2025",
-    image: "https://images.pexels.com/photos/13065690/pexels-photo-13065690.jpeg?auto=compress&cs=tinysrgb&w=800",
+    image: huileImg,
     content: "Le graissage régulier est une opération de maintenance préventive souvent négligée, mais qui joue un rôle crucial dans la longévité et le bon fonctionnement de votre véhicule. Les points de graissage permettent de réduire l'usure, les frottements et les bruits, tout en améliorant les performances globales de votre automobile.",
     sections: [
       {
