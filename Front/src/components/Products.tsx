@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Search, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, X, Grid3x3, List, Check } from 'lucide-react';
 import ProductModal from './ProductModal';
 import CompareModal from './CompareModal';
+import { fetchProducts, type Product as ApiProduct } from '../services/products';
 import product1 from '../assets/20w504lb.png';
 import product2 from '../assets/20w504lgold.png';
 import product3 from '../assets/40fl20l.png';
@@ -12,8 +13,10 @@ import product7 from '../assets/7580.png';
 import product8 from '../assets/10405l.png';
 import product9 from '../assets/atf.png';
 
-interface Product {
-  id: number;
+// Unified Product type that can handle both static and API products
+type UnifiedProduct = {
+  _id: string; // Unique identifier (for API products) or generated for static
+  id?: number; // Legacy id for static products
   name: string;
   category: string;
   description: string;
@@ -30,9 +33,13 @@ interface Product {
   specifications?: string[];
   features?: string[];
   price?: string;
-}
+  createdAt?: string;
+  updatedAt?: string;
+  isStatic?: boolean; // Flag to identify static products
+};
 
-const products: Product[] = [
+// Static products
+const staticProducts: Omit<UnifiedProduct, '_id'>[] = [
   {
     id: 1,
     name: 'PO-5000 20W-50',
@@ -50,6 +57,7 @@ const products: Product[] = [
     specifications: ['Norme API SF/CD', 'Multigrade 20W-50', 'Pour moteurs essence'],
     features: ['Protection contre l\'usure', 'Excellente stabilité thermique', 'Réduction de la consommation'],
     price: 'Sur devis',
+    isStatic: true,
   },
   {
     id: 2,
@@ -68,6 +76,7 @@ const products: Product[] = [
     specifications: ['Norme API SL/CF', 'Qualité supérieure', 'Protection maximale'],
     features: ['Performance optimale', 'Nettoyage du moteur', 'Longévité accrue'],
     price: 'Sur devis',
+    isStatic: true,
   },
   {
     id: 3,
@@ -86,6 +95,7 @@ const products: Product[] = [
     specifications: ['SAE 40', 'Pour moteurs diesel', 'Usage industriel'],
     features: ['Résistance aux charges élevées', 'Protection anti-corrosion', 'Durabilité exceptionnelle'],
     price: 'Sur devis',
+    isStatic: true,
   },
   {
     id: 4,
@@ -99,6 +109,7 @@ const products: Product[] = [
     specifications: ['SAE 90', 'API GL1', 'Pour transmissions'],
     features: ['Changement de vitesse fluide', 'Protection des engrenages', 'Réduction du bruit'],
     price: 'Sur devis',
+    isStatic: true,
   },
   {
     id: 5,
@@ -114,6 +125,7 @@ const products: Product[] = [
     specifications: ['API SL/CF', '10W-40', 'Semi-synthétique'],
     features: ['Démarrage à froid facilité', 'Protection toutes saisons', 'Économie de carburant'],
     price: 'Sur devis',
+    isStatic: true,
   },
   {
     id: 6,
@@ -130,6 +142,7 @@ const products: Product[] = [
     specifications: ['Qualité premium', 'API SL/CF', 'Additifs avancés'],
     features: ['Performance supérieure', 'Propreté maximale', 'Protection longue durée'],
     price: 'Sur devis',
+    isStatic: true,
   },
   {
     id: 7,
@@ -145,6 +158,7 @@ const products: Product[] = [
     specifications: ['API GL4', '75W-80', 'Multi-usage'],
     features: ['Changements précis', 'Résistance à l\'oxydation', 'Protection anti-usure'],
     price: 'Sur devis',
+    isStatic: true,
   },
   {
     id: 8,
@@ -160,6 +174,7 @@ const products: Product[] = [
     specifications: ['API SL/CF', 'Essence et diesel', '10W-40'],
     features: ['Polyvalence maximale', 'Économique', 'Haute protection'],
     price: 'Sur devis',
+    isStatic: true,
   },
   {
     id: 9,
@@ -172,6 +187,7 @@ const products: Product[] = [
     specifications: ['Dexron II', 'Transmission automatique', 'Fluide ATF'],
     features: ['Changement fluide', 'Protection hydraulique', 'Longévité transmission'],
     price: 'Sur devis',
+    isStatic: true,
   },
   {
     id: 10,
@@ -184,6 +200,7 @@ const products: Product[] = [
     specifications: ['Norme DOT 4', 'Point d\'ébullition élevé', 'Compatible tous véhicules'],
     features: ['Freinage sûr', 'Résistance à l\'humidité', 'Performance constante'],
     price: 'Sur devis',
+    isStatic: true,
   },
   {
     id: 11,
@@ -196,6 +213,7 @@ const products: Product[] = [
     specifications: ['Concentré dilutable', 'Toutes saisons', 'Non toxique'],
     features: ['Nettoyage parfait', 'Protection anti-gel', 'Sans traces'],
     price: 'Sur devis',
+    isStatic: true,
   },
   {
     id: 12,
@@ -208,6 +226,7 @@ const products: Product[] = [
     specifications: ['Lithium EP2', 'Multi-usage', 'Haute adhérence'],
     features: ['Protection extrême', 'Résistance aux charges', 'Usage universel'],
     price: 'Sur devis',
+    isStatic: true,
   },
   {
     id: 13,
@@ -220,6 +239,7 @@ const products: Product[] = [
     specifications: ['100% pure', 'Sans minéraux', 'Usage automobile'],
     features: ['Évite les dépôts', 'Protection batteries', 'Polyvalente'],
     price: 'Sur devis',
+    isStatic: true,
   },
   {
     id: 14,
@@ -236,6 +256,7 @@ const products: Product[] = [
     specifications: ['API SN', '5W-40', '100% Synthèse'],
     features: ['Performance maximale', 'Protection longue durée', 'Économie de carburant'],
     price: 'Sur devis',
+    isStatic: true,
   },
   {
     id: 15,
@@ -251,6 +272,7 @@ const products: Product[] = [
     specifications: ['API SL', '10W-50', 'Minérale'],
     features: ['Protection standard', 'Économique', 'Usage quotidien'],
     price: 'Sur devis',
+    isStatic: true,
   },
   {
     id: 16,
@@ -266,54 +288,71 @@ const products: Product[] = [
     specifications: ['API TA', '2 Temps', 'Pour motos'],
     features: ['Protection moteur 2T', 'Faible fumée', 'Performance optimale'],
     price: 'Sur devis',
+    isStatic: true,
   },
 ];
 
-// Filter options with counts
-const filterCategories = [
-  { name: 'Divers', count: 9 },
-  { name: 'Huiles de Boîte', count: 6 },
-  { name: 'Huiles Moteur', count: 14 },
-  { name: 'Liquide Refroidissement', count: 7 },
-];
+// Helper function to normalize products (convert API products to UnifiedProduct)
+function normalizeApiProduct(apiProduct: ApiProduct): UnifiedProduct {
+  return {
+    ...apiProduct,
+    isStatic: false,
+  };
+}
 
-const filterOilTypes = [
-  { name: '100% Synthèse', count: 2 },
-  { name: 'Minérale', count: 7 },
-  { name: 'Semi-Synthèse', count: 4 },
-  { name: 'Technologie de Synthèse', count: 1 },
-];
+// Helper function to normalize static products (add _id)
+function normalizeStaticProduct(staticProduct: Omit<UnifiedProduct, '_id'>, index: number): UnifiedProduct {
+  return {
+    ...staticProduct,
+    _id: `static-${staticProduct.id || index}`,
+  };
+}
 
-const filterViscosities = [
-  { name: '2 Temps', count: 4 },
-  { name: '5W40', count: 1 },
-  { name: '10W40', count: 4 },
-  { name: '10W50', count: 1 },
-  { name: '15W40', count: 1 },
-  { name: '20W50', count: 3 },
-];
+// Helper function to calculate filter counts
+function calculateFilterCounts(products: UnifiedProduct[]) {
+  const categories = new Map<string, number>();
+  const oilTypes = new Map<string, number>();
+  const viscosities = new Map<string, number>();
+  const apiStandards = new Map<string, number>();
+  const technologies = new Map<string, number>();
+  const packaging = new Map<string, number>();
 
-const filterApiStandards = [
-  { name: 'API TA', count: 1 },
-  { name: 'API SL/CF', count: 1 },
-  { name: 'API SF', count: 1 },
-  { name: 'API SG', count: 1 },
-  { name: 'API SL', count: 3 },
-  { name: 'API SM', count: 1 },
-  { name: 'API SN', count: 3 },
-  { name: 'API TC', count: 2 },
-];
+  products.forEach((product) => {
+    // Categories
+    if (product.category) {
+      categories.set(product.category, (categories.get(product.category) || 0) + 1);
+    }
+    // Oil Types
+    if (product.oilType) {
+      oilTypes.set(product.oilType, (oilTypes.get(product.oilType) || 0) + 1);
+    }
+    // Viscosities
+    if (product.viscosity) {
+      viscosities.set(product.viscosity, (viscosities.get(product.viscosity) || 0) + 1);
+    }
+    // API Standards
+    if (product.apiStandard) {
+      apiStandards.set(product.apiStandard, (apiStandards.get(product.apiStandard) || 0) + 1);
+    }
+    // Technologies
+    if (product.technology) {
+      technologies.set(product.technology, (technologies.get(product.technology) || 0) + 1);
+    }
+    // Packaging
+    if (product.packaging) {
+      packaging.set(product.packaging, (packaging.get(product.packaging) || 0) + 1);
+    }
+  });
 
-const filterTechnologies = [
-  { name: 'ESTER', count: 2 },
-];
-
-const filterPackaging = [
-  { name: 'Bidon 1L', count: 10 },
-  { name: 'Bidon 2L', count: 1 },
-  { name: 'Bidon 4L', count: 4 },
-  { name: 'Bidon 20L', count: 1 },
-];
+  return {
+    categories: Array.from(categories.entries()).map(([name, count]) => ({ name, count })),
+    oilTypes: Array.from(oilTypes.entries()).map(([name, count]) => ({ name, count })),
+    viscosities: Array.from(viscosities.entries()).map(([name, count]) => ({ name, count })),
+    apiStandards: Array.from(apiStandards.entries()).map(([name, count]) => ({ name, count })),
+    technologies: Array.from(technologies.entries()).map(([name, count]) => ({ name, count })),
+    packaging: Array.from(packaging.entries()).map(([name, count]) => ({ name, count })),
+  };
+}
 
 const ITEMS_PER_PAGE = 16;
 
@@ -348,14 +387,45 @@ function FilterSection({ title, isOpen, onToggle, children }: FilterSectionProps
 }
 
 export default function Products() {
+  const [apiProducts, setApiProducts] = useState<ApiProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<UnifiedProduct | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState('default');
-  const [productsToCompare, setProductsToCompare] = useState<Product[]>([]);
+  const [productsToCompare, setProductsToCompare] = useState<UnifiedProduct[]>([]);
   const [isCompareModalOpen, setIsCompareModalOpen] = useState(false);
+
+  // Load products from API
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await fetchProducts();
+        setApiProducts(data);
+      } catch (err) {
+        console.error('Failed to load products:', err);
+        setError(err instanceof Error ? err.message : 'Erreur lors du chargement des produits');
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadProducts();
+  }, []);
+
+  // Combine static and API products
+  const allProducts = useMemo(() => {
+    const normalizedStatic = staticProducts.map((p, i) => normalizeStaticProduct(p, i));
+    const normalizedApi = apiProducts.map(normalizeApiProduct);
+    return [...normalizedStatic, ...normalizedApi];
+  }, [apiProducts]);
+
+  // Calculate filter counts from all products
+  const filterCounts = useMemo(() => calculateFilterCounts(allProducts), [allProducts]);
 
   // Filter states
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -439,7 +509,7 @@ export default function Products() {
     ...selectedPackaging.map(c => ({ type: 'packaging', label: c })),
   ];
 
-  const filteredProducts = products.filter(product => {
+  const filteredProducts = allProducts.filter(product => {
     const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(product.category);
     const matchesOilType = selectedOilTypes.length === 0 || (product.oilType && selectedOilTypes.includes(product.oilType));
     const matchesViscosity = selectedViscosities.length === 0 || (product.viscosity && selectedViscosities.includes(product.viscosity));
@@ -463,7 +533,7 @@ export default function Products() {
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const currentProducts = sortedProducts.slice(startIndex, endIndex);
 
-  const handleProductClick = (product: Product, e: React.MouseEvent) => {
+  const handleProductClick = (product: UnifiedProduct, e: React.MouseEvent) => {
     // Si on clique sur la checkbox, ne pas ouvrir le modal
     if ((e.target as HTMLElement).closest('.compare-checkbox')) {
       return;
@@ -472,10 +542,10 @@ export default function Products() {
     setIsModalOpen(true);
   };
 
-  const toggleProductCompare = (product: Product) => {
-    const isSelected = productsToCompare.some(p => p.id === product.id);
+  const toggleProductCompare = (product: UnifiedProduct) => {
+    const isSelected = productsToCompare.some(p => p._id === product._id);
     if (isSelected) {
-      setProductsToCompare(productsToCompare.filter(p => p.id !== product.id));
+      setProductsToCompare(productsToCompare.filter(p => p._id !== product._id));
     } else {
       if (productsToCompare.length < 2) {
         setProductsToCompare([...productsToCompare, product]);
@@ -532,7 +602,7 @@ export default function Products() {
                   isOpen={openSections.categories}
                   onToggle={() => toggleSection('categories')}
                 >
-                  {filterCategories.map((filter) => (
+                  {filterCounts.categories.map((filter) => (
                     <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-1.5 rounded">
                       <span className="text-sm text-gray-700">{filter.name}</span>
                       <div className="flex items-center space-x-2">
@@ -553,7 +623,7 @@ export default function Products() {
                   isOpen={openSections.oilType}
                   onToggle={() => toggleSection('oilType')}
                 >
-                  {filterOilTypes.map((filter) => (
+                  {filterCounts.oilTypes.map((filter) => (
                     <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-1.5 rounded">
                       <span className="text-sm text-gray-700">{filter.name}</span>
                       <div className="flex items-center space-x-2">
@@ -574,7 +644,7 @@ export default function Products() {
                   isOpen={openSections.viscosity}
                   onToggle={() => toggleSection('viscosity')}
                 >
-                  {filterViscosities.map((filter) => (
+                  {filterCounts.viscosities.map((filter) => (
                     <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-1.5 rounded">
                       <span className="text-sm text-gray-700">{filter.name}</span>
                       <div className="flex items-center space-x-2">
@@ -595,7 +665,7 @@ export default function Products() {
                   isOpen={openSections.apiStandard}
                   onToggle={() => toggleSection('apiStandard')}
                 >
-                  {filterApiStandards.map((filter) => (
+                  {filterCounts.apiStandards.map((filter) => (
                     <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-1.5 rounded">
                       <span className="text-sm text-gray-700">{filter.name}</span>
                       <div className="flex items-center space-x-2">
@@ -616,7 +686,7 @@ export default function Products() {
                   isOpen={openSections.technology}
                   onToggle={() => toggleSection('technology')}
                 >
-                  {filterTechnologies.map((filter) => (
+                  {filterCounts.technologies.map((filter) => (
                     <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-1.5 rounded">
                       <span className="text-sm text-gray-700">{filter.name}</span>
                       <div className="flex items-center space-x-2">
@@ -637,7 +707,7 @@ export default function Products() {
                   isOpen={openSections.packaging}
                   onToggle={() => toggleSection('packaging')}
                 >
-                  {filterPackaging.map((filter) => (
+                  {filterCounts.packaging.map((filter) => (
                     <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-1.5 rounded">
                       <span className="text-sm text-gray-700">{filter.name}</span>
                       <div className="flex items-center space-x-2">
@@ -697,10 +767,11 @@ export default function Products() {
             )}
 
             {/* Products Header */}
-            <div className="mb-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="text-sm text-gray-600">
-                Affichage {startIndex + 1}-{Math.min(endIndex, sortedProducts.length)} de {sortedProducts.length} article(s)
-              </div>
+            {!loading && !error && (
+              <div className="mb-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="text-sm text-gray-600">
+                  Affichage {startIndex + 1}-{Math.min(endIndex, sortedProducts.length)} de {sortedProducts.length} article(s)
+                </div>
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2 border border-gray-300 rounded-lg p-1">
                   <button
@@ -741,19 +812,43 @@ export default function Products() {
                 </button>
               </div>
             </div>
+            )}
+
+            {/* Loading State */}
+            {loading && (
+              <div className="text-center py-12">
+                <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+                <p className="text-gray-600">Chargement des produits...</p>
+              </div>
+            )}
+
+            {/* Error State */}
+            {error && !loading && (
+              <div className="text-center py-12">
+                <div className="text-6xl mb-3">⚠️</div>
+                <p className="text-2xl font-bold text-gray-700 mb-2">Erreur de chargement</p>
+                <p className="text-gray-500 mb-4">{error}</p>
+                <button
+                  onClick={() => window.location.reload()}
+                  className="bg-gradient-to-r from-blue-600 to-red-600 text-white px-6 py-3 rounded-full hover:shadow-lg transition-all duration-300 font-medium"
+                >
+                  Réessayer
+                </button>
+              </div>
+            )}
 
             {/* Products Grid */}
-            {currentProducts.length > 0 ? (
+            {!loading && !error && currentProducts.length > 0 ? (
               <div className={viewMode === 'grid' 
                 ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8'
                 : 'space-y-4 mb-8'
               }>
                 {currentProducts.map((product) => {
-                  const isSelected = productsToCompare.some(p => p.id === product.id);
+                  const isSelected = productsToCompare.some(p => p._id === product._id);
                   const canSelect = productsToCompare.length < 2 || isSelected;
                   return (
                   <div
-                    key={product.id}
+                    key={product._id}
                     className={`bg-white rounded-xl shadow-md overflow-hidden transform hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl cursor-pointer group relative flex flex-col ${
                       viewMode === 'list' ? 'flex-row' : ''
                     } ${isSelected ? 'ring-2 ring-blue-600' : ''}`}
@@ -819,7 +914,7 @@ export default function Products() {
                   );
                 })}
               </div>
-            ) : (
+            ) : !loading && !error ? (
               <div className="text-center py-8">
                 <div className="text-6xl mb-3">🔍</div>
                 <p className="text-2xl font-bold text-gray-700 mb-2">Aucun produit trouvé</p>
@@ -831,10 +926,10 @@ export default function Products() {
                   Réinitialiser les filtres
                 </button>
               </div>
-            )}
+            ) : null}
 
             {/* Pagination */}
-            {totalPages > 1 && (
+            {!loading && !error && totalPages > 1 && (
               <div className="flex items-center justify-center space-x-2 mt-8">
                 <button
                   onClick={() => handlePageChange(currentPage - 1)}

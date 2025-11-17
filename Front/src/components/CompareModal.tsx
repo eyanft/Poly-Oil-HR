@@ -1,7 +1,8 @@
 import { X } from 'lucide-react';
 
-interface Product {
-  id: number;
+// Product type compatible with both static and API products
+type Product = {
+  _id: string;
   name: string;
   category: string;
   description: string;
@@ -15,10 +16,8 @@ interface Product {
   applications?: string;
   technology?: string;
   packaging?: string;
-  specifications?: string[];
-  features?: string[];
-  price?: string;
-}
+  [key: string]: any; // Allow additional properties
+};
 
 interface CompareModalProps {
   products: Product[];
