@@ -17,6 +17,7 @@ import {
   Upload,
   Image as ImageIcon
 } from 'lucide-react';
+import logo from '../assets/po.png';
 
 type ProductFormData = {
   name: string;
@@ -372,8 +373,8 @@ export default function AdminDashboardPage() {
           <div className="p-6 border-b border-slate-700">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
-                  <Package className="w-6 h-6" />
+                <div className="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center">
+                  <img src={logo} alt="Poly Oil logo" className="w-12 h-12 object-contain" />
                 </div>
                 <div>
                   <h1 className="text-lg font-bold">Poly Oil</h1>
