@@ -57,6 +57,11 @@ const EMPTY_FORM: ProductFormData = {
   price: '',
 };
 
+// Dropdown options based on static products
+const CATEGORY_OPTIONS = ['Huiles Moteur', 'Huiles de Boîte', 'Divers'];
+const VOLUME_OPTIONS = ['1L', '4L', '5L', '20L'];
+const OIL_TYPE_OPTIONS = ['Minérale', 'Semi-Synthèse', '100% Synthèse'];
+
 function toFormData(product: productService.Product): ProductFormData {
   return {
     name: product.name ?? '',
@@ -669,14 +674,21 @@ export default function AdminDashboardPage() {
                       <label className="text-sm font-medium text-gray-700" htmlFor="category">
                         Catégorie <span className="text-red-500">*</span>
                       </label>
-                      <input
+                      <select
                         id="category"
                         name="category"
                         value={formData.category}
                         onChange={handleInputChange}
                         className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         required
-                      />
+                      >
+                        <option value="">Sélectionner une catégorie</option>
+                        {CATEGORY_OPTIONS.map((category) => (
+                          <option key={category} value={category}>
+                            {category}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <div className="md:col-span-2 space-y-2">
                       <label className="text-sm font-medium text-gray-700" htmlFor="description">
@@ -777,26 +789,40 @@ export default function AdminDashboardPage() {
                       <label className="text-sm font-medium text-gray-700" htmlFor="volume">
                         Volume <span className="text-red-500">*</span>
                       </label>
-                      <input
+                      <select
                         id="volume"
                         name="volume"
                         value={formData.volume}
                         onChange={handleInputChange}
                         className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         required
-                      />
+                      >
+                        <option value="">Sélectionner un volume</option>
+                        {VOLUME_OPTIONS.map((volume) => (
+                          <option key={volume} value={volume}>
+                            {volume}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-gray-700" htmlFor="oilType">
                         Type d'huile
                       </label>
-                      <input
+                      <select
                         id="oilType"
                         name="oilType"
                         value={formData.oilType}
                         onChange={handleInputChange}
                         className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
+                      >
+                        <option value="">Sélectionner un type d'huile</option>
+                        {OIL_TYPE_OPTIONS.map((oilType) => (
+                          <option key={oilType} value={oilType}>
+                            {oilType}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-gray-700" htmlFor="viscosity">
