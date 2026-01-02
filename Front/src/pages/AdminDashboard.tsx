@@ -15,9 +15,11 @@ import {
   TrendingUp,
   AlertCircle,
   Upload,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Wand2
 } from 'lucide-react';
 import logo from '../assets/po.png';
+import { removeBackground } from '@imgly/background-removal';
 
 type ProductFormData = {
   name: string;
@@ -106,6 +108,8 @@ export default function AdminDashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [removeBgEnabled, setRemoveBgEnabled] = useState(true);
+  const [isRemovingBg, setIsRemovingBg] = useState(false);
 
   useEffect(() => {
     if (user?.role !== 'admin') {
@@ -175,7 +179,7 @@ export default function AdminDashboardPage() {
     setImagePreview(null);
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -217,6 +221,58 @@ export default function AdminDashboardPage() {
     });
   };
 
+  const removeBackgroundAndAddWhite = async (imageDataUrl: string): Promise<string> => {
+    let objectUrl: string | null = null;
+    try {
+      // Convertir data URL en Blob
+      const response = await fetch(imageDataUrl);
+      const blob = await response.blob();
+      
+      // Supprimer le fond
+      const blobWithoutBg = await removeBackground(blob);
+      
+      // Convertir le Blob en Image pour ajouter un fond blanc
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            if (objectUrl) URL.revokeObjectURL(objectUrl);
+            reject(new Error('Impossible de créer le contexte canvas'));
+            return;
+          }
+          
+          // Remplir avec un fond blanc
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          
+          // Dessiner l'image sans fond par-dessus
+          ctx.drawImage(img, 0, 0);
+          
+          // Nettoyer l'URL de l'objet
+          if (objectUrl) URL.revokeObjectURL(objectUrl);
+          
+          // Convertir en base64
+          const resultBase64 = canvas.toDataURL('image/png', 1.0);
+          resolve(resultBase64);
+        };
+        img.onerror = () => {
+          if (objectUrl) URL.revokeObjectURL(objectUrl);
+          reject(new Error('Erreur lors du chargement de l\'image sans fond'));
+        };
+        objectUrl = URL.createObjectURL(blobWithoutBg);
+        img.src = objectUrl;
+      });
+    } catch (err) {
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+      throw new Error(err instanceof Error ? err.message : 'Erreur lors de la suppression du fond');
+    }
+  };
+
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -235,11 +291,26 @@ export default function AdminDashboardPage() {
 
     try {
       setFormError(null);
+      setIsRemovingBg(removeBgEnabled);
+      
       // Compresser l'image pour réduire la taille
-      const compressedBase64 = await compressImage(file);
-      setFormData((prev) => ({ ...prev, image: compressedBase64 }));
-      setImagePreview(compressedBase64);
+      let processedImage = await compressImage(file);
+      
+      // Supprimer le fond si activé
+      if (removeBgEnabled) {
+        try {
+          processedImage = await removeBackgroundAndAddWhite(processedImage);
+        } catch (bgError) {
+          console.warn('Erreur lors de la suppression du fond, utilisation de l\'image originale:', bgError);
+          // Continuer avec l'image compressée si la suppression du fond échoue
+        }
+      }
+      
+      setFormData((prev) => ({ ...prev, image: processedImage }));
+      setImagePreview(processedImage);
+      setIsRemovingBg(false);
     } catch (err) {
+      setIsRemovingBg(false);
       setFormError(err instanceof Error ? err.message : 'Erreur lors du traitement de l\'image');
     }
   };
@@ -704,9 +775,32 @@ export default function AdminDashboardPage() {
                       />
                     </div>
                     <div className="md:col-span-2 space-y-2">
-                      <label className="text-sm font-medium text-gray-700" htmlFor="image">
-                        Image du produit <span className="text-red-500">*</span>
-                      </label>
+                      <div className="flex items-center justify-between">
+                        <label className="text-sm font-medium text-gray-700" htmlFor="image">
+                          Image du produit <span className="text-red-500">*</span>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={removeBgEnabled}
+                            onChange={(e) => setRemoveBgEnabled(e.target.checked)}
+                            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                          />
+                          <div className="flex items-center gap-1.5">
+                            <Wand2 className="w-4 h-4 text-gray-600" />
+                            <span className="text-sm text-gray-700">Supprimer le fond</span>
+                          </div>
+                        </label>
+                      </div>
+                      
+                      {isRemovingBg && (
+                        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                            <p className="text-blue-700 text-sm font-medium">Suppression du fond en cours...</p>
+                          </div>
+                        </div>
+                      )}
                       
                       {/* Image Preview */}
                       {imagePreview && (
