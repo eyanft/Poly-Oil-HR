@@ -795,13 +795,13 @@ export default function Products() {
                       />
                     </div>
                     <div className={`p-4 flex flex-col flex-1 ${viewMode === 'list' ? '' : ''}`}>
-                      <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
                         <span className="inline-block px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
                           {product.category}
                         </span>
-                        {product.packaging && (
+                        {product.volume && (
                           <span className="inline-block px-2 py-0.5 bg-red-100 text-red-700 text-xs font-semibold rounded-full">
-                            {product.packaging.replace('Bidon ', '')}
+                            {product.volume}
                           </span>
                         )}
                       </div>
