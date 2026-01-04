@@ -39,24 +39,51 @@
     "filterByType": "تصفية حسب النوع",
     "filterByViscosity": "تصفية حسب اللزوجة",
     "filterByStandard": "تصفية حسب المعيار",
+    "filterByTechnology": "التكنولوجيا",
+    "filterByPackaging": "التعبئة",
     "viewDetails": "عرض التفاصيل",
     "compare": "مقارنة",
     "addToCompare": "إضافة للمقارنة",
     "removeFromCompare": "إزالة من المقارنة",
     "noProducts": "لم يتم العثور على منتجات",
     "noProductsDescription": "حاول تعديل المرشحات",
+    "activeFilters": "المرشحات النشطة:",
+    "categoryPrefix": "الفئات:",
+    "displayRange": "عرض {{start}}-{{end}} من {{total}} عنصر(ات)",
+    "sortBy": "ترتيب حسب:",
+    "sortDefault": "افتراضي",
+    "sortNameAsc": "الاسم (أ-ي)",
+    "sortNameDesc": "الاسم (ي-أ)",
+    "compareButton": "مقارنة",
+    "compareCount": "({{count}}/2)",
+    "loading": "جاري تحميل المنتجات...",
+    "errorTitle": "خطأ في التحميل",
+    "retry": "إعادة المحاولة",
+    "selectForCompare": "تحديد للمقارنة",
+    "deselectForCompare": "إلغاء التحديد للمقارنة",
+    "maxCompare": "حد أقصى منتجان",
+    "viewMore": "عرض المزيد",
+    "noProductsFound": "لم يتم العثور على منتجات",
+    "tryModifySearch": "حاول تعديل معايير البحث",
+    "resetFilters": "إعادة تعيين المرشحات",
     "categories": {
       "all": "جميع الفئات",
       "engineOil": "زيوت المحرك",
       "brakeFluid": "سائل الفرامل",
       "coolant": "سائل التبريد",
-      "other": "متنوع"
+      "other": "متنوع",
+      "gearboxOil": "زيوت علبة السرعة"
     },
     "oilTypes": {
       "all": "جميع الأنواع",
       "mineral": "معدنية",
       "semiSynthetic": "شبه اصطناعية",
       "synthetic": "100% اصطناعية"
+    },
+    "packagingTypes": {
+      "bidon4L": "عبوة 4 لتر",
+      "bidon20L": "عبوة 20 لتر",
+      "bidon1L": "عبوة 1 لتر"
     },
     "specifications": "المواصفات",
     "features": "المميزات",
@@ -70,6 +97,32 @@
     "packaging": "التعبئة",
     "price": "السعر",
     "priceOnQuote": "على السعر"
+  },
+  "productModal": {
+    "title": "تفاصيل المنتج",
+    "availableVolume": "الحجم المتاح",
+    "indicativePrice": "السعر الإرشادي",
+    "specifications": "المواصفات",
+    "features": "المميزات",
+    "guaranteedQuality": "جودة مضمونة",
+    "qualityDescription": "جميع منتجاتنا متوافقة مع المعايير الدولية وتم اختبارها بدقة لضمان الأداء الأمثل والحماية القصوى لمحركك.",
+    "requestQuote": "طلب عرض سعر",
+    "close": "إغلاق"
+  },
+  "compareModal": {
+    "title": "مقارنة المنتجات",
+    "characteristics": "الخصائص",
+    "category": "الفئات",
+    "oilType": "نوع الزيت",
+    "viscosity": "اللزوجة",
+    "apiStandard": "معيار API",
+    "aceaStandard": "معيار ACEA",
+    "manufacturerStandards": "معايير الشركة المصنعة",
+    "applications": "التطبيقات",
+    "technology": "التكنولوجيا",
+    "packaging": "التعبئة",
+    "volume": "الحجم",
+    "close": "إغلاق"
   },
   "mission": {
     "title": "المهمة والرؤية والقيم",
@@ -108,7 +161,8 @@
     "successMessage": "شكراً لرسالتك! سنرد في أقرب وقت ممكن.",
     "emailLabel": "polyoilhr@gmail.com",
     "phoneLabel": "+216 97 864 022",
-    "addressLabel": "GP5 km 24 Borj EL Amri, Manouba"
+    "addressLabel": "GP5 كم 24 برج العامري، منوبة",
+    "addressLabelAr": "GP5 كم 24 برج العامري، منوبة"
   },
   "footer": {
     "description": "الأداء والحماية والطول للعمر لمحركك لأكثر من 10 سنوات.",

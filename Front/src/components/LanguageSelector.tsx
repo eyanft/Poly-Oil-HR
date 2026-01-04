@@ -62,7 +62,7 @@ export default function LanguageSelector() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+        className={`flex items-center px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors ${i18n.language === 'ar' ? 'space-x-reverse space-x-2 flex-row-reverse' : 'space-x-2'}`}
         aria-label="Change language"
       >
         <CurrentFlag className="w-6 h-4 rounded-sm object-cover" />
@@ -73,7 +73,7 @@ export default function LanguageSelector() {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+        <div className={`absolute mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50 ${i18n.language === 'ar' ? 'left-0' : 'right-0'}`}>
           <div className="py-1">
             {languages.map((lang) => {
               const LangFlag = lang.Flag;
@@ -81,14 +81,14 @@ export default function LanguageSelector() {
                 <button
                   key={lang.code}
                   onClick={() => changeLanguage(lang.code)}
-                  className={`w-full flex items-center space-x-3 px-4 py-2 text-left hover:bg-gray-100 transition-colors ${
+                  className={`w-full flex items-center px-4 py-2 hover:bg-gray-100 transition-colors ${
                     i18n.language === lang.code ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
-                  }`}
+                  } ${i18n.language === 'ar' ? 'space-x-reverse space-x-3 flex-row-reverse text-right' : 'space-x-3 text-left'}`}
                 >
                   <LangFlag className="w-6 h-4 rounded-sm object-cover" />
                   <span className="font-medium">{lang.name}</span>
                   {i18n.language === lang.code && (
-                    <span className="ml-auto text-blue-600">✓</span>
+                    <span className={i18n.language === 'ar' ? 'mr-auto text-blue-600' : 'ml-auto text-blue-600'}>✓</span>
                   )}
                 </button>
               );

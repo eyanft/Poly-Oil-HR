@@ -1,4 +1,5 @@
 import { X, Package, Droplets, Shield, Award } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 // Product type compatible with both static and API products
 type Product = {
@@ -21,6 +22,7 @@ interface ProductModalProps {
 }
 
 export default function ProductModal({ product, isOpen, onClose }: ProductModalProps) {
+  const { t } = useTranslation();
   if (!isOpen || !product) return null;
 
   return (
@@ -33,7 +35,7 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
         onClick={(e) => e.stopPropagation()}
       >
         <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between rounded-t-2xl z-10">
-          <h2 className="text-2xl font-bold text-gray-800">Détails du produit</h2>
+          <h2 className="text-2xl font-bold text-gray-800">{t('productModal.title')}</h2>
           <button
             onClick={onClose}
             className="p-2 hover:bg-gray-100 rounded-full transition-colors"
@@ -65,14 +67,14 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
               <div className="flex items-center space-x-3 py-4 border-y border-gray-200">
                 <Package className="h-6 w-6 text-blue-600" />
                 <div>
-                  <p className="text-sm text-gray-500">Volume disponible</p>
+                  <p className="text-sm text-gray-500">{t('productModal.availableVolume')}</p>
                   <p className="text-lg font-bold text-gray-800">{product.volume}</p>
                 </div>
               </div>
 
               {product.price && (
                 <div className="bg-gradient-to-r from-blue-50 to-red-50 rounded-lg p-4">
-                  <p className="text-sm text-gray-600 mb-1">Prix indicatif</p>
+                  <p className="text-sm text-gray-600 mb-1">{t('productModal.indicativePrice')}</p>
                   <p className="text-3xl font-bold text-blue-700">{product.price}</p>
                 </div>
               )}
@@ -83,7 +85,7 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
             <div className="bg-blue-50 rounded-xl p-6">
               <div className="flex items-center mb-4">
                 <Droplets className="h-6 w-6 text-blue-600 mr-3" />
-                <h4 className="text-xl font-bold text-gray-800">Spécifications</h4>
+                <h4 className="text-xl font-bold text-gray-800">{t('productModal.specifications')}</h4>
               </div>
               <ul className="space-y-2">
                 {product.specifications?.map((spec, index) => (
@@ -98,7 +100,7 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
             <div className="bg-red-50 rounded-xl p-6">
               <div className="flex items-center mb-4">
                 <Shield className="h-6 w-6 text-red-600 mr-3" />
-                <h4 className="text-xl font-bold text-gray-800">Avantages</h4>
+                <h4 className="text-xl font-bold text-gray-800">{t('productModal.features')}</h4>
               </div>
               <ul className="space-y-2">
                 {product.features?.map((feature, index) => (
@@ -114,23 +116,22 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
           <div className="bg-gradient-to-r from-blue-600 to-red-600 rounded-xl p-6 text-white">
             <div className="flex items-center mb-3">
               <Award className="h-6 w-6 mr-3" />
-              <h4 className="text-xl font-bold">Qualité garantie</h4>
+              <h4 className="text-xl font-bold">{t('productModal.guaranteedQuality')}</h4>
             </div>
             <p className="text-blue-100">
-              Tous nos produits sont conformes aux normes internationales et testés rigoureusement
-              pour garantir des performances optimales et une protection maximale de votre moteur.
+              {t('productModal.qualityDescription')}
             </p>
           </div>
 
           <div className="mt-8 flex flex-col sm:flex-row gap-4">
             <button className="flex-1 bg-gradient-to-r from-blue-600 to-red-600 text-white py-4 rounded-lg hover:shadow-lg transition-all duration-300 font-bold text-lg">
-              Demander un devis
+              {t('productModal.requestQuote')}
             </button>
             <button
               onClick={onClose}
               className="flex-1 bg-gray-200 text-gray-700 py-4 rounded-lg hover:bg-gray-300 transition-all duration-300 font-bold text-lg"
             >
-              Fermer
+              {t('productModal.close')}
             </button>
           </div>
         </div>

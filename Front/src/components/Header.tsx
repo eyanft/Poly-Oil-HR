@@ -8,7 +8,7 @@ import LanguageSelector from './LanguageSelector';
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -31,7 +31,7 @@ export default function Header() {
             <img src={logo} alt="Poly Oil Logo" className="h-12 w-auto" />
           </div>
 
-          <nav className="hidden lg:flex items-center space-x-8">
+          <nav className={`hidden lg:flex items-center ${i18n.language === 'ar' ? 'space-x-reverse space-x-8' : 'space-x-8'}`}>
             <button onClick={() => scrollToSection('accueil')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
               {t('header.home')}
             </button>
@@ -51,7 +51,7 @@ export default function Header() {
           
           </nav>
 
-          <div className="hidden lg:flex items-center space-x-4">
+          <div className={`hidden lg:flex items-center ${i18n.language === 'ar' ? 'space-x-reverse space-x-4' : 'space-x-4'}`}>
             <LanguageSelector />
             <button
               onClick={() => scrollToSection('contact')}

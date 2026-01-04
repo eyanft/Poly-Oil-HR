@@ -39,24 +39,51 @@
     "filterByType": "Filtrer par type",
     "filterByViscosity": "Filtrer par viscosité",
     "filterByStandard": "Filtrer par norme",
+    "filterByTechnology": "Technologie",
+    "filterByPackaging": "Emballage",
     "viewDetails": "Voir les détails",
     "compare": "Comparer",
     "addToCompare": "Ajouter à la comparaison",
     "removeFromCompare": "Retirer de la comparaison",
     "noProducts": "Aucun produit trouvé",
     "noProductsDescription": "Essayez de modifier vos filtres",
+    "activeFilters": "FILTRES ACTIFS:",
+    "categoryPrefix": "Catégories:",
+    "displayRange": "Affichage {{start}}-{{end}} de {{total}} article(s)",
+    "sortBy": "TRIER PAR:",
+    "sortDefault": "Par défaut",
+    "sortNameAsc": "Nom (A-Z)",
+    "sortNameDesc": "Nom (Z-A)",
+    "compareButton": "COMPARER",
+    "compareCount": "({{count}}/2)",
+    "loading": "Chargement des produits...",
+    "errorTitle": "Erreur de chargement",
+    "retry": "Réessayer",
+    "selectForCompare": "Sélectionner pour comparaison",
+    "deselectForCompare": "Désélectionner pour comparaison",
+    "maxCompare": "Maximum 2 produits",
+    "viewMore": "Voir plus",
+    "noProductsFound": "Aucun produit trouvé",
+    "tryModifySearch": "Essayez de modifier vos critères de recherche",
+    "resetFilters": "Réinitialiser les filtres",
     "categories": {
       "all": "Toutes les catégories",
       "engineOil": "Huiles Moteur",
       "brakeFluid": "Liquide de Frein",
       "coolant": "Liquide Refroidissement",
-      "other": "Divers"
+      "other": "Divers",
+      "gearboxOil": "Huiles de Boîte"
     },
     "oilTypes": {
       "all": "Tous les types",
       "mineral": "Minérale",
       "semiSynthetic": "Semi-Synthèse",
       "synthetic": "100% Synthèse"
+    },
+    "packagingTypes": {
+      "bidon4L": "Bidon 4L",
+      "bidon20L": "Bidon 20L",
+      "bidon1L": "Bidon 1L"
     },
     "specifications": "Spécifications",
     "features": "Caractéristiques",
@@ -70,6 +97,32 @@
     "packaging": "Emballage",
     "price": "Prix",
     "priceOnQuote": "Sur devis"
+  },
+  "productModal": {
+    "title": "Détails du produit",
+    "availableVolume": "Volume disponible",
+    "indicativePrice": "Prix indicatif",
+    "specifications": "Spécifications",
+    "features": "Avantages",
+    "guaranteedQuality": "Qualité garantie",
+    "qualityDescription": "Tous nos produits sont conformes aux normes internationales et testés rigoureusement pour garantir des performances optimales et une protection maximale de votre moteur.",
+    "requestQuote": "Demander un devis",
+    "close": "Fermer"
+  },
+  "compareModal": {
+    "title": "Comparaison de produits",
+    "characteristics": "Caractéristiques",
+    "category": "Catégories",
+    "oilType": "Type d'huile",
+    "viscosity": "Viscosité",
+    "apiStandard": "Norme API",
+    "aceaStandard": "Norme ACEA",
+    "manufacturerStandards": "Normes constructeurs",
+    "applications": "Applications",
+    "technology": "Technologie",
+    "packaging": "Emballage",
+    "volume": "Volume",
+    "close": "Fermer"
   },
   "mission": {
     "title": "Mission, Vision & Valeurs",
@@ -108,7 +161,8 @@
     "successMessage": "Merci pour votre message ! Nous vous répondrons dans les plus brefs délais.",
     "emailLabel": "polyoilhr@gmail.com",
     "phoneLabel": "+216 97 864 022",
-    "addressLabel": "GP5 km 24 Borj EL Amri, Manouba"
+    "addressLabel": "GP5 km 24 Borj EL Amri, Manouba",
+    "addressLabelAr": "GP5 كم 24 برج العامري، منوبة"
   },
   "footer": {
     "description": "Performance, protection et longévité pour votre moteur depuis plus de 10 ans.",

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Search, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, X, Grid3x3, List, Check } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import ProductModal from './ProductModal';
@@ -266,11 +266,12 @@ interface FilterSectionProps {
 }
 
 function FilterSection({ title, isOpen, onToggle, children }: FilterSectionProps) {
+  const { i18n } = useTranslation();
   return (
     <div className="border-b border-gray-200">
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between py-1 text-left hover:bg-gray-50 transition-colors"
+        className={`w-full flex items-center justify-between py-1 hover:bg-gray-50 transition-colors ${i18n.language === 'ar' ? 'text-right flex-row-reverse' : 'text-left'}`}
       >
         <span className="font-semibold text-gray-800">{title}</span>
         {isOpen ? (
@@ -289,7 +290,42 @@ function FilterSection({ title, isOpen, onToggle, children }: FilterSectionProps
 }
 
 export default function Products() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  
+  // Helper function to translate filter values
+  const translateFilterValue = useCallback((type: string, value: string): string => {
+    // Category translations
+    if (type === 'category') {
+      const categoryMap: { [key: string]: string } = {
+        'Huiles Moteur': t('products.categories.engineOil'),
+        'Divers': t('products.categories.other'),
+        'Huiles de Boîte': t('products.categories.gearboxOil'),
+      };
+      return categoryMap[value] || value;
+    }
+    
+    // Oil type translations
+    if (type === 'oilType') {
+      const oilTypeMap: { [key: string]: string } = {
+        'Minérale': t('products.oilTypes.mineral'),
+        'Semi-Synthèse': t('products.oilTypes.semiSynthetic'),
+        '100% Synthèse': t('products.oilTypes.synthetic'),
+      };
+      return oilTypeMap[value] || value;
+    }
+    
+    // Packaging translations
+    if (type === 'packaging') {
+      const packagingMap: { [key: string]: string } = {
+        'Bidon 4L': t('products.packagingTypes.bidon4L'),
+        'Bidon 20L': t('products.packagingTypes.bidon20L'),
+        'Bidon 1L': t('products.packagingTypes.bidon1L'),
+      };
+      return packagingMap[value] || value;
+    }
+    
+    return value;
+  }, [t]);
   const [apiProducts, setApiProducts] = useState<ApiProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -318,7 +354,7 @@ export default function Products() {
       }
     }
     loadProducts();
-  }, []);
+  }, [t]);
 
   // Combine static and API products
   const allProducts = useMemo(() => {
@@ -506,9 +542,9 @@ export default function Products() {
                   onToggle={() => toggleSection('categories')}
                 >
                   {filterCounts.categories.map((filter) => (
-                    <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-1.5 rounded">
-                      <span className="text-sm text-gray-700">{filter.name}</span>
-                      <div className="flex items-center space-x-2">
+                    <label key={filter.name} className={`flex items-center justify-between cursor-pointer hover:bg-gray-50 p-1.5 rounded ${i18n.language === 'ar' ? 'flex-row-reverse' : ''}`}>
+                      <span className="text-sm text-gray-700">{translateFilterValue('category', filter.name)}</span>
+                      <div className={`flex items-center ${i18n.language === 'ar' ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
                         <span className="text-xs text-gray-500">{filter.count}</span>
                         <input
                           type="checkbox"
@@ -527,9 +563,9 @@ export default function Products() {
                   onToggle={() => toggleSection('oilType')}
                 >
                   {filterCounts.oilTypes.map((filter) => (
-                    <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-1.5 rounded">
-                      <span className="text-sm text-gray-700">{filter.name}</span>
-                      <div className="flex items-center space-x-2">
+                    <label key={filter.name} className={`flex items-center justify-between cursor-pointer hover:bg-gray-50 p-1.5 rounded ${i18n.language === 'ar' ? 'flex-row-reverse' : ''}`}>
+                      <span className="text-sm text-gray-700">{translateFilterValue('oilType', filter.name)}</span>
+                      <div className={`flex items-center ${i18n.language === 'ar' ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
                         <span className="text-xs text-gray-500">{filter.count}</span>
                         <input
                           type="checkbox"
@@ -548,9 +584,9 @@ export default function Products() {
                   onToggle={() => toggleSection('viscosity')}
                 >
                   {filterCounts.viscosities.map((filter) => (
-                    <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-1.5 rounded">
+                    <label key={filter.name} className={`flex items-center justify-between cursor-pointer hover:bg-gray-50 p-1.5 rounded ${i18n.language === 'ar' ? 'flex-row-reverse' : ''}`}>
                       <span className="text-sm text-gray-700">{filter.name}</span>
-                      <div className="flex items-center space-x-2">
+                      <div className={`flex items-center ${i18n.language === 'ar' ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
                         <span className="text-xs text-gray-500">{filter.count}</span>
                         <input
                           type="checkbox"
@@ -569,9 +605,9 @@ export default function Products() {
                   onToggle={() => toggleSection('apiStandard')}
                 >
                   {filterCounts.apiStandards.map((filter) => (
-                    <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-1.5 rounded">
+                    <label key={filter.name} className={`flex items-center justify-between cursor-pointer hover:bg-gray-50 p-1.5 rounded ${i18n.language === 'ar' ? 'flex-row-reverse' : ''}`}>
                       <span className="text-sm text-gray-700">{filter.name}</span>
-                      <div className="flex items-center space-x-2">
+                      <div className={`flex items-center ${i18n.language === 'ar' ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
                         <span className="text-xs text-gray-500">{filter.count}</span>
                         <input
                           type="checkbox"
@@ -585,14 +621,14 @@ export default function Products() {
                 </FilterSection>
 
                 <FilterSection
-                  title="Technologie"
+                  title={t('products.filterByTechnology')}
                   isOpen={openSections.technology}
                   onToggle={() => toggleSection('technology')}
                 >
                   {filterCounts.technologies.map((filter) => (
-                    <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-1.5 rounded">
+                    <label key={filter.name} className={`flex items-center justify-between cursor-pointer hover:bg-gray-50 p-1.5 rounded ${i18n.language === 'ar' ? 'flex-row-reverse' : ''}`}>
                       <span className="text-sm text-gray-700">{filter.name}</span>
-                      <div className="flex items-center space-x-2">
+                      <div className={`flex items-center ${i18n.language === 'ar' ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
                         <span className="text-xs text-gray-500">{filter.count}</span>
                         <input
                           type="checkbox"
@@ -606,14 +642,14 @@ export default function Products() {
                 </FilterSection>
 
                 <FilterSection
-                  title="Emballage"
+                  title={t('products.filterByPackaging')}
                   isOpen={openSections.packaging}
                   onToggle={() => toggleSection('packaging')}
                 >
                   {filterCounts.packaging.map((filter) => (
-                    <label key={filter.name} className="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-1.5 rounded">
-                      <span className="text-sm text-gray-700">{filter.name}</span>
-                      <div className="flex items-center space-x-2">
+                    <label key={filter.name} className={`flex items-center justify-between cursor-pointer hover:bg-gray-50 p-1.5 rounded ${i18n.language === 'ar' ? 'flex-row-reverse' : ''}`}>
+                      <span className="text-sm text-gray-700">{translateFilterValue('packaging', filter.name)}</span>
+                      <div className={`flex items-center ${i18n.language === 'ar' ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
                         <span className="text-xs text-gray-500">{filter.count}</span>
                         <input
                           type="checkbox"
@@ -650,16 +686,18 @@ export default function Products() {
             {activeFilters.length > 0 && (
               <div className="mb-4 p-3 bg-gray-50 rounded-lg">
                 <div className="flex items-center flex-wrap gap-2">
-                  <span className="text-sm font-semibold text-gray-700">FILTRES ACTIFS:</span>
+                  <span className="text-sm font-semibold text-gray-700">{t('products.activeFilters')}</span>
                   {activeFilters.map((filter) => (
                     <span
                       key={`${filter.type}-${filter.label}`}
-                      className="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm"
+                      className={`inline-flex items-center px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm ${i18n.language === 'ar' ? 'flex-row-reverse' : ''}`}
                     >
-                      {filter.label === 'Huiles Moteur' ? 'Catégories: Huiles Moteur' : filter.label}
+                      {filter.type === 'category' 
+                        ? `${t('products.categoryPrefix')} ${translateFilterValue('category', filter.label)}` 
+                        : translateFilterValue(filter.type, filter.label)}
                       <button
                         onClick={() => removeFilter(filter.type, filter.label)}
-                        className="ml-2 hover:text-blue-900"
+                        className={i18n.language === 'ar' ? 'mr-2 hover:text-blue-900' : 'ml-2 hover:text-blue-900'}
                       >
                         <X className="h-4 w-4" />
                       </button>
@@ -673,7 +711,7 @@ export default function Products() {
             {!loading && !error && (
               <div className="mb-4 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="text-sm text-gray-600">
-                  Affichage {startIndex + 1}-{Math.min(endIndex, sortedProducts.length)} de {sortedProducts.length} article(s)
+                  {t('products.displayRange', { start: startIndex + 1, end: Math.min(endIndex, sortedProducts.length), total: sortedProducts.length })}
                 </div>
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2 border border-gray-300 rounded-lg p-1">
@@ -691,15 +729,15 @@ export default function Products() {
                   </button>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-700">TRIER PAR:</span>
+                  <span className="text-sm text-gray-700">{t('products.sortBy')}</span>
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
                     className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
-                    <option value="default">Par défaut</option>
-                    <option value="name">Nom (A-Z)</option>
-                    <option value="name-desc">Nom (Z-A)</option>
+                    <option value="default">{t('products.sortDefault')}</option>
+                    <option value="name">{t('products.sortNameAsc')}</option>
+                    <option value="name-desc">{t('products.sortNameDesc')}</option>
                   </select>
                 </div>
                 <button
@@ -711,7 +749,7 @@ export default function Products() {
                       : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                   }`}
                 >
-                  COMPARER {productsToCompare.length > 0 && `(${productsToCompare.length}/2)`}
+                  {t('products.compareButton')} {productsToCompare.length > 0 && t('products.compareCount', { count: productsToCompare.length })}
                 </button>
               </div>
             </div>
@@ -721,7 +759,7 @@ export default function Products() {
             {loading && (
               <div className="text-center py-12">
                 <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
-                <p className="text-gray-600">Chargement des produits...</p>
+                <p className="text-gray-600">{t('products.loading')}</p>
               </div>
             )}
 
@@ -729,13 +767,13 @@ export default function Products() {
             {error && !loading && (
               <div className="text-center py-12">
                 <div className="text-6xl mb-3">⚠️</div>
-                <p className="text-2xl font-bold text-gray-700 mb-2">Erreur de chargement</p>
+                <p className="text-2xl font-bold text-gray-700 mb-2">{t('products.errorTitle')}</p>
                 <p className="text-gray-500 mb-4">{error}</p>
                 <button
                   onClick={() => window.location.reload()}
                   className="bg-gradient-to-r from-blue-600 to-red-600 text-white px-6 py-3 rounded-full hover:shadow-lg transition-all duration-300 font-medium"
                 >
-                  Réessayer
+                  {t('products.retry')}
                 </button>
               </div>
             )}
@@ -774,7 +812,7 @@ export default function Products() {
                             ? 'bg-white/80 hover:bg-blue-100 text-gray-600'
                             : 'bg-gray-300 text-gray-400 cursor-not-allowed'
                         }`}
-                        title={isSelected ? 'Désélectionner pour comparaison' : canSelect ? 'Sélectionner pour comparaison' : 'Maximum 2 produits'}
+                        title={isSelected ? t('products.deselectForCompare') : canSelect ? t('products.selectForCompare') : t('products.maxCompare')}
                       >
                         {isSelected ? (
                           <Check className="h-4 w-4" />
@@ -810,7 +848,7 @@ export default function Products() {
                       </h3>
                       <p className="text-gray-600 mb-3 line-clamp-2 text-sm flex-1">{product.description}</p>
                       <button className="w-full bg-gradient-to-r from-blue-600 to-red-600 text-white py-2.5 rounded-lg hover:shadow-lg transition-all duration-300 font-medium group-hover:from-blue-700 group-hover:to-red-700 mt-auto">
-                        Voir plus
+                        {t('products.viewMore')}
                       </button>
                     </div>
                   </div>
@@ -820,13 +858,13 @@ export default function Products() {
             ) : !loading && !error ? (
               <div className="text-center py-8">
                 <div className="text-6xl mb-3">🔍</div>
-                <p className="text-2xl font-bold text-gray-700 mb-2">Aucun produit trouvé</p>
-                <p className="text-gray-500 mb-4">Essayez de modifier vos critères de recherche</p>
+                <p className="text-2xl font-bold text-gray-700 mb-2">{t('products.noProductsFound')}</p>
+                <p className="text-gray-500 mb-4">{t('products.tryModifySearch')}</p>
                 <button
                   onClick={clearAllFilters}
                   className="bg-gradient-to-r from-blue-600 to-red-600 text-white px-6 py-3 rounded-full hover:shadow-lg transition-all duration-300 font-medium"
                 >
-                  Réinitialiser les filtres
+                  {t('products.resetFilters')}
                 </button>
               </div>
             ) : null}

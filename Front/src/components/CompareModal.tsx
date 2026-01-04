@@ -1,4 +1,5 @@
 import { X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 // Product type compatible with both static and API products
 type Product = {
@@ -26,19 +27,20 @@ interface CompareModalProps {
 }
 
 export default function CompareModal({ products, isOpen, onClose }: CompareModalProps) {
+  const { t } = useTranslation();
   if (!isOpen || products.length !== 2) return null;
 
   const comparisonFields = [
-    { label: 'Catégories', getValue: (p: Product) => p.category },
-    { label: 'Type d\'huile', getValue: (p: Product) => p.oilType || '-' },
-    { label: 'Viscosité', getValue: (p: Product) => p.viscosity || '-' },
-    { label: 'Norme API', getValue: (p: Product) => p.apiStandard || '-' },
-    { label: 'Norme ACEA', getValue: (p: Product) => p.aceaStandard || '-' },
-    { label: 'Normes constructeurs', getValue: (p: Product) => p.manufacturerStandards || '-' },
-    { label: 'Applications', getValue: (p: Product) => p.applications || '-' },
-    { label: 'Technologie', getValue: (p: Product) => p.technology || '-' },
-    { label: 'Emballage', getValue: (p: Product) => p.packaging || '-' },
-    { label: 'Volume', getValue: (p: Product) => p.volume },
+    { label: t('compareModal.category'), getValue: (p: Product) => p.category },
+    { label: t('compareModal.oilType'), getValue: (p: Product) => p.oilType || '-' },
+    { label: t('compareModal.viscosity'), getValue: (p: Product) => p.viscosity || '-' },
+    { label: t('compareModal.apiStandard'), getValue: (p: Product) => p.apiStandard || '-' },
+    { label: t('compareModal.aceaStandard'), getValue: (p: Product) => p.aceaStandard || '-' },
+    { label: t('compareModal.manufacturerStandards'), getValue: (p: Product) => p.manufacturerStandards || '-' },
+    { label: t('compareModal.applications'), getValue: (p: Product) => p.applications || '-' },
+    { label: t('compareModal.technology'), getValue: (p: Product) => p.technology || '-' },
+    { label: t('compareModal.packaging'), getValue: (p: Product) => p.packaging || '-' },
+    { label: t('compareModal.volume'), getValue: (p: Product) => p.volume },
   ];
 
   return (
@@ -51,7 +53,7 @@ export default function CompareModal({ products, isOpen, onClose }: CompareModal
         onClick={(e) => e.stopPropagation()}
       >
         <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between rounded-t-2xl z-10">
-          <h2 className="text-2xl font-bold text-gray-800">Comparaison de produits</h2>
+          <h2 className="text-2xl font-bold text-gray-800">{t('compareModal.title')}</h2>
           <button
             onClick={onClose}
             className="p-2 hover:bg-gray-100 rounded-full transition-colors"
@@ -64,7 +66,7 @@ export default function CompareModal({ products, isOpen, onClose }: CompareModal
         <div className="p-6">
           {/* Product Headers */}
           <div className="grid grid-cols-3 gap-4 mb-6">
-            <div className="font-semibold text-gray-700">Caractéristiques</div>
+            <div className="font-semibold text-gray-700">{t('compareModal.characteristics')}</div>
             <div className="text-center">
               <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-4 mb-3">
                 <img
@@ -92,7 +94,7 @@ export default function CompareModal({ products, isOpen, onClose }: CompareModal
             <table className="w-full border-collapse">
               <thead>
                 <tr className="bg-gradient-to-r from-blue-50 to-red-50">
-                  <th className="border border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">Caractéristiques</th>
+                  <th className="border border-gray-300 px-4 py-3 text-left font-semibold text-gray-700">{t('compareModal.characteristics')}</th>
                   <th className="border border-gray-300 px-4 py-3 text-center font-semibold text-gray-700">{products[0].name}</th>
                   <th className="border border-gray-300 px-4 py-3 text-center font-semibold text-gray-700">{products[1].name}</th>
                 </tr>
@@ -136,7 +138,7 @@ export default function CompareModal({ products, isOpen, onClose }: CompareModal
               onClick={onClose}
               className="bg-gradient-to-r from-blue-600 to-red-600 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all duration-300 font-medium"
             >
-              Fermer
+              {t('compareModal.close')}
             </button>
           </div>
         </div>

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import logo from '../assets/po.png';
 
 export default function Footer() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -60,7 +60,7 @@ export default function Footer() {
 
           <div>
             <h3 className="text-lg font-bold mb-4">{t('footer.followUs')}</h3>
-            <div className="flex space-x-4">
+            <div className={`flex ${i18n.language === 'ar' ? 'space-x-reverse space-x-4' : 'space-x-4'}`}>
               <a
                 href="#"
                 className="bg-white/10 hover:bg-blue-600 p-3 rounded-full transition-all duration-300 hover:scale-110"

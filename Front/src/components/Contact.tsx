@@ -3,7 +3,7 @@ import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export default function Contact() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -133,13 +133,13 @@ export default function Contact() {
             <Mail className="h-6 w-6 text-blue-600 mr-3 flex-shrink-0" />
             <span className="text-gray-700 font-medium">{t('contact.emailLabel')}</span>
           </div>
-          <div className="flex items-center justify-center p-6 bg-gradient-to-br from-red-50 to-red-100 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
-            <Phone className="h-6 w-6 text-red-600 mr-3 flex-shrink-0" />
+          <div className={`flex items-center justify-center p-6 bg-gradient-to-br from-red-50 to-red-100 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ${i18n.language === 'ar' ? 'flex-row-reverse' : ''}`}>
+            <Phone className={`h-6 w-6 text-red-600 flex-shrink-0 ${i18n.language === 'ar' ? 'ml-3' : 'mr-3'}`} />
             <span className="text-gray-700 font-medium">{t('contact.phoneLabel')}</span>
           </div>
-          <div className="flex items-center justify-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
-            <MapPin className="h-6 w-6 text-blue-600 mr-3 flex-shrink-0" />
-            <span className="text-gray-700 font-medium text-center">{t('contact.addressLabel')}</span>
+          <div className={`flex items-center justify-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ${i18n.language === 'ar' ? 'flex-row-reverse' : ''}`}>
+            <MapPin className={`h-6 w-6 text-blue-600 flex-shrink-0 ${i18n.language === 'ar' ? 'ml-3' : 'mr-3'}`} />
+            <span className="text-gray-700 font-medium text-center">{i18n.language === 'ar' ? t('contact.addressLabelAr') : t('contact.addressLabel')}</span>
           </div>
         </div>
       </div>

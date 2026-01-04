@@ -39,24 +39,51 @@
     "filterByType": "Filter by type",
     "filterByViscosity": "Filter by viscosity",
     "filterByStandard": "Filter by standard",
+    "filterByTechnology": "Technology",
+    "filterByPackaging": "Packaging",
     "viewDetails": "View details",
     "compare": "Compare",
     "addToCompare": "Add to comparison",
     "removeFromCompare": "Remove from comparison",
     "noProducts": "No products found",
     "noProductsDescription": "Try adjusting your filters",
+    "activeFilters": "ACTIVE FILTERS:",
+    "categoryPrefix": "Categories:",
+    "displayRange": "Displaying {{start}}-{{end}} of {{total}} item(s)",
+    "sortBy": "SORT BY:",
+    "sortDefault": "Default",
+    "sortNameAsc": "Name (A-Z)",
+    "sortNameDesc": "Name (Z-A)",
+    "compareButton": "COMPARE",
+    "compareCount": "({{count}}/2)",
+    "loading": "Loading products...",
+    "errorTitle": "Loading error",
+    "retry": "Retry",
+    "selectForCompare": "Select for comparison",
+    "deselectForCompare": "Deselect for comparison",
+    "maxCompare": "Maximum 2 products",
+    "viewMore": "View more",
+    "noProductsFound": "No products found",
+    "tryModifySearch": "Try modifying your search criteria",
+    "resetFilters": "Reset filters",
     "categories": {
       "all": "All categories",
       "engineOil": "Engine Oils",
       "brakeFluid": "Brake Fluid",
       "coolant": "Coolant",
-      "other": "Other"
+      "other": "Other",
+      "gearboxOil": "Gearbox Oils"
     },
     "oilTypes": {
       "all": "All types",
       "mineral": "Mineral",
       "semiSynthetic": "Semi-Synthetic",
       "synthetic": "100% Synthetic"
+    },
+    "packagingTypes": {
+      "bidon4L": "4L Container",
+      "bidon20L": "20L Container",
+      "bidon1L": "1L Container"
     },
     "specifications": "Specifications",
     "features": "Features",
@@ -70,6 +97,32 @@
     "packaging": "Packaging",
     "price": "Price",
     "priceOnQuote": "On quote"
+  },
+  "productModal": {
+    "title": "Product Details",
+    "availableVolume": "Available Volume",
+    "indicativePrice": "Indicative Price",
+    "specifications": "Specifications",
+    "features": "Advantages",
+    "guaranteedQuality": "Guaranteed Quality",
+    "qualityDescription": "All our products comply with international standards and are rigorously tested to guarantee optimal performance and maximum protection for your engine.",
+    "requestQuote": "Request a Quote",
+    "close": "Close"
+  },
+  "compareModal": {
+    "title": "Product Comparison",
+    "characteristics": "Characteristics",
+    "category": "Categories",
+    "oilType": "Oil Type",
+    "viscosity": "Viscosity",
+    "apiStandard": "API Standard",
+    "aceaStandard": "ACEA Standard",
+    "manufacturerStandards": "Manufacturer Standards",
+    "applications": "Applications",
+    "technology": "Technology",
+    "packaging": "Packaging",
+    "volume": "Volume",
+    "close": "Close"
   },
   "mission": {
     "title": "Mission, Vision & Values",
@@ -108,7 +161,8 @@
     "successMessage": "Thank you for your message! We will respond as soon as possible.",
     "emailLabel": "polyoilhr@gmail.com",
     "phoneLabel": "+216 97 864 022",
-    "addressLabel": "GP5 km 24 Borj EL Amri, Manouba"
+    "addressLabel": "GP5 km 24 Borj EL Amri, Manouba",
+    "addressLabelAr": "GP5 كم 24 برج العامري، منوبة"
   },
   "footer": {
     "description": "Performance, protection and longevity for your engine for over 10 years.",
