@@ -28,24 +28,24 @@ export default function Header() {
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <img src={logo} alt="Poly Oil Logo" className="h-12 w-auto" />
+            <img src={logo} alt="Poly Oil Logo" className="h-12 w-auto" width="48" height="48" />
           </div>
 
-          <nav className={`hidden lg:flex items-center ${i18n.language === 'ar' ? 'space-x-reverse space-x-8' : 'space-x-8'}`}>
-            <button onClick={() => scrollToSection('accueil')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
+          <nav className={`hidden lg:flex items-center ${i18n.language === 'ar' ? 'space-x-reverse space-x-8' : 'space-x-8'}`} aria-label={t('header.navigation')}>
+            <button onClick={() => scrollToSection('accueil')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium" aria-label={t('header.home')}>
               {t('header.home')}
             </button>
-            <button onClick={() => scrollToSection('produits')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
+            <button onClick={() => scrollToSection('produits')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium" aria-label={t('header.products')}>
               {t('header.products')}
             </button>
            
-            <button onClick={() => scrollToSection('mission')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
+            <button onClick={() => scrollToSection('mission')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium" aria-label={t('header.mission')}>
               {t('header.mission')}
             </button>
-            <button onClick={() => scrollToSection('blog')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
+            <button onClick={() => scrollToSection('blog')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium" aria-label={t('header.blog')}>
               {t('header.blog')}
             </button>
-            <button onClick={() => scrollToSection('contact')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
+            <button onClick={() => scrollToSection('contact')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium" aria-label={t('header.contact')}>
               {t('header.contact')}
             </button>
           
@@ -56,6 +56,7 @@ export default function Header() {
             <button
               onClick={() => scrollToSection('contact')}
               className="bg-gradient-to-r from-blue-600 to-red-600 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300 font-medium"
+              aria-label={t('header.requestQuote')}
             >
               {t('header.requestQuote')}
             </button>
@@ -64,30 +65,32 @@ export default function Header() {
           <button
             className="lg:hidden text-gray-700"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label={isMenuOpen ? t('common.close') : t('header.menu')}
+            aria-expanded={isMenuOpen}
           >
-            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {isMenuOpen ? <X className="h-6 w-6" aria-hidden="true" /> : <Menu className="h-6 w-6" aria-hidden="true" />}
           </button>
         </div>
 
         {isMenuOpen && (
-          <nav className="lg:hidden mt-4 pb-4 flex flex-col space-y-3">
-            <button onClick={() => scrollToSection('accueil')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium text-left">
+          <nav className="lg:hidden mt-4 pb-4 flex flex-col space-y-3" aria-label={t('header.mobileNavigation')}>
+            <button onClick={() => scrollToSection('accueil')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium text-left" aria-label={t('header.home')}>
               {t('header.home')}
             </button>
-            <button onClick={() => scrollToSection('produits')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium text-left">
+            <button onClick={() => scrollToSection('produits')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium text-left" aria-label={t('header.products')}>
               {t('header.products')}
             </button>
            
-            <button onClick={() => scrollToSection('mission')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium text-left">
+            <button onClick={() => scrollToSection('mission')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium text-left" aria-label={t('header.mission')}>
               {t('header.mission')}
             </button>
-            <button onClick={() => scrollToSection('blog')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium text-left">
+            <button onClick={() => scrollToSection('blog')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium text-left" aria-label={t('header.blog')}>
               {t('header.blog')}
             </button>
-            <button onClick={() => scrollToSection('contact')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium text-left">
+            <button onClick={() => scrollToSection('contact')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium text-left" aria-label={t('header.contact')}>
               {t('header.contact')}
             </button>
-            <button onClick={goToAdmin} className="text-gray-700 hover:text-blue-600 transition-colors font-medium text-left">
+            <button onClick={goToAdmin} className="text-gray-700 hover:text-blue-600 transition-colors font-medium text-left" aria-label={t('header.admin')}>
               {t('header.admin')}
             </button>
             <div className="flex items-center space-x-3">

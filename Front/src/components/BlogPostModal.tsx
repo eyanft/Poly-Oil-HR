@@ -1,4 +1,5 @@
 import { X, Calendar, ArrowLeft } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface BlogPost {
   id: number;
@@ -17,6 +18,7 @@ interface BlogPostModalProps {
 }
 
 export default function BlogPostModal({ post, isOpen, onClose }: BlogPostModalProps) {
+  const { t } = useTranslation();
   if (!isOpen || !post) return null;
 
   return (
@@ -32,10 +34,10 @@ export default function BlogPostModal({ post, isOpen, onClose }: BlogPostModalPr
           <h2 className="text-2xl font-bold text-gray-800">Article de blog</h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-            aria-label="Close modal"
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+            aria-label={t('common.close')}
           >
-            <X className="h-6 w-6 text-gray-600" />
+            <X className="h-6 w-6 text-gray-600" aria-hidden="true" />
           </button>
         </div>
 
@@ -48,6 +50,8 @@ export default function BlogPostModal({ post, isOpen, onClose }: BlogPostModalPr
               className="w-full h-64 md:h-80 object-cover"
               loading="lazy"
               decoding="async"
+              width="800"
+              height="400"
             />
           </div>
 

@@ -24,7 +24,10 @@
     "blog": "Blog",
     "contact": "Contact",
     "admin": "Admin Area",
-    "requestQuote": "Request a Quote"
+    "requestQuote": "Request a Quote",
+    "menu": "Menu",
+    "navigation": "Main navigation",
+    "mobileNavigation": "Mobile navigation"
   },
   "hero": {
     "title": "Performance, Protection and Longevity for your engine",

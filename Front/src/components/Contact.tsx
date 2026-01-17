@@ -104,9 +104,10 @@ export default function Contact() {
               <button
                 type="submit"
                 className="w-full bg-gradient-to-r from-blue-600 to-red-600 text-white py-3 rounded-lg hover:shadow-lg transition-all duration-300 font-medium flex items-center justify-center space-x-2"
+                aria-label={t('contact.sendButton')}
               >
                 <span>{t('contact.sendButton')}</span>
-                <Send className="h-5 w-5" />
+                <Send className="h-5 w-5" aria-hidden="true" />
               </button>
             </form>
           </div>
@@ -123,6 +124,8 @@ export default function Contact() {
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 className="w-full"
+                title={t('contact.location')}
+                aria-label={t('contact.location')}
               />
             </div>
           </div>

@@ -717,15 +717,19 @@ export default function Products() {
                 <div className="flex items-center gap-2 border border-gray-300 rounded-lg p-1">
                   <button
                     onClick={() => setViewMode('grid')}
-                    className={`p-2 rounded ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+                    className={`p-2 rounded min-w-[44px] min-h-[44px] flex items-center justify-center ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+                    aria-label={t('products.gridView') || 'Grid view'}
+                    aria-pressed={viewMode === 'grid'}
                   >
-                    <Grid3x3 className="h-5 w-5" />
+                    <Grid3x3 className="h-5 w-5" aria-hidden="true" />
                   </button>
                   <button
                     onClick={() => setViewMode('list')}
-                    className={`p-2 rounded ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+                    className={`p-2 rounded min-w-[44px] min-h-[44px] flex items-center justify-center ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+                    aria-label={t('products.listView') || 'List view'}
+                    aria-pressed={viewMode === 'list'}
                   >
-                    <List className="h-5 w-5" />
+                    <List className="h-5 w-5" aria-hidden="true" />
                   </button>
                 </div>
                 <div className="flex items-center gap-2">
@@ -743,11 +747,12 @@ export default function Products() {
                 <button
                   onClick={handleCompare}
                   disabled={productsToCompare.length !== 2}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors min-h-[44px] ${
                     productsToCompare.length === 2
                       ? 'bg-gradient-to-r from-blue-600 to-red-600 text-white hover:from-blue-700 hover:to-red-700 cursor-pointer'
                       : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                   }`}
+                  aria-label={productsToCompare.length === 2 ? t('products.compareButton') : t('products.maxCompare')}
                 >
                   {t('products.compareButton')} {productsToCompare.length > 0 && t('products.compareCount', { count: productsToCompare.length })}
                 </button>
@@ -805,19 +810,20 @@ export default function Products() {
                           }
                         }}
                         disabled={!canSelect}
-                        className={`compare-checkbox p-2 rounded-full transition-all ${
+                        className={`compare-checkbox p-2 rounded-full transition-all min-w-[44px] min-h-[44px] flex items-center justify-center ${
                           isSelected
                             ? 'bg-blue-600 text-white'
                             : canSelect
                             ? 'bg-white/80 hover:bg-blue-100 text-gray-600'
                             : 'bg-gray-300 text-gray-400 cursor-not-allowed'
                         }`}
+                        aria-label={isSelected ? t('products.deselectForCompare') : canSelect ? t('products.selectForCompare') : t('products.maxCompare')}
                         title={isSelected ? t('products.deselectForCompare') : canSelect ? t('products.selectForCompare') : t('products.maxCompare')}
                       >
                         {isSelected ? (
-                          <Check className="h-4 w-4" />
+                          <Check className="h-4 w-4" aria-hidden="true" />
                         ) : (
-                          <span className="text-xs font-bold">+</span>
+                          <span className="text-xs font-bold" aria-hidden="true">+</span>
                         )}
                       </button>
                     </div>
@@ -832,6 +838,8 @@ export default function Products() {
                         }`}
                         loading="lazy"
                         decoding="async"
+                        width="200"
+                        height="200"
                       />
                     </div>
                     <div className={`p-4 flex flex-col flex-1 ${viewMode === 'list' ? '' : ''}`}>
@@ -849,7 +857,10 @@ export default function Products() {
                         {product.name}
                       </h3>
                       <p className="text-gray-600 mb-3 line-clamp-2 text-sm flex-1">{product.description}</p>
-                      <button className="w-full bg-gradient-to-r from-blue-600 to-red-600 text-white py-2.5 rounded-lg hover:shadow-lg transition-all duration-300 font-medium group-hover:from-blue-700 group-hover:to-red-700 mt-auto">
+                      <button 
+                        className="w-full bg-gradient-to-r from-blue-600 to-red-600 text-white py-2.5 rounded-lg hover:shadow-lg transition-all duration-300 font-medium group-hover:from-blue-700 group-hover:to-red-700 mt-auto min-h-[44px]"
+                        aria-label={`${t('products.viewMore')} ${product.name}`}
+                      >
                         {t('products.viewMore')}
                       </button>
                     </div>
@@ -864,7 +875,8 @@ export default function Products() {
                 <p className="text-gray-500 mb-4">{t('products.tryModifySearch')}</p>
                 <button
                   onClick={clearAllFilters}
-                  className="bg-gradient-to-r from-blue-600 to-red-600 text-white px-6 py-3 rounded-full hover:shadow-lg transition-all duration-300 font-medium"
+                  className="bg-gradient-to-r from-blue-600 to-red-600 text-white px-6 py-3 rounded-full hover:shadow-lg transition-all duration-300 font-medium min-h-[44px]"
+                  aria-label={t('products.resetFilters')}
                 >
                   {t('products.resetFilters')}
                 </button>
@@ -877,13 +889,14 @@ export default function Products() {
                 <button
                   onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 1}
-                  className={`p-3 rounded-lg transition-all duration-300 ${
+                  className={`p-3 rounded-lg transition-all duration-300 min-w-[44px] min-h-[44px] flex items-center justify-center ${
                     currentPage === 1
                       ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                       : 'bg-white text-blue-600 hover:bg-blue-50 shadow-md hover:shadow-lg'
                   }`}
+                  aria-label={t('common.previous')}
                 >
-                  <ChevronLeft className="h-5 w-5" />
+                  <ChevronLeft className="h-5 w-5" aria-hidden="true" />
                 </button>
 
                 <div className="flex space-x-2">
@@ -893,11 +906,13 @@ export default function Products() {
                       <button
                         key={page}
                         onClick={() => handlePageChange(page)}
-                        className={`px-4 py-2 rounded-lg transition-all duration-300 font-medium ${
+                        className={`px-4 py-2 rounded-lg transition-all duration-300 font-medium min-w-[44px] min-h-[44px] flex items-center justify-center ${
                           currentPage === page
                             ? 'bg-gradient-to-r from-blue-600 to-red-600 text-white shadow-lg scale-110'
                             : 'bg-white text-gray-700 hover:bg-gray-100 shadow-md'
                         }`}
+                        aria-label={`${t('common.page') || 'Page'} ${page}`}
+                        aria-current={currentPage === page ? 'page' : undefined}
                       >
                         {page}
                       </button>
@@ -908,13 +923,14 @@ export default function Products() {
                 <button
                   onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage === totalPages}
-                  className={`p-3 rounded-lg transition-all duration-300 ${
+                  className={`p-3 rounded-lg transition-all duration-300 min-w-[44px] min-h-[44px] flex items-center justify-center ${
                     currentPage === totalPages
                       ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                       : 'bg-white text-blue-600 hover:bg-blue-50 shadow-md hover:shadow-lg'
                   }`}
+                  aria-label={t('common.next')}
                 >
-                  <ChevronRight className="h-5 w-5" />
+                  <ChevronRight className="h-5 w-5" aria-hidden="true" />
                 </button>
               </div>
             )}

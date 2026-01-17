@@ -38,10 +38,10 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
           <h2 className="text-2xl font-bold text-gray-800">{t('productModal.title')}</h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-            aria-label="Close modal"
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+            aria-label={t('productModal.close')}
           >
-            <X className="h-6 w-6 text-gray-600" />
+            <X className="h-6 w-6 text-gray-600" aria-hidden="true" />
           </button>
         </div>
 
@@ -52,6 +52,8 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
                 src={product.image}
                 alt={product.name}
                 className="w-full h-auto max-h-96 object-contain"
+                width="400"
+                height="400"
               />
             </div>
 
@@ -124,12 +126,16 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
           </div>
 
           <div className="mt-8 flex flex-col sm:flex-row gap-4">
-            <button className="flex-1 bg-gradient-to-r from-blue-600 to-red-600 text-white py-4 rounded-lg hover:shadow-lg transition-all duration-300 font-bold text-lg">
+            <button 
+              className="flex-1 bg-gradient-to-r from-blue-600 to-red-600 text-white py-4 rounded-lg hover:shadow-lg transition-all duration-300 font-bold text-lg min-h-[44px]"
+              aria-label={t('productModal.requestQuote')}
+            >
               {t('productModal.requestQuote')}
             </button>
             <button
               onClick={onClose}
-              className="flex-1 bg-gray-200 text-gray-700 py-4 rounded-lg hover:bg-gray-300 transition-all duration-300 font-bold text-lg"
+              className="flex-1 bg-gray-200 text-gray-700 py-4 rounded-lg hover:bg-gray-300 transition-all duration-300 font-bold text-lg min-h-[44px]"
+              aria-label={t('productModal.close')}
             >
               {t('productModal.close')}
             </button>

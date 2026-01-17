@@ -35,7 +35,6 @@ export default function LubrifiantsAutomobilesPage() {
         schema={schema}
       />
       <Header />
-      
       <main>
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-blue-900 via-blue-800 to-red-700 text-white py-20 pt-32">

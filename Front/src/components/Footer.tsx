@@ -16,7 +16,7 @@ export default function Footer() {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div>
-            <img src={logo} alt="Poly Oil Logo" className="h-16 w-auto mb-4" />
+            <img src={logo} alt="Poly Oil Logo" className="h-16 w-auto mb-4" width="64" height="64" />
             <p className="text-gray-300 text-sm">
               {t('footer.description')}
             </p>
@@ -26,22 +26,22 @@ export default function Footer() {
             <h3 className="text-lg font-bold mb-4">{t('footer.quickLinks')}</h3>
             <ul className="space-y-2">
               <li>
-                <button onClick={() => scrollToSection('accueil')} className="text-gray-300 hover:text-white transition-colors">
+                <button onClick={() => scrollToSection('accueil')} className="text-gray-300 hover:text-white transition-colors" aria-label={t('header.home')}>
                   {t('header.home')}
                 </button>
               </li>
               <li>
-                <button onClick={() => scrollToSection('produits')} className="text-gray-300 hover:text-white transition-colors">
+                <button onClick={() => scrollToSection('produits')} className="text-gray-300 hover:text-white transition-colors" aria-label={t('header.products')}>
                   {t('header.products')}
                 </button>
               </li>
               <li>
-                <button onClick={() => scrollToSection('blog')} className="text-gray-300 hover:text-white transition-colors">
+                <button onClick={() => scrollToSection('blog')} className="text-gray-300 hover:text-white transition-colors" aria-label={t('header.blog')}>
                   {t('header.blog')}
                 </button>
               </li>
               <li>
-                <button onClick={() => scrollToSection('contact')} className="text-gray-300 hover:text-white transition-colors">
+                <button onClick={() => scrollToSection('contact')} className="text-gray-300 hover:text-white transition-colors" aria-label={t('header.contact')}>
                   {t('header.contact')}
                 </button>
               </li>
@@ -63,24 +63,24 @@ export default function Footer() {
             <div className={`flex ${i18n.language === 'ar' ? 'space-x-reverse space-x-4' : 'space-x-4'}`}>
               <a
                 href="#"
-                className="bg-white/10 hover:bg-blue-600 p-3 rounded-full transition-all duration-300 hover:scale-110"
+                className="bg-white/10 hover:bg-blue-600 p-3 rounded-full transition-all duration-300 hover:scale-110 min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label="Facebook"
               >
-                <Facebook className="h-5 w-5" />
+                <Facebook className="h-5 w-5" aria-hidden="true" />
               </a>
               <a
                 href="#"
-                className="bg-white/10 hover:bg-pink-600 p-3 rounded-full transition-all duration-300 hover:scale-110"
+                className="bg-white/10 hover:bg-pink-600 p-3 rounded-full transition-all duration-300 hover:scale-110 min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label="Instagram"
               >
-                <Instagram className="h-5 w-5" />
+                <Instagram className="h-5 w-5" aria-hidden="true" />
               </a>
               <a
                 href="#"
-                className="bg-white/10 hover:bg-blue-500 p-3 rounded-full transition-all duration-300 hover:scale-110"
+                className="bg-white/10 hover:bg-blue-500 p-3 rounded-full transition-all duration-300 hover:scale-110 min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label="LinkedIn"
               >
-                <Linkedin className="h-5 w-5" />
+                <Linkedin className="h-5 w-5" aria-hidden="true" />
               </a>
             </div>
           </div>

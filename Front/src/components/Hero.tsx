@@ -51,6 +51,8 @@ export default function Hero() {
               className="w-full h-full object-cover"
               loading={index === 0 ? "eager" : "lazy"}
               fetchPriority={index === 0 ? "high" : "auto"}
+              width="1920"
+              height="1080"
             />
           </div>
         ))}
@@ -62,7 +64,7 @@ export default function Hero() {
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center py-20">
           <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight animate-fade-in-up">
-            Huile Moteur & Lubrifiants Automobiles en Tunisie - Polyoil Tunis
+            Huile Moteur & Lubrifiants Automobiles en Tunisie 
           </h1>
           <p className="text-xl md:text-2xl mb-8 text-blue-100 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
             {t('hero.subtitle')}
@@ -71,27 +73,28 @@ export default function Hero() {
             onClick={() => scrollToSection('produits')}
             className="bg-white text-blue-900 px-8 py-4 rounded-full font-bold text-lg hover:bg-blue-50 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 inline-flex items-center space-x-2 animate-fade-in-up"
             style={{ animationDelay: '0.4s' }}
+            aria-label={t('hero.cta')}
           >
             <span>{t('hero.cta')}</span>
-            <ArrowRight className="h-5 w-5" />
+            <ArrowRight className="h-5 w-5" aria-hidden="true" />
           </button>
         </div>
       </div>
 
       <button
         onClick={prevSlide}
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm p-3 rounded-full transition-all duration-300"
-        aria-label="Previous slide"
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm p-3 rounded-full transition-all duration-300 min-w-[44px] min-h-[44px] flex items-center justify-center"
+        aria-label={t('hero.previousSlide') || "Previous slide"}
       >
-        <ChevronLeft className="h-6 w-6 text-white" />
+        <ChevronLeft className="h-6 w-6 text-white" aria-hidden="true" />
       </button>
 
       <button
         onClick={nextSlide}
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm p-3 rounded-full transition-all duration-300"
-        aria-label="Next slide"
+        className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm p-3 rounded-full transition-all duration-300 min-w-[44px] min-h-[44px] flex items-center justify-center"
+        aria-label={t('hero.nextSlide') || "Next slide"}
       >
-        <ChevronRight className="h-6 w-6 text-white" />
+        <ChevronRight className="h-6 w-6 text-white" aria-hidden="true" />
       </button>
 
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex space-x-2">
@@ -102,7 +105,8 @@ export default function Hero() {
             className={`w-3 h-3 rounded-full transition-all duration-300 ${
               index === currentSlide ? 'bg-white w-8' : 'bg-white/50 hover:bg-white/75'
             }`}
-            aria-label={`Go to slide ${index + 1}`}
+            aria-label={`${t('hero.goToSlide') || 'Go to slide'} ${index + 1}`}
+            style={{ minWidth: '12px', minHeight: '12px' }}
           />
         ))}
       </div>

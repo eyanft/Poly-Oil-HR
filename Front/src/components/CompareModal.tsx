@@ -56,10 +56,10 @@ export default function CompareModal({ products, isOpen, onClose }: CompareModal
           <h2 className="text-2xl font-bold text-gray-800">{t('compareModal.title')}</h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-            aria-label="Close modal"
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+            aria-label={t('common.close')}
           >
-            <X className="h-6 w-6 text-gray-600" />
+            <X className="h-6 w-6 text-gray-600" aria-hidden="true" />
           </button>
         </div>
 

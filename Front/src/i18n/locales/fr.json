@@ -24,7 +24,10 @@
     "blog": "Blog",
     "contact": "Contact",
     "admin": "Espace Admin",
-    "requestQuote": "Demander un devis"
+    "requestQuote": "Demander un devis",
+    "menu": "Menu",
+    "navigation": "Navigation principale",
+    "mobileNavigation": "Navigation mobile"
   },
   "hero": {
     "title": "Performance, Protection et Longévité pour votre moteur",

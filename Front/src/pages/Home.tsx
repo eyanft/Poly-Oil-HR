@@ -48,11 +48,13 @@ export default function HomePage() {
         schema={organizationSchema}
       />
       <Header />
-      <Hero />
-      <Products />
-      <Mission />
-      <Blog />
-      <Contact />
+      <main>
+        <Hero />
+        <Products />
+        <Mission />
+        <Blog />
+        <Contact />
+      </main>
       <Footer />
     </div>
   );
