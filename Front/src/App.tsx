@@ -1,6 +1,10 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import HomePage from './pages/Home';
+import HuileMoteurTunisiePage from './pages/HuileMoteurTunisie';
+import LubrifiantsAutomobilesPage from './pages/LubrifiantsAutomobiles';
+import EauLaveGlacePage from './pages/EauLaveGlace';
+import ContactPage from './pages/Contact';
 import AdminLoginPage from './pages/AdminLogin';
 import AdminDashboardPage from './pages/AdminDashboard';
 import { useAuth } from './contexts/AuthContext';
@@ -28,6 +32,10 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/huile-moteur-tunisie" element={<HuileMoteurTunisiePage />} />
+      <Route path="/lubrifiants-automobiles" element={<LubrifiantsAutomobilesPage />} />
+      <Route path="/eau-lave-glace" element={<EauLaveGlacePage />} />
+      <Route path="/contact" element={<ContactPage />} />
       <Route path="/admin" element={<AdminLoginPage />} />
       <Route
         path="/admin/dashboard"

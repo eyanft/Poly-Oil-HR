@@ -137,6 +137,8 @@ export default function Blog() {
                     src={post.image}
                     alt={post.title}
                     className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                    loading="lazy"
+                    decoding="async"
                   />
                 </div>
                 <div className="p-6">

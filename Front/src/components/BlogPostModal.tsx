@@ -46,6 +46,8 @@ export default function BlogPostModal({ post, isOpen, onClose }: BlogPostModalPr
               src={post.image}
               alt={post.title}
               className="w-full h-64 md:h-80 object-cover"
+              loading="lazy"
+              decoding="async"
             />
           </div>
 

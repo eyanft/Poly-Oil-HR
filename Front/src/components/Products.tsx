@@ -830,6 +830,8 @@ export default function Products() {
                         className={`w-auto object-contain transform group-hover:scale-110 transition-transform duration-500 ${
                           viewMode === 'list' ? 'h-full' : 'h-full'
                         }`}
+                        loading="lazy"
+                        decoding="async"
                       />
                     </div>
                     <div className={`p-4 flex flex-col flex-1 ${viewMode === 'list' ? '' : ''}`}>
