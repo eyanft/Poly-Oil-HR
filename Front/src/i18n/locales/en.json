@@ -38,6 +38,7 @@
     "title": "Our Products",
     "subtitle": "Discover our complete range of quality lubricants",
     "searchPlaceholder": "Search for a product...",
+    "filter": "Filter",
     "filterByCategory": "Filter by category",
     "filterByType": "Filter by type",
     "filterByViscosity": "Filter by viscosity",

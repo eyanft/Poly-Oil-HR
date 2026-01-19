@@ -13,6 +13,25 @@ import product6 from '../assets/2050p2.png';
 import product7 from '../assets/7580.png';
 import product8 from '../assets/10405l.png';
 import product9 from '../assets/atf.png';
+import product10 from '../assets/15405l.png';
+import product11 from '../assets/15w4020l.png';
+import product12 from '../assets/2050p1.png';
+import product13 from '../assets/2t20l.png';
+import product14 from '../assets/405l.png';
+import product15 from '../assets/4620l.png';
+import product16 from '../assets/8090.png';
+import product17 from '../assets/9020l.png';
+import product18 from '../assets/atf20l.png';
+import product19 from '../assets/eaunomalr.png';
+import product20 from '../assets/eaunormal.png';
+import product21 from '../assets/eauvert.png';
+import product22 from '../assets/frezol20l.png';
+import product23 from '../assets/frezolrose.png';
+import product24 from '../assets/g12.png';
+import product25 from '../assets/g13.png';
+import product26 from '../assets/hd4020l..png';
+import product27 from '../assets/laveglace.png';
+import product28 from '../assets/vg46.png';
 
 // Unified Product type that can handle both static and API products
 type UnifiedProduct = {
@@ -190,8 +209,278 @@ const staticProducts: Omit<UnifiedProduct, '_id'>[] = [
     price: 'Sur devis',
     isStatic: true,
   },
-  
-  
+  {
+    id: 10,
+    name: 'PO-5000 15W-40',
+    category: 'Huiles Moteur',
+    description: 'Huile moteur multigrade semi-synthétique',
+    image: product10,
+    volume: '5L',
+    oilType: 'Semi-Synthèse',
+    viscosity: '15W40',
+    apiStandard: 'API SL/CF',
+    packaging: 'Bidon 5L',
+    specifications: ['API SL/CF', '15W-40', 'Semi-synthétique'],
+    features: ['Protection moteur optimale', 'Résistance thermique', 'Économie de carburant'],
+    price: 'Sur devis',
+    isStatic: true,
+  },
+  {
+    id: 11,
+    name: 'PO-5000 15W-40',
+    category: 'Huiles Moteur',
+    description: 'Huile moteur multigrade semi-synthétique format industriel',
+    image: product11,
+    volume: '20L',
+    oilType: 'Semi-Synthèse',
+    viscosity: '15W40',
+    apiStandard: 'API SL/CF',
+    packaging: 'Bidon 20L',
+    specifications: ['API SL/CF', '15W-40', 'Semi-synthétique', 'Format industriel'],
+    features: ['Protection moteur optimale', 'Résistance thermique', 'Économie de carburant', 'Grand format'],
+    price: 'Sur devis',
+    isStatic: true,
+  },
+  {
+    id: 12,
+    name: 'PO Gold P1 20W-50',
+    category: 'Huiles Moteur',
+    description: 'Huile moteur premium haute performance',
+    image: product12,
+    volume: '1L',
+    oilType: '100% Synthèse',
+    viscosity: '20W50',
+    apiStandard: 'API SN',
+    packaging: 'Bidon 1L',
+    specifications: ['API SN', 'Qualité premium', '20W-50'],
+    features: ['Performance supérieure', 'Protection maximale', 'Longévité exceptionnelle'],
+    price: 'Sur devis',
+    isStatic: true,
+  },
+  {
+    id: 13,
+    name: 'Huile 2 Temps',
+    category: 'Huiles Moteur',
+    description: 'Huile moteur 2 temps pour scooters et motos',
+    image: product13,
+    volume: '20L',
+    oilType: 'Minérale',
+    viscosity: '2 Temps',
+    apiStandard: 'API TC',
+    packaging: 'Bidon 20L',
+    specifications: ['API TC', '2 Temps', 'Pour scooters et motos'],
+    features: ['Protection moteur 2 temps', 'Brûlage propre', 'Format économique'],
+    price: 'Sur devis',
+    isStatic: true,
+  },
+  {
+    id: 14,
+    name: 'Flexi Oil HD 40',
+    category: 'Divers',
+    description: 'Huile moteur diesel haute performance format standard',
+    image: product14,
+    volume: '5L',
+    oilType: 'Minérale',
+    viscosity: 'SAE 40',
+    packaging: 'Bidon 5L',
+    specifications: ['SAE 40', 'Pour moteurs diesel', 'Usage industriel'],
+    features: ['Résistance aux charges élevées', 'Protection anti-corrosion', 'Durabilité exceptionnelle'],
+    price: 'Sur devis',
+    isStatic: true,
+  },
+  {
+    id: 15,
+    name: 'Flexi Oil HD 46',
+    category: 'Divers',
+    description: 'Huile moteur diesel haute viscosité pour applications lourdes',
+    image: product15,
+    volume: '20L',
+    oilType: 'Minérale',
+    viscosity: 'SAE 46',
+    packaging: 'Bidon 20L',
+    specifications: ['SAE 46', 'Pour moteurs diesel', 'Usage industriel lourd'],
+    features: ['Haute viscosité', 'Protection maximale', 'Pour applications sévères'],
+    price: 'Sur devis',
+    isStatic: true,
+  },
+  {
+    id: 16,
+    name: 'Flexi Oil 80W-90',
+    category: 'Huiles de Boîte',
+    description: 'Huile de transmission pour boîtes de vitesses et différentiels',
+    image: product16,
+    volume: '1L',
+    oilType: 'Minérale',
+    viscosity: '80W90',
+    apiStandard: 'API GL4',
+    packaging: 'Bidon 1L',
+    specifications: ['API GL4', '80W-90', 'Pour transmissions'],
+    features: ['Protection des engrenages', 'Résistance à l\'usure', 'Performance optimale'],
+    price: 'Sur devis',
+    isStatic: true,
+  },
+  {
+    id: 17,
+    name: 'Flexi Oil SAE 90',
+    category: 'Huiles de Boîte',
+    description: 'Huile de transmission API GL1 pour boîtes de vitesses format industriel',
+    image: product17,
+    volume: '20L',
+    oilType: 'Minérale',
+    viscosity: 'SAE 90',
+    packaging: 'Bidon 20L',
+    specifications: ['SAE 90', 'API GL1', 'Pour transmissions', 'Format industriel'],
+    features: ['Changement de vitesse fluide', 'Protection des engrenages', 'Réduction du bruit'],
+    price: 'Sur devis',
+    isStatic: true,
+  },
+  {
+    id: 18,
+    name: 'ATF A2 Dexron II',
+    category: 'Huiles de Boîte',
+    description: 'Huile pour transmission automatique format industriel',
+    image: product18,
+    volume: '20L',
+    packaging: 'Bidon 20L',
+    specifications: ['Dexron II', 'Transmission automatique', 'Fluide ATF', 'Format industriel'],
+    features: ['Changement fluide', 'Protection hydraulique', 'Longévité transmission'],
+    price: 'Sur devis',
+    isStatic: true,
+  },
+  {
+    id: 19,
+    name: 'Eau Normale Rose',
+    category: 'Divers',
+    description: 'Eau déminéralisée pour système de refroidissement',
+    image: product19,
+    volume: '5L',
+    packaging: 'Bidon 5L',
+    specifications: ['Eau déminéralisée', 'Système de refroidissement'],
+    features: ['Pure', 'Antigel compatible', 'Protection du moteur'],
+    price: 'Sur devis',
+    isStatic: true,
+  },
+  {
+    id: 20,
+    name: 'Eau Normale',
+    category: 'Divers',
+    description: 'Eau déminéralisée pour système de refroidissement',
+    image: product20,
+    volume: '5L',
+    packaging: 'Bidon 5L',
+    specifications: ['Eau déminéralisée', 'Système de refroidissement'],
+    features: ['Pure', 'Antigel compatible', 'Protection du moteur'],
+    price: 'Sur devis',
+    isStatic: true,
+  },
+  {
+    id: 21,
+    name: 'Eau Verte',
+    category: 'Divers',
+    description: 'Eau déminéralisée avec additifs pour système de refroidissement',
+    image: product21,
+    volume: '5L',
+    packaging: 'Bidon 5L',
+    specifications: ['Eau déminéralisée', 'Avec additifs', 'Système de refroidissement'],
+    features: ['Protection anti-corrosion', 'Antigel compatible', 'Longévité système'],
+    price: 'Sur devis',
+    isStatic: true,
+  },
+  {
+    id: 22,
+    name: 'Frezol',
+    category: 'Divers',
+    description: 'Liquide de refroidissement concentré format industriel',
+    image: product22,
+    volume: '20L',
+    packaging: 'Bidon 20L',
+    specifications: ['Liquide de refroidissement', 'Concentré', 'Format industriel'],
+    features: ['Protection contre le gel', 'Protection anti-corrosion', 'Économique'],
+    price: 'Sur devis',
+    isStatic: true,
+  },
+  {
+    id: 23,
+    name: 'Frezol Rose',
+    category: 'Divers',
+    description: 'Liquide de refroidissement concentré de couleur rose',
+    image: product23,
+    volume: '5L',
+    packaging: 'Bidon 5L',
+    specifications: ['Liquide de refroidissement', 'Concentré', 'Couleur rose'],
+    features: ['Protection contre le gel', 'Protection anti-corrosion', 'Haute performance'],
+    price: 'Sur devis',
+    isStatic: true,
+  },
+  {
+    id: 24,
+    name: 'Liquide de Refroidissement G12',
+    category: 'Divers',
+    description: 'Liquide de refroidissement conforme à la norme G12',
+    image: product24,
+    volume: '1L',
+    packaging: 'Bidon 1L',
+    specifications: ['Norme G12', 'Liquide de refroidissement', 'Antigel'],
+    features: ['Protection contre le gel', 'Norme constructeur', 'Longue durée'],
+    price: 'Sur devis',
+    isStatic: true,
+  },
+  {
+    id: 25,
+    name: 'Liquide de Refroidissement G13',
+    category: 'Divers',
+    description: 'Liquide de refroidissement conforme à la norme G13',
+    image: product25,
+    volume: '1L',
+    packaging: 'Bidon 1L',
+    specifications: ['Norme G13', 'Liquide de refroidissement', 'Antigel'],
+    features: ['Protection contre le gel', 'Norme constructeur', 'Eco-friendly'],
+    price: 'Sur devis',
+    isStatic: true,
+  },
+  {
+    id: 26,
+    name: 'Flexi Oil HD 40',
+    category: 'Divers',
+    description: 'Huile moteur diesel haute performance format industriel',
+    image: product26,
+    volume: '20L',
+    oilType: 'Minérale',
+    viscosity: 'SAE 40',
+    packaging: 'Bidon 20L',
+    specifications: ['SAE 40', 'Pour moteurs diesel', 'Usage industriel'],
+    features: ['Résistance aux charges élevées', 'Protection anti-corrosion', 'Durabilité exceptionnelle'],
+    price: 'Sur devis',
+    isStatic: true,
+  },
+  {
+    id: 27,
+    name: 'Lave-Glace',
+    category: 'Divers',
+    description: 'Liquide lave-glace concentré pour pare-brise',
+    image: product27,
+    volume: '5L',
+    packaging: 'Bidon 5L',
+    specifications: ['Liquide lave-glace', 'Concentré', 'Antigel'],
+    features: ['Nettoyage efficace', 'Protection contre le gel', 'Visibilité optimale'],
+    price: 'Sur devis',
+    isStatic: true,
+  },
+  {
+    id: 28,
+    name: 'Flexi Oil VG 46',
+    category: 'Divers',
+    description: 'Huile hydraulique viscosité 46 pour systèmes hydrauliques',
+    image: product28,
+    volume: '20L',
+    oilType: 'Minérale',
+    viscosity: 'VG 46',
+    packaging: 'Bidon 20L',
+    specifications: ['VG 46', 'Huile hydraulique', 'Usage industriel'],
+    features: ['Protection des systèmes hydrauliques', 'Haute stabilité', 'Longévité'],
+    price: 'Sur devis',
+    isStatic: true,
+  },
 ];
 
 // Helper function to normalize products (convert API products to UnifiedProduct)
@@ -291,7 +580,7 @@ function FilterSection({ title, isOpen, onToggle, children }: FilterSectionProps
 
 export default function Products() {
   const { t, i18n } = useTranslation();
-  
+
   // Helper function to translate filter values
   const translateFilterValue = useCallback((type: string, value: string): string => {
     // Category translations
@@ -303,7 +592,7 @@ export default function Products() {
       };
       return categoryMap[value] || value;
     }
-    
+
     // Oil type translations
     if (type === 'oilType') {
       const oilTypeMap: { [key: string]: string } = {
@@ -313,7 +602,7 @@ export default function Products() {
       };
       return oilTypeMap[value] || value;
     }
-    
+
     // Packaging translations
     if (type === 'packaging') {
       const packagingMap: { [key: string]: string } = {
@@ -323,7 +612,7 @@ export default function Products() {
       };
       return packagingMap[value] || value;
     }
-    
+
     return value;
   }, [t]);
   const [apiProducts, setApiProducts] = useState<ApiProduct[]>([]);
@@ -374,7 +663,10 @@ export default function Products() {
   const [selectedTechnologies, setSelectedTechnologies] = useState<string[]>([]);
   const [selectedPackaging, setSelectedPackaging] = useState<string[]>([]);
 
-  // Collapsible filter sections
+  // Mobile filter sidebar visibility
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+
+  // Collapsible filter sections (open by default for desktop, will be closed on mobile)
   const [openSections, setOpenSections] = useState({
     categories: true,
     oilType: true,
@@ -383,6 +675,21 @@ export default function Products() {
     technology: true,
     packaging: true,
   });
+
+  // Close filter sections on mobile by default (only on initial mount)
+  useEffect(() => {
+    if (window.innerWidth < 1024) { // lg breakpoint
+      setOpenSections({
+        categories: false,
+        oilType: false,
+        viscosity: false,
+        apiStandard: false,
+        technology: false,
+        packaging: false,
+      });
+    }
+    // On desktop (>= 1024px), sections remain open as per initial state
+  }, []);
 
   const toggleSection = (section: keyof typeof openSections) => {
     setOpenSections(prev => ({ ...prev, [section]: !prev[section] }));
@@ -456,7 +763,7 @@ export default function Products() {
     const matchesTechnology = selectedTechnologies.length === 0 || (product.technology && selectedTechnologies.includes(product.technology));
     const matchesPackaging = selectedPackaging.length === 0 || (product.packaging && selectedPackaging.includes(product.packaging));
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         product.description.toLowerCase().includes(searchTerm.toLowerCase());
+      product.description.toLowerCase().includes(searchTerm.toLowerCase());
 
     return matchesCategory && matchesOilType && matchesViscosity && matchesApiStandard && matchesTechnology && matchesPackaging && matchesSearch;
   });
@@ -514,13 +821,28 @@ export default function Products() {
           <p className="text-xl text-gray-600">{t('products.subtitle')}</p>
         </div>
 
+        {/* Mobile Filter Toggle Button */}
+        <div className="lg:hidden mb-4">
+          <button
+            onClick={() => setIsFiltersOpen(!isFiltersOpen)}
+            className="w-full bg-gradient-to-r from-blue-600 to-red-600 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all duration-300 font-medium flex items-center justify-center gap-2"
+          >
+            <span>{isFiltersOpen ? 'Masquer les filtres' : 'Filtrer vos recherches'} </span>
+            {isFiltersOpen ? (
+              <ChevronUp className="h-5 w-5" />
+            ) : (
+              <ChevronDown className="h-5 w-5" />
+            )}
+          </button>
+        </div>
+
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Left Sidebar - Filters */}
-          <aside className="lg:w-1/4">
+          <aside className={`lg:w-1/4 ${isFiltersOpen ? 'block' : 'hidden'} lg:block`}>
             <div className="bg-white rounded-lg shadow-lg p-3 sticky top-4">
               <div className="flex items-center justify-between mb-3 pb-3 border-b border-gray-200">
                 <h3 className="text-base font-bold text-blue-600 bg-blue-50 px-3 py-1.5 rounded w-full text-center">
-                  {t('products.filterByCategory').toUpperCase()}
+                  {t('products.filter').toUpperCase()}
                 </h3>
               </div>
 
@@ -692,8 +1014,8 @@ export default function Products() {
                       key={`${filter.type}-${filter.label}`}
                       className={`inline-flex items-center px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm ${i18n.language === 'ar' ? 'flex-row-reverse' : ''}`}
                     >
-                      {filter.type === 'category' 
-                        ? `${t('products.categoryPrefix')} ${translateFilterValue('category', filter.label)}` 
+                      {filter.type === 'category'
+                        ? `${t('products.categoryPrefix')} ${translateFilterValue('category', filter.label)}`
                         : translateFilterValue(filter.type, filter.label)}
                       <button
                         onClick={() => removeFilter(filter.type, filter.label)}
@@ -713,51 +1035,50 @@ export default function Products() {
                 <div className="text-sm text-gray-600">
                   {t('products.displayRange', { start: startIndex + 1, end: Math.min(endIndex, sortedProducts.length), total: sortedProducts.length })}
                 </div>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2 border border-gray-300 rounded-lg p-1">
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2 border border-gray-300 rounded-lg p-1">
+                    <button
+                      onClick={() => setViewMode('grid')}
+                      className={`p-2 rounded min-w-[44px] min-h-[44px] flex items-center justify-center ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+                      aria-label={t('products.gridView') || 'Grid view'}
+                      aria-pressed={viewMode === 'grid'}
+                    >
+                      <Grid3x3 className="h-5 w-5" aria-hidden="true" />
+                    </button>
+                    <button
+                      onClick={() => setViewMode('list')}
+                      className={`p-2 rounded min-w-[44px] min-h-[44px] flex items-center justify-center ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+                      aria-label={t('products.listView') || 'List view'}
+                      aria-pressed={viewMode === 'list'}
+                    >
+                      <List className="h-5 w-5" aria-hidden="true" />
+                    </button>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-700">{t('products.sortBy')}</span>
+                    <select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value)}
+                      className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="default">{t('products.sortDefault')}</option>
+                      <option value="name">{t('products.sortNameAsc')}</option>
+                      <option value="name-desc">{t('products.sortNameDesc')}</option>
+                    </select>
+                  </div>
                   <button
-                    onClick={() => setViewMode('grid')}
-                    className={`p-2 rounded min-w-[44px] min-h-[44px] flex items-center justify-center ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
-                    aria-label={t('products.gridView') || 'Grid view'}
-                    aria-pressed={viewMode === 'grid'}
+                    onClick={handleCompare}
+                    disabled={productsToCompare.length !== 2}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors min-h-[44px] ${productsToCompare.length === 2
+                        ? 'bg-gradient-to-r from-blue-600 to-red-600 text-white hover:from-blue-700 hover:to-red-700 cursor-pointer'
+                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      }`}
+                    aria-label={productsToCompare.length === 2 ? t('products.compareButton') : t('products.maxCompare')}
                   >
-                    <Grid3x3 className="h-5 w-5" aria-hidden="true" />
-                  </button>
-                  <button
-                    onClick={() => setViewMode('list')}
-                    className={`p-2 rounded min-w-[44px] min-h-[44px] flex items-center justify-center ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
-                    aria-label={t('products.listView') || 'List view'}
-                    aria-pressed={viewMode === 'list'}
-                  >
-                    <List className="h-5 w-5" aria-hidden="true" />
+                    {t('products.compareButton')} {productsToCompare.length > 0 && t('products.compareCount', { count: productsToCompare.length })}
                   </button>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-700">{t('products.sortBy')}</span>
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="default">{t('products.sortDefault')}</option>
-                    <option value="name">{t('products.sortNameAsc')}</option>
-                    <option value="name-desc">{t('products.sortNameDesc')}</option>
-                  </select>
-                </div>
-                <button
-                  onClick={handleCompare}
-                  disabled={productsToCompare.length !== 2}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors min-h-[44px] ${
-                    productsToCompare.length === 2
-                      ? 'bg-gradient-to-r from-blue-600 to-red-600 text-white hover:from-blue-700 hover:to-red-700 cursor-pointer'
-                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  }`}
-                  aria-label={productsToCompare.length === 2 ? t('products.compareButton') : t('products.maxCompare')}
-                >
-                  {t('products.compareButton')} {productsToCompare.length > 0 && t('products.compareCount', { count: productsToCompare.length })}
-                </button>
               </div>
-            </div>
             )}
 
             {/* Loading State */}
@@ -785,7 +1106,7 @@ export default function Products() {
 
             {/* Products Grid */}
             {!loading && !error && currentProducts.length > 0 ? (
-              <div className={viewMode === 'grid' 
+              <div className={viewMode === 'grid'
                 ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8'
                 : 'space-y-4 mb-8'
               }>
@@ -793,78 +1114,76 @@ export default function Products() {
                   const isSelected = productsToCompare.some(p => p._id === product._id);
                   const canSelect = productsToCompare.length < 2 || isSelected;
                   return (
-                  <div
-                    key={product._id}
-                    className={`bg-white rounded-xl shadow-md overflow-hidden transform hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl cursor-pointer group relative flex flex-col ${
-                      viewMode === 'list' ? 'flex-row' : ''
-                    } ${isSelected ? 'ring-2 ring-blue-600' : ''}`}
-                    onClick={(e) => handleProductClick(product, e as React.MouseEvent)}
-                  >
-                    {/* Compare Checkbox */}
-                    <div className="absolute top-2 right-2 z-10">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          if (canSelect) {
-                            toggleProductCompare(product);
-                          }
-                        }}
-                        disabled={!canSelect}
-                        className={`compare-checkbox p-2 rounded-full transition-all min-w-[44px] min-h-[44px] flex items-center justify-center ${
-                          isSelected
-                            ? 'bg-blue-600 text-white'
-                            : canSelect
-                            ? 'bg-white/80 hover:bg-blue-100 text-gray-600'
-                            : 'bg-gray-300 text-gray-400 cursor-not-allowed'
-                        }`}
-                        aria-label={isSelected ? t('products.deselectForCompare') : canSelect ? t('products.selectForCompare') : t('products.maxCompare')}
-                        title={isSelected ? t('products.deselectForCompare') : canSelect ? t('products.selectForCompare') : t('products.maxCompare')}
-                      >
-                        {isSelected ? (
-                          <Check className="h-4 w-4" aria-hidden="true" />
-                        ) : (
-                          <span className="text-xs font-bold" aria-hidden="true">+</span>
-                        )}
-                      </button>
-                    </div>
-                    <div className={`bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden ${
-                      viewMode === 'list' ? 'w-48 h-48 flex-shrink-0 p-4' : 'h-48 p-4'
-                    }`}>
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className={`w-auto object-contain transform group-hover:scale-110 transition-transform duration-500 ${
-                          viewMode === 'list' ? 'h-full' : 'h-full'
-                        }`}
-                        loading="lazy"
-                        decoding="async"
-                        width="200"
-                        height="200"
-                      />
-                    </div>
-                    <div className={`p-4 flex flex-col flex-1 ${viewMode === 'list' ? '' : ''}`}>
-                      <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
-                        <span className="inline-block px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
-                          {product.category}
-                        </span>
-                        {product.volume && (
-                          <span className="inline-block px-2 py-0.5 bg-red-100 text-red-700 text-xs font-semibold rounded-full">
-                            {product.volume}
-                          </span>
-                        )}
+                    <div
+                      key={product._id}
+                      className={`bg-white rounded-xl shadow-md overflow-hidden transform hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl cursor-pointer group relative flex flex-col ${viewMode === 'list' ? 'flex-row' : ''
+                        } ${isSelected ? 'ring-2 ring-blue-600' : ''}`}
+                      onClick={(e) => handleProductClick(product, e as React.MouseEvent)}
+                    >
+                      {/* Compare Checkbox */}
+                      <div className="absolute top-2 right-2 z-10">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (canSelect) {
+                              toggleProductCompare(product);
+                            }
+                          }}
+                          disabled={!canSelect}
+                          className={`compare-checkbox p-2 rounded-full transition-all min-w-[44px] min-h-[44px] flex items-center justify-center ${isSelected
+                              ? 'bg-blue-600 text-white'
+                              : canSelect
+                                ? 'bg-white/80 hover:bg-blue-100 text-gray-600'
+                                : 'bg-gray-300 text-gray-400 cursor-not-allowed'
+                            }`}
+                          aria-label={isSelected ? t('products.deselectForCompare') : canSelect ? t('products.selectForCompare') : t('products.maxCompare')}
+                          title={isSelected ? t('products.deselectForCompare') : canSelect ? t('products.selectForCompare') : t('products.maxCompare')}
+                        >
+                          {isSelected ? (
+                            <Check className="h-4 w-4" aria-hidden="true" />
+                          ) : (
+                            <span className="text-xs font-bold" aria-hidden="true">+</span>
+                          )}
+                        </button>
                       </div>
-                      <h3 className="text-lg font-bold text-gray-800 mb-1.5 group-hover:text-blue-600 transition-colors">
-                        {product.name}
-                      </h3>
-                      <p className="text-gray-600 mb-3 line-clamp-2 text-sm flex-1">{product.description}</p>
-                      <button 
-                        className="w-full bg-gradient-to-r from-blue-600 to-red-600 text-white py-2.5 rounded-lg hover:shadow-lg transition-all duration-300 font-medium group-hover:from-blue-700 group-hover:to-red-700 mt-auto min-h-[44px]"
-                        aria-label={`${t('products.viewMore')} ${product.name}`}
-                      >
-                        {t('products.viewMore')}
-                      </button>
+                      <div className={`bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden ${viewMode === 'list'
+                          ? 'w-56 md:w-56 lg:w-56 h-56 md:h-56 lg:h-56 flex-shrink-0 p-4'
+                          : 'h-64 md:h-60 lg:h-56 p-6 md:p-5 lg:p-5'
+                        }`}>
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className={`w-auto object-contain transform group-hover:scale-110 transition-transform duration-500 ${viewMode === 'list' ? 'h-full max-w-full' : 'h-full max-w-full'
+                            }`}
+                          loading="lazy"
+                          decoding="async"
+                          width="340"
+                          height="340"
+                        />
+                      </div>
+                      <div className={`p-4 flex flex-col flex-1 ${viewMode === 'list' ? '' : ''}`}>
+                        <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
+                          <span className="inline-block px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
+                            {product.category}
+                          </span>
+                          {product.volume && (
+                            <span className="inline-block px-2 py-0.5 bg-red-100 text-red-700 text-xs font-semibold rounded-full">
+                              {product.volume}
+                            </span>
+                          )}
+                        </div>
+                        <h3 className="text-lg font-bold text-gray-800 mb-1.5 group-hover:text-blue-600 transition-colors">
+                          {product.name}
+                        </h3>
+                        <p className="text-gray-600 mb-3 line-clamp-2 text-sm flex-1">{product.description}</p>
+                        <button
+                          className="w-full bg-gradient-to-r from-blue-600 to-red-600 text-white py-2.5 rounded-lg hover:shadow-lg transition-all duration-300 font-medium group-hover:from-blue-700 group-hover:to-red-700 mt-auto min-h-[44px]"
+                          aria-label={`${t('products.viewMore')} ${product.name}`}
+                        >
+                          {t('products.viewMore')}
+                        </button>
+                      </div>
                     </div>
-                  </div>
                   );
                 })}
               </div>
@@ -889,11 +1208,10 @@ export default function Products() {
                 <button
                   onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 1}
-                  className={`p-3 rounded-lg transition-all duration-300 min-w-[44px] min-h-[44px] flex items-center justify-center ${
-                    currentPage === 1
+                  className={`p-3 rounded-lg transition-all duration-300 min-w-[44px] min-h-[44px] flex items-center justify-center ${currentPage === 1
                       ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                       : 'bg-white text-blue-600 hover:bg-blue-50 shadow-md hover:shadow-lg'
-                  }`}
+                    }`}
                   aria-label={t('common.previous')}
                 >
                   <ChevronLeft className="h-5 w-5" aria-hidden="true" />
@@ -906,11 +1224,10 @@ export default function Products() {
                       <button
                         key={page}
                         onClick={() => handlePageChange(page)}
-                        className={`px-4 py-2 rounded-lg transition-all duration-300 font-medium min-w-[44px] min-h-[44px] flex items-center justify-center ${
-                          currentPage === page
+                        className={`px-4 py-2 rounded-lg transition-all duration-300 font-medium min-w-[44px] min-h-[44px] flex items-center justify-center ${currentPage === page
                             ? 'bg-gradient-to-r from-blue-600 to-red-600 text-white shadow-lg scale-110'
                             : 'bg-white text-gray-700 hover:bg-gray-100 shadow-md'
-                        }`}
+                          }`}
                         aria-label={`${t('common.page') || 'Page'} ${page}`}
                         aria-current={currentPage === page ? 'page' : undefined}
                       >
@@ -923,11 +1240,10 @@ export default function Products() {
                 <button
                   onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage === totalPages}
-                  className={`p-3 rounded-lg transition-all duration-300 min-w-[44px] min-h-[44px] flex items-center justify-center ${
-                    currentPage === totalPages
+                  className={`p-3 rounded-lg transition-all duration-300 min-w-[44px] min-h-[44px] flex items-center justify-center ${currentPage === totalPages
                       ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                       : 'bg-white text-blue-600 hover:bg-blue-50 shadow-md hover:shadow-lg'
-                  }`}
+                    }`}
                   aria-label={t('common.next')}
                 >
                   <ChevronRight className="h-5 w-5" aria-hidden="true" />

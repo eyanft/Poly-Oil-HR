@@ -62,9 +62,11 @@ export default function Footer() {
             <h3 className="text-lg font-bold mb-4">{t('footer.followUs')}</h3>
             <div className={`flex ${i18n.language === 'ar' ? 'space-x-reverse space-x-4' : 'space-x-4'}`}>
               <a
-                href="#"
+                href="https://www.facebook.com/profile.php?id=61586657618833&rdid=DxZaejMrKaFWqHqx&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1CPYZEB2ez%2F#"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="bg-white/10 hover:bg-blue-600 p-3 rounded-full transition-all duration-300 hover:scale-110 min-w-[44px] min-h-[44px] flex items-center justify-center"
-                aria-label="Facebook"
+                aria-label="polyoil facebook"
               >
                 <Facebook className="h-5 w-5" aria-hidden="true" />
               </a>
