@@ -156,6 +156,25 @@
     "readMore": "Read more",
     "date": "Date"
   },
+  "quoteForm": {
+    "title": "Request a Quote",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "Your name",
+    "email": "Email",
+    "emailPlaceholder": "your@email.com",
+    "phone": "Phone",
+    "phonePlaceholder": "+216 00 000 000",
+    "company": "Company",
+    "companyPlaceholder": "Your company name (optional)",
+    "product": "Product",
+    "productPlaceholder": "Product name if known",
+    "message": "Message",
+    "messagePlaceholder": "Quantity, delivery time, questions...",
+    "submit": "Send my request",
+    "sending": "Sending...",
+    "successMessage": "Your request has been sent. We will get back to you shortly.",
+    "errorGeneric": "An error occurred. Please try again or contact us by phone."
+  },
   "contact": {
     "title": "Contact Us",
     "subtitle": "We are here to listen",

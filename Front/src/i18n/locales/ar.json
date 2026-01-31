@@ -156,6 +156,25 @@
     "readMore": "اقرأ المزيد",
     "date": "التاريخ"
   },
+  "quoteForm": {
+    "title": "طلب عرض سعر",
+    "fullName": "الاسم الكامل",
+    "fullNamePlaceholder": "اسمك",
+    "email": "البريد الإلكتروني",
+    "emailPlaceholder": "your@email.com",
+    "phone": "الهاتف",
+    "phonePlaceholder": "+216 00 000 000",
+    "company": "الشركة",
+    "companyPlaceholder": "اسم شركتك (اختياري)",
+    "product": "المنتج المعني",
+    "productPlaceholder": "اسم المنتج إن وجد",
+    "message": "الرسالة",
+    "messagePlaceholder": "الكمية، الموعد، أسئلة...",
+    "submit": "إرسال طلبي",
+    "sending": "جاري الإرسال...",
+    "successMessage": "تم إرسال طلبك. سنتواصل معك قريباً.",
+    "errorGeneric": "حدث خطأ. يرجى المحاولة مرة أخرى أو الاتصال بنا."
+  },
   "contact": {
     "title": "اتصل بنا",
     "subtitle": "نحن هنا للاستماع",

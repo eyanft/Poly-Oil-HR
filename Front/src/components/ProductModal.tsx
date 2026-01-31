@@ -19,9 +19,10 @@ interface ProductModalProps {
   product: Product | null;
   isOpen: boolean;
   onClose: () => void;
+  onRequestQuote?: (product: Product) => void;
 }
 
-export default function ProductModal({ product, isOpen, onClose }: ProductModalProps) {
+export default function ProductModal({ product, isOpen, onClose, onRequestQuote }: ProductModalProps) {
   const { t } = useTranslation();
   if (!isOpen || !product) return null;
 
@@ -127,6 +128,11 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
 
           <div className="mt-8 flex flex-col sm:flex-row gap-4">
             <button
+              type="button"
+              onClick={() => {
+                onRequestQuote?.(product);
+                onClose();
+              }}
               className="flex-1 bg-gradient-to-r from-blue-600 to-red-600 text-white py-4 rounded-lg hover:shadow-lg transition-all duration-300 font-bold text-lg min-h-[44px]"
               aria-label={t('productModal.requestQuote')}
             >

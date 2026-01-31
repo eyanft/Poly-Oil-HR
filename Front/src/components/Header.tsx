@@ -5,10 +5,23 @@ import { useTranslation } from 'react-i18next';
 import logo from '../assets/po.png';
 import LanguageSelector from './LanguageSelector';
 
-export default function Header() {
+type HeaderProps = {
+  onRequestQuote?: () => void;
+};
+
+export default function Header({ onRequestQuote }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
+
+  const handleRequestQuote = () => {
+    setIsMenuOpen(false);
+    if (onRequestQuote) {
+      onRequestQuote();
+    } else {
+      scrollToSection('contact');
+    }
+  };
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -54,7 +67,7 @@ export default function Header() {
           <div className={`hidden lg:flex items-center ${i18n.language === 'ar' ? 'space-x-reverse space-x-4' : 'space-x-4'}`}>
             <LanguageSelector />
             <button
-              onClick={() => scrollToSection('contact')}
+              onClick={handleRequestQuote}
               className="bg-gradient-to-r from-blue-600 to-red-600 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300 font-medium"
               aria-label={t('header.requestQuote')}
             >
@@ -96,7 +109,7 @@ export default function Header() {
             <div className="flex items-center space-x-3">
               <LanguageSelector />
               <button
-                onClick={() => scrollToSection('contact')}
+                onClick={handleRequestQuote}
                 className="bg-gradient-to-r from-blue-600 to-red-600 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300 font-medium"
               >
                 {t('header.requestQuote')}

@@ -156,6 +156,25 @@
     "readMore": "Lire plus",
     "date": "Date"
   },
+  "quoteForm": {
+    "title": "Demander un devis",
+    "fullName": "Nom complet",
+    "fullNamePlaceholder": "Votre nom",
+    "email": "Email",
+    "emailPlaceholder": "votre@email.com",
+    "phone": "Téléphone",
+    "phonePlaceholder": "+216 00 000 000",
+    "company": "Société",
+    "companyPlaceholder": "Nom de votre entreprise (optionnel)",
+    "product": "Produit concerné",
+    "productPlaceholder": "Indiquez le produit si connu",
+    "message": "Message",
+    "messagePlaceholder": "Quantité souhaitée, délai, questions...",
+    "submit": "Envoyer ma demande",
+    "sending": "Envoi en cours...",
+    "successMessage": "Votre demande a bien été envoyée. Nous vous recontacterons rapidement.",
+    "errorGeneric": "Une erreur s'est produite. Réessayez ou contactez-nous par téléphone."
+  },
   "contact": {
     "title": "Contactez-nous",
     "subtitle": "Nous sommes à votre écoute",

@@ -583,7 +583,11 @@ function FilterSection({ title, isOpen, onToggle, children }: FilterSectionProps
   );
 }
 
-export default function Products() {
+type ProductsProps = {
+  onRequestQuote?: (product: UnifiedProduct) => void;
+};
+
+export default function Products({ onRequestQuote }: ProductsProps) {
   const { t, i18n } = useTranslation();
 
   // Helper function to translate filter values
@@ -1267,6 +1271,7 @@ export default function Products() {
         product={selectedProduct}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        onRequestQuote={onRequestQuote}
       />
 
       <CompareModal

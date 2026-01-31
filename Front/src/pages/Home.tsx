@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Header from '../components/Header';
 import Hero from '../components/Hero';
 import Products from '../components/Products';
@@ -6,10 +7,18 @@ import Blog from '../components/Blog';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import SEO from '../components/SEO';
+import QuoteFormModal from '../components/QuoteFormModal';
 
 export default function HomePage() {
   const siteUrl = 'https://polyoil-tunis.com';
   const pageUrl = siteUrl;
+  const [quoteModalOpen, setQuoteModalOpen] = useState(false);
+  const [productForQuote, setProductForQuote] = useState<{ name: string } | null>(null);
+
+  const openQuoteForm = (product: { name: string } | null) => {
+    setProductForQuote(product);
+    setQuoteModalOpen(true);
+  };
 
   // Schema Organization pour la page d'accueil
   const organizationSchema = {
@@ -47,15 +56,20 @@ export default function HomePage() {
         canonicalUrl={pageUrl}
         schema={organizationSchema}
       />
-      <Header />
+      <Header onRequestQuote={openQuoteForm} />
       <main>
         <Hero />
-        <Products />
+        <Products onRequestQuote={openQuoteForm} />
         <Mission />
         <Blog />
         <Contact />
       </main>
       <Footer />
+      <QuoteFormModal
+        isOpen={quoteModalOpen}
+        onClose={() => setQuoteModalOpen(false)}
+        product={productForQuote}
+      />
     </div>
   );
 }

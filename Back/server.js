@@ -1,13 +1,18 @@
+import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: join(__dirname, '.env') });
+
 import express from 'express';
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
 import authRouter from './src/routes/auth.js';
 import productRouter from './src/routes/products.js';
-
-dotenv.config();
+import quoteRouter from './src/routes/quote.js';
 
 const app = express();
 
@@ -27,6 +32,7 @@ app.get('/api/health', (req, res) => {
 
 app.use('/api/auth', authRouter);
 app.use('/api/products', productRouter);
+app.use('/api/quote', quoteRouter);
 
 async function start() {
   try {
