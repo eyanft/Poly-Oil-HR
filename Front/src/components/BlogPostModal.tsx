@@ -1,15 +1,6 @@
 import { X, Calendar, ArrowLeft } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-
-interface BlogPost {
-  id: number;
-  title: string;
-  summary: string;
-  date: string;
-  image: string;
-  content?: string;
-  sections?: { title: string; content: string }[];
-}
+import type { BlogPost } from './Blog';
 
 interface BlogPostModalProps {
   post: BlogPost | null;
@@ -17,9 +8,25 @@ interface BlogPostModalProps {
   onClose: () => void;
 }
 
+function getSections(t: (key: string) => string, postId: number): { title: string; content: string }[] {
+  const sections: { title: string; content: string }[] = [];
+  for (let i = 0; i < 5; i++) {
+    const title = t(`blog.posts.${postId}.sections.${i}.title`);
+    if (!title || title.startsWith('blog.posts')) break;
+    sections.push({
+      title,
+      content: t(`blog.posts.${postId}.sections.${i}.content`),
+    });
+  }
+  return sections;
+}
+
 export default function BlogPostModal({ post, isOpen, onClose }: BlogPostModalProps) {
   const { t } = useTranslation();
   if (!isOpen || !post) return null;
+
+  const content = t(`blog.posts.${post.id}.content`);
+  const sections = getSections(t, post.id);
 
   return (
     <div
@@ -31,7 +38,7 @@ export default function BlogPostModal({ post, isOpen, onClose }: BlogPostModalPr
         onClick={(e) => e.stopPropagation()}
       >
         <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between rounded-t-2xl z-10">
-          <h2 className="text-2xl font-bold text-gray-800">Article de blog</h2>
+          <h2 className="text-2xl font-bold text-gray-800">{t('blog.modalTitle')}</h2>
           <button
             onClick={onClose}
             className="p-2 hover:bg-gray-100 rounded-full transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
@@ -67,13 +74,13 @@ export default function BlogPostModal({ post, isOpen, onClose }: BlogPostModalPr
 
           {/* Article Content */}
           <div className="prose prose-lg max-w-none">
-            {post.content && (
+            {content && !content.startsWith('blog.posts') && (
               <div className="text-gray-700 leading-relaxed mb-8">
-                <p className="text-lg mb-4">{post.content}</p>
+                <p className="text-lg mb-4">{content}</p>
               </div>
             )}
 
-            {post.sections && post.sections.map((section, index) => (
+            {sections.map((section, index) => (
               <div key={index} className="mb-8 pb-6 border-b border-gray-200 last:border-b-0">
                 <h2 className="text-2xl font-bold text-gray-800 mb-4 text-blue-600">{section.title}</h2>
                 <p className="text-gray-700 leading-relaxed text-base whitespace-pre-line">{section.content}</p>
@@ -83,9 +90,9 @@ export default function BlogPostModal({ post, isOpen, onClose }: BlogPostModalPr
 
           {/* Call to Action */}
           <div className="mt-8 bg-gradient-to-r from-blue-50 to-red-50 rounded-xl p-6">
-            <h3 className="text-xl font-bold text-gray-800 mb-2">Besoin de conseils personnalisés ?</h3>
+            <h3 className="text-xl font-bold text-gray-800 mb-2">{t('blog.needAdvice')}</h3>
             <p className="text-gray-600 mb-4">
-              Contactez nos experts pour obtenir des recommandations adaptées à votre véhicule.
+              {t('blog.contactExperts')}
             </p>
             <button
               onClick={() => {
@@ -97,7 +104,7 @@ export default function BlogPostModal({ post, isOpen, onClose }: BlogPostModalPr
               }}
               className="bg-gradient-to-r from-blue-600 to-red-600 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all duration-300 font-medium"
             >
-              Nous contacter
+              {t('blog.contactUs')}
             </button>
           </div>
 
@@ -108,7 +115,7 @@ export default function BlogPostModal({ post, isOpen, onClose }: BlogPostModalPr
               className="flex items-center justify-center space-x-2 bg-gray-200 text-gray-700 py-3 px-6 rounded-lg hover:bg-gray-300 transition-all duration-300 font-medium"
             >
               <ArrowLeft className="h-5 w-5" />
-              <span>Retour aux articles</span>
+              <span>{t('blog.backToArticles')}</span>
             </button>
           </div>
         </div>

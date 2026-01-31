@@ -840,7 +840,7 @@ export default function Products({ onRequestQuote }: ProductsProps) {
             onClick={() => setIsFiltersOpen(!isFiltersOpen)}
             className="w-full bg-gradient-to-r from-blue-600 to-red-600 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all duration-300 font-medium flex items-center justify-center gap-2"
           >
-            <span>{isFiltersOpen ? 'Masquer les filtres' : 'Filtrer vos recherches'} </span>
+            <span>{isFiltersOpen ? t('products.hideFilters') : t('products.showFilters')}</span>
             {isFiltersOpen ? (
               <ChevronUp className="h-5 w-5" />
             ) : (

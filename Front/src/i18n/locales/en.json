@@ -73,6 +73,8 @@
     "noProductsFound": "No products found",
     "tryModifySearch": "Try modifying your search criteria",
     "resetFilters": "Reset filters",
+    "showFilters": "Filter your search",
+    "hideFilters": "Hide filters",
     "categories": {
       "all": "All categories",
       "engineOil": "Engine Oils",
@@ -154,7 +156,53 @@
     "title": "Our Blog",
     "subtitle": "Tips and news about car maintenance",
     "readMore": "Read more",
-    "date": "Date"
+    "date": "Date",
+    "modalTitle": "Blog article",
+    "needAdvice": "Need personalized advice?",
+    "contactExperts": "Contact our experts for recommendations tailored to your vehicle.",
+    "contactUs": "Contact us",
+    "backToArticles": "Back to articles",
+    "posts": {
+      "1": {
+        "title": "How to choose the right engine oil?",
+        "summary": "Discover the essential criteria for selecting the engine oil suited to your vehicle and optimizing its performance.",
+        "date": "March 15, 2025",
+        "content": "Choosing the right engine oil is essential to ensure the longevity and optimal performance of your vehicle. With so many options on the market, it can be difficult to know which oil best suits your engine. In this article, we guide you through the essential criteria to consider when selecting your engine oil.",
+        "sections": {
+          "0": { "title": "Understanding viscosity", "content": "Viscosity is one of the most important factors to consider. It is indicated by codes such as 5W-30, 10W-40 or 20W-50. The first number (preceded by W for Winter) indicates the oil's fluidity when cold, while the second number indicates its viscosity when hot.\n\n• 5W-30: Ideal for cold climates, offers excellent cold fluidity\n• 10W-40: Versatile, suits most weather conditions\n• 20W-50: Recommended for hot climates and older engines" },
+          "1": { "title": "API and ACEA standards", "content": "API (American Petroleum Institute) and ACEA (European Automobile Manufacturers Association) standards guarantee the quality and compatibility of the oil with your engine.\n\n• API SN: Current standard for modern petrol engines\n• API CF: For diesel engines\n• ACEA A3/B3: For high-performance petrol and diesel engines\n\nAlways check your vehicle manual for manufacturer-recommended standards." },
+          "2": { "title": "Oil type: Mineral, Semi-synthetic or Synthetic", "content": "The type of oil determines its performance and lifespan:\n\n• Mineral oil: Economical, suited to older engines with short drain intervals\n• Semi-synthetic: Good quality/price compromise, better protection than mineral\n• 100% Synthetic: Maximum performance, longer drain intervals, optimal protection even in extreme conditions" },
+          "3": { "title": "When to change the oil?", "content": "Drain intervals vary according to several factors:\n\n• Petrol engines: Every 10,000 to 15,000 km or once a year\n• Diesel engines: Every 7,000 to 10,000 km\n• Intensive urban driving: Reduce intervals by 20%\n• Sporty driving: Reduce intervals by 30%\n\nRemember to check the oil level regularly between changes and use a quality oil filter." },
+          "4": { "title": "Practical tips", "content": "• Always check your vehicle manual for specific recommendations\n• Use the same brand and type of oil at each change\n• Never mix different types of oil\n• Check the oil level monthly\n• Keep a spare bottle of oil in your boot\n• When in doubt, consult a professional" }
+        }
+      },
+      "2": {
+        "title": "The importance of regular lubrication",
+        "summary": "Preventive lubrication is crucial for your vehicle's longevity. Learn when and how to carry out this maintenance.",
+        "date": "March 10, 2025",
+        "content": "Regular lubrication is a preventive maintenance operation that is often neglected, but plays a crucial role in the longevity and proper functioning of your vehicle. Lubrication points help reduce wear, friction and noise, while improving the overall performance of your car.",
+        "sections": {
+          "0": { "title": "Why lubrication is essential", "content": "Lubrication prevents premature wear of mechanical parts by creating a protective layer between metal surfaces. Without adequate lubrication:\n\n• Parts wear out faster\n• Friction increases fuel consumption\n• Noise and vibrations intensify\n• Repairs become more costly\n• Safety can be compromised" },
+          "1": { "title": "Lubrication points to check", "content": "Several components of your vehicle require regular lubrication:\n\n• Driveshafts and transmissions: Every 20,000 km or when abnormal noises occur\n• Door hinges: Every 6 months to avoid squeaking\n• Steering system: Check at each service\n• Suspension joints: Every 15,000 to 20,000 km\n• Brake and clutch cables: Annual check\n• Locks and opening mechanisms: Every 3 months" },
+          "2": { "title": "Types of grease and their applications", "content": "Each type of grease has its specificities:\n\n• Lithium EP2 grease: General use, water and moderate temperature resistant\n• High-temperature grease: For brakes and very hot areas\n• Silicone grease: For rubber seals and gaskets\n• Marine grease: For vehicles exposed to humidity\n\nAlways check manufacturer specifications before applying grease." },
+          "3": { "title": "Signs that lubrication is needed", "content": "Watch for these warning signs:\n\n• Squeaking when opening doors\n• Metallic noises from the suspension\n• Difficulty turning the steering wheel\n• Abnormal vibrations\n• Increased fuel consumption\n• Premature tyre wear\n\nIf you notice these symptoms, consult a professional quickly." },
+          "4": { "title": "Preventive maintenance", "content": "A regular lubrication programme can significantly extend your vehicle's life:\n\n• Schedule a full lubrication every 10,000 km\n• Check grease levels at each service\n• Use quality products that meet standards\n• Clean areas before applying grease\n• Record your work in the service book\n\nInvesting in preventive maintenance is always more economical than emergency repairs." }
+        }
+      },
+      "3": {
+        "title": "Innovations in automotive lubricants",
+        "summary": "Explore the latest technological advances in lubricants and their impact on engine performance.",
+        "date": "March 5, 2025",
+        "content": "The automotive lubricants industry is undergoing an unprecedented technological revolution. Recent innovations are transforming not only engine performance but also their environmental impact. Discover how the latest technological advances are revolutionising the automotive lubricants sector.",
+        "sections": {
+          "0": { "title": "Advanced synthesis technologies", "content": "Modern synthetic oils use cutting-edge technologies:\n\n• ESTER technology: Superior protection at very high temperatures and better stability\n• Polyalphaolefin (PAO) based formulations: Exceptional performance in extreme conditions\n• Nanotechnology additives: Significantly reduce friction\n• Hybrid formulations: Combine the benefits of several technologies\n\nThese innovations allow longer drain intervals while maintaining optimal protection." },
+          "1": { "title": "Eco-friendly and sustainable lubricants", "content": "The industry is moving towards more environmentally friendly solutions:\n\n• Bio-based oils: Produced from renewable resources\n• Emission-reducing formulations: Help reduce fine particles\n• Improved recyclability: More efficient recycling processes\n• Waste reduction: Longer drain intervals\n\nThese innovations meet growing environmental requirements while maintaining performance." },
+          "2": { "title": "Intelligence and connectivity", "content": "Smart lubricants integrate sensors and monitoring systems:\n\n• Oil quality sensors: Real-time analysis of oil condition\n• Predictive tracking systems: Alert before problems occur\n• Mobile apps: Maintenance tracking and recommendations\n• IoT compatibility: Integration with vehicle diagnostic systems\n\nThese technologies enable predictive and optimised maintenance." },
+          "3": { "title": "Performance and fuel economy", "content": "New formulations offer measurable benefits:\n\n• Consumption reduction: Up to 5% fuel savings\n• Improved protection: Up to 30% wear reduction\n• Adaptive viscosity: Adapts to driving conditions\n• Active cleaning: Keeps the engine cleaner longer\n\nThese improvements translate into significant long-term savings." },
+          "4": { "title": "The future of lubricants", "content": "Future trends include:\n\n• Lubricants for electric vehicles: Specific needs of electric motors\n• Formulations for hybrid engines: Adaptation to both types of powertrain\n• Materials research: New even more efficient base oils\n• Personalisation: Formulations adapted to each driving style\n\nThe industry continues to evolve to meet the future challenges of the automobile." }
+        }
+      }
+    }
   },
   "quoteForm": {
     "title": "Request a Quote",
