@@ -5,7 +5,7 @@ function getEnv() {
     QUOTE_EMAIL: (process.env.QUOTE_EMAIL || '').trim(),
     RESEND_API_KEY: (process.env.RESEND_API_KEY || '').trim(),
     // Adresse d'envoi : utilise "onboarding@resend.dev" (fourni par Resend à l'inscription) ou ton domaine vérifié
-    RESEND_FROM: (process.env.RESEND_FROM || 'Poly-Oil HR <onboarding@resend.dev>').trim(),
+    RESEND_FROM: (process.env.RESEND_FROM || 'Poly Oil <onboarding@resend.dev>').trim(),
   };
 }
 
