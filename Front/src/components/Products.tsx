@@ -1070,8 +1070,8 @@ export default function Products() {
                     onClick={handleCompare}
                     disabled={productsToCompare.length !== 2}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors min-h-[44px] ${productsToCompare.length === 2
-                        ? 'bg-gradient-to-r from-blue-600 to-red-600 text-white hover:from-blue-700 hover:to-red-700 cursor-pointer'
-                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      ? 'bg-gradient-to-r from-blue-600 to-red-600 text-white hover:from-blue-700 hover:to-red-700 cursor-pointer'
+                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                       }`}
                     aria-label={productsToCompare.length === 2 ? t('products.compareButton') : t('products.maxCompare')}
                   >
@@ -1131,10 +1131,10 @@ export default function Products() {
                           }}
                           disabled={!canSelect}
                           className={`compare-checkbox p-2 rounded-full transition-all min-w-[44px] min-h-[44px] flex items-center justify-center ${isSelected
-                              ? 'bg-blue-600 text-white'
-                              : canSelect
-                                ? 'bg-white/80 hover:bg-blue-100 text-gray-600'
-                                : 'bg-gray-300 text-gray-400 cursor-not-allowed'
+                            ? 'bg-blue-600 text-white'
+                            : canSelect
+                              ? 'bg-white/80 hover:bg-blue-100 text-gray-600'
+                              : 'bg-gray-300 text-gray-400 cursor-not-allowed'
                             }`}
                           aria-label={isSelected ? t('products.deselectForCompare') : canSelect ? t('products.selectForCompare') : t('products.maxCompare')}
                           title={isSelected ? t('products.deselectForCompare') : canSelect ? t('products.selectForCompare') : t('products.maxCompare')}
@@ -1147,8 +1147,8 @@ export default function Products() {
                         </button>
                       </div>
                       <div className={`bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden ${viewMode === 'list'
-                          ? 'w-56 md:w-56 lg:w-56 h-56 md:h-56 lg:h-56 flex-shrink-0 p-4'
-                          : 'h-64 md:h-60 lg:h-56 p-6 md:p-5 lg:p-5'
+                        ? 'w-56 md:w-56 lg:w-56 h-56 md:h-56 lg:h-56 flex-shrink-0 p-4'
+                        : 'h-64 md:h-60 lg:h-56 p-6 md:p-5 lg:p-5'
                         }`}>
                         <img
                           src={product.image}
@@ -1209,8 +1209,8 @@ export default function Products() {
                   onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 1}
                   className={`p-3 rounded-lg transition-all duration-300 min-w-[44px] min-h-[44px] flex items-center justify-center ${currentPage === 1
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      : 'bg-white text-blue-600 hover:bg-blue-50 shadow-md hover:shadow-lg'
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-white text-blue-600 hover:bg-blue-50 shadow-md hover:shadow-lg'
                     }`}
                   aria-label={t('common.previous')}
                 >
@@ -1225,8 +1225,8 @@ export default function Products() {
                         key={page}
                         onClick={() => handlePageChange(page)}
                         className={`px-4 py-2 rounded-lg transition-all duration-300 font-medium min-w-[44px] min-h-[44px] flex items-center justify-center ${currentPage === page
-                            ? 'bg-gradient-to-r from-blue-600 to-red-600 text-white shadow-lg scale-110'
-                            : 'bg-white text-gray-700 hover:bg-gray-100 shadow-md'
+                          ? 'bg-gradient-to-r from-blue-600 to-red-600 text-white shadow-lg scale-110'
+                          : 'bg-white text-gray-700 hover:bg-gray-100 shadow-md'
                           }`}
                         aria-label={`${t('common.page') || 'Page'} ${page}`}
                         aria-current={currentPage === page ? 'page' : undefined}
@@ -1241,8 +1241,8 @@ export default function Products() {
                   onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage === totalPages}
                   className={`p-3 rounded-lg transition-all duration-300 min-w-[44px] min-h-[44px] flex items-center justify-center ${currentPage === totalPages
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      : 'bg-white text-blue-600 hover:bg-blue-50 shadow-md hover:shadow-lg'
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-white text-blue-600 hover:bg-blue-50 shadow-md hover:shadow-lg'
                     }`}
                   aria-label={t('common.next')}
                 >

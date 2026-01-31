@@ -14,7 +14,6 @@ export default function ContactPage() {
     '@id': `${siteUrl}/#organization`,
     name: 'Polyoil Tunis',
     image: `${siteUrl}/logo.png`,
-    '@id': `${siteUrl}`,
     url: siteUrl,
     telephone: '+21697864022',
     email: 'polyoilhr@gmail.com',
