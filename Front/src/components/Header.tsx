@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import logo from '../assets/po.png';
@@ -11,7 +10,6 @@ type HeaderProps = {
 
 export default function Header({ onRequestQuote }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const navigate = useNavigate();
   const { t, i18n } = useTranslation();
 
   const handleRequestQuote = () => {
@@ -31,17 +29,18 @@ export default function Header({ onRequestQuote }: HeaderProps) {
     }
   };
 
-  const goToAdmin = () => {
-    setIsMenuOpen(false);
-    navigate('/admin');
-  };
-
   return (
     <header className="bg-white shadow-md fixed w-full top-0 z-50">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <img src={logo} alt="Poly Oil Logo" className="h-12 w-auto" width="48" height="48" />
+            <img 
+              src={logo} 
+              alt="Poly Oil Logo" 
+              className="h-32 w-auto -my-12" 
+              width="120" 
+              height="120" 
+            />
           </div>
 
           <nav className={`hidden lg:flex items-center ${i18n.language === 'ar' ? 'space-x-reverse space-x-8' : 'space-x-8'}`} aria-label={t('header.navigation')}>
@@ -61,7 +60,6 @@ export default function Header({ onRequestQuote }: HeaderProps) {
             <button onClick={() => scrollToSection('contact')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium" aria-label={t('header.contact')}>
               {t('header.contact')}
             </button>
-          
           </nav>
 
           <div className={`hidden lg:flex items-center ${i18n.language === 'ar' ? 'space-x-reverse space-x-4' : 'space-x-4'}`}>
@@ -103,9 +101,7 @@ export default function Header({ onRequestQuote }: HeaderProps) {
             <button onClick={() => scrollToSection('contact')} className="text-gray-700 hover:text-blue-600 transition-colors font-medium text-left" aria-label={t('header.contact')}>
               {t('header.contact')}
             </button>
-            <button onClick={goToAdmin} className="text-gray-700 hover:text-blue-600 transition-colors font-medium text-left" aria-label={t('header.admin')}>
-              {t('header.admin')}
-            </button>
+          
             <div className="flex items-center space-x-3">
               <LanguageSelector />
               <button
