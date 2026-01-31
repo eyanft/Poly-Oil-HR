@@ -12,7 +12,7 @@ type Product = {
   specifications?: string[];
   features?: string[];
   price?: string;
-  [key: string]: any; // Allow additional properties
+  [key: string]: unknown; // Allow additional properties
 };
 
 interface ProductModalProps {
@@ -126,7 +126,7 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
           </div>
 
           <div className="mt-8 flex flex-col sm:flex-row gap-4">
-            <button 
+            <button
               className="flex-1 bg-gradient-to-r from-blue-600 to-red-600 text-white py-4 rounded-lg hover:shadow-lg transition-all duration-300 font-bold text-lg min-h-[44px]"
               aria-label={t('productModal.requestQuote')}
             >
