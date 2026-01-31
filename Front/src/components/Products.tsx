@@ -107,13 +107,13 @@ const staticProducts: Omit<UnifiedProduct, '_id'>[] = [
     volume: '20L',
     oilType: 'Minérale',
     viscosity: 'SAE 40',
-    
+
     apiStandard: 'API CB/SB',
     aceaStandard: '',
     manufacturerStandards: '',
     applications: 'Poids lourds; Travaux publics; Marine',
     packaging: 'Bidon 20L',
-    specifications: [ 'Norme API CB/SB', 'Pour moteurs diesel', 'Usage industriel'],
+    specifications: ['Norme API CB/SB', 'Pour moteurs diesel', 'Usage industriel'],
     features: ['Résistance aux charges élevées', 'Protection anti-corrosion', 'Durabilité exceptionnelle'],
     price: 'Sur devis',
     isStatic: true,
@@ -191,7 +191,7 @@ const staticProducts: Omit<UnifiedProduct, '_id'>[] = [
     oilType: 'Semi-Synthèse',
     viscosity: '10W40',
     apiStandard: 'API SL',
-    packaging: 'Bidon 4L',
+    packaging: 'Bidon 5L',
     specifications: ['API SL/CF', 'Essence et diesel', '10W-40'],
     features: ['Polyvalence maximale', 'Économique', 'Haute protection'],
     price: 'Sur devis',
@@ -298,7 +298,7 @@ const staticProducts: Omit<UnifiedProduct, '_id'>[] = [
     image: product15,
     volume: '20L',
     oilType: 'Hydraulique',
-    viscosity: 'VG46',
+    viscosity: 'VG 46',
     packaging: 'Bidon 20L',
     specifications: ['VG 46', 'Pour moteurs diesel', 'Usage industriel lourd'],
     features: ['Haute viscosité', 'Protection maximale', 'Pour applications sévères'],
@@ -358,7 +358,7 @@ const staticProducts: Omit<UnifiedProduct, '_id'>[] = [
     volume: '5L',
     packaging: 'Bidon 5L',
     specifications: ['Eau déminéralisée', 'Système de refroidissement'],
-    features: ['Pure', 'Antigel compatible', 'Protection du moteur','Usage direct sans ajout d\'eau'],
+    features: ['Pure', 'Antigel compatible', 'Protection du moteur', 'Usage direct sans ajout d\'eau'],
     price: 'Sur devis',
     isStatic: true,
   },
@@ -371,7 +371,7 @@ const staticProducts: Omit<UnifiedProduct, '_id'>[] = [
     volume: '5L',
     packaging: 'Bidon 5L',
     specifications: ['Eau déminéralisée', 'Système de refroidissement'],
-    features: ['Pure', 'Antigel compatible', 'Protection du moteur','Usage direct sans ajout d\'eau'],
+    features: ['Pure', 'Antigel compatible', 'Protection du moteur', 'Usage direct sans ajout d\'eau'],
     price: 'Sur devis',
     isStatic: true,
   },
@@ -384,7 +384,7 @@ const staticProducts: Omit<UnifiedProduct, '_id'>[] = [
     volume: '5L',
     packaging: 'Bidon 5L',
     specifications: ['Eau déminéralisée', 'Avec additifs', 'Système de refroidissement'],
-    features: ['Protection anti-corrosion', 'Antigel compatible', 'Longévité système','Usage direct sans ajout d\'eau'],
+    features: ['Protection anti-corrosion', 'Antigel compatible', 'Longévité système', 'Usage direct sans ajout d\'eau'],
     price: 'Sur devis',
     isStatic: true,
   },
@@ -484,6 +484,8 @@ const staticProducts: Omit<UnifiedProduct, '_id'>[] = [
     price: 'Sur devis',
     isStatic: true,
   },
+ 
+
 ];
 
 // Helper function to normalize products (convert API products to UnifiedProduct)
@@ -590,6 +592,7 @@ export default function Products() {
     if (type === 'category') {
       const categoryMap: { [key: string]: string } = {
         'Huiles Moteur': t('products.categories.engineOil'),
+        'Huile moteur': t('products.categories.engineOil'),
         'Divers': t('products.categories.other'),
         'Huiles de Boîte': t('products.categories.gearboxOil'),
       };
@@ -602,6 +605,8 @@ export default function Products() {
         'Minérale': t('products.oilTypes.mineral'),
         'Semi-Synthèse': t('products.oilTypes.semiSynthetic'),
         '100% Synthèse': t('products.oilTypes.synthetic'),
+        'Moteur 2 temps': t('products.oilTypes.twoStroke'),
+        'Multigrade': t('products.oilTypes.multigrade'),
       };
       return oilTypeMap[value] || value;
     }
@@ -612,6 +617,7 @@ export default function Products() {
         'Bidon 4L': t('products.packagingTypes.bidon4L'),
         'Bidon 20L': t('products.packagingTypes.bidon20L'),
         'Bidon 1L': t('products.packagingTypes.bidon1L'),
+        'Bouteille 1L': t('products.packagingTypes.bottle1L'),
       };
       return packagingMap[value] || value;
     }

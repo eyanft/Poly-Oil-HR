@@ -39,6 +39,8 @@ export default function Mission() {
           </div>
         </div>
 
+       
+
         <div className="bg-gradient-to-r from-blue-600 to-red-600 rounded-xl p-8 text-white shadow-xl">
           <div className="text-center mb-8">
             <h3 className="text-3xl font-bold mb-4">{t('mission.valuesTitle')}</h3>
@@ -70,6 +72,7 @@ export default function Mission() {
           </div>
         </div>
       </div>
+      
     </section>
   );
 }

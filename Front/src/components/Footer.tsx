@@ -71,15 +71,19 @@ export default function Footer() {
                 <Facebook className="h-5 w-5" aria-hidden="true" />
               </a>
               <a
-                href="#"
+                href="https://www.instagram.com/_poly_oil?igsh=MXhuaDlpZWNjdHljZw=="
+                 target="_blank"
+                rel="noopener noreferrer"
                 className="bg-white/10 hover:bg-pink-600 p-3 rounded-full transition-all duration-300 hover:scale-110 min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label="Instagram"
               >
                 <Instagram className="h-5 w-5" aria-hidden="true" />
               </a>
               <a
-                href="#"
-                className="bg-white/10 hover:bg-blue-500 p-3 rounded-full transition-all duration-300 hover:scale-110 min-w-[44px] min-h-[44px] flex items-center justify-center"
+                href="https://linkedin.com/company/poly-oil"
+                 target="_blank"
+                rel="noopener noreferrer"
+             className="bg-white/10 hover:bg-blue-500 p-3 rounded-full transition-all duration-300 hover:scale-110 min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label="LinkedIn"
               >
                 <Linkedin className="h-5 w-5" aria-hidden="true" />

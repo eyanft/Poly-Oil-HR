@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 import BlogPostModal from './BlogPostModal';
 
 import huileImg from "../assets/huile.png";
+import bannerB1 from "../assets/b1.png";
+
 interface BlogPost {
   id: number;
   title: string;
@@ -20,7 +22,7 @@ const blogPosts: BlogPost[] = [
     title: "Comment choisir la bonne huile moteur ?",
     summary: "Découvrez les critères essentiels pour sélectionner l'huile moteur adaptée à votre véhicule et optimiser ses performances.",
     date: "15 Mars 2025",
-    image: "https://images.pexels.com/photos/279949/pexels-photo-279949.jpeg?auto=compress&cs=tinysrgb&w=800",
+    image: bannerB1,
     content: "Choisir la bonne huile moteur est essentiel pour garantir la longévité et les performances optimales de votre véhicule. Avec tant d'options disponibles sur le marché, il peut être difficile de savoir quelle huile convient le mieux à votre moteur. Dans cet article, nous vous guidons à travers les critères essentiels à prendre en compte lors de la sélection de votre huile moteur.",
     sections: [
       {
@@ -80,7 +82,7 @@ const blogPosts: BlogPost[] = [
     title: "Les innovations dans les lubrifiants automobiles",
     summary: "Explorez les dernières avancées technologiques dans le domaine des lubrifiants et leurs impacts sur la performance des moteurs.",
     date: "5 Mars 2025",
-    image: "https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=800",
+    image: "https://images.pexels.com/photos/16234303/pexels-photo-16234303.jpeg?_gl=1*19laqby*_ga*MjA4NzAxODgwNi4xNzQ1NDgxMjEz*_ga_8JE65Q40S6*czE3Njk4ODI1MzUkbzQkZzEkdDE3Njk4ODI1OTkkajU5JGwwJGgw",
     content: "L'industrie des lubrifiants automobiles connaît une révolution technologique sans précédent. Les innovations récentes transforment non seulement les performances des moteurs, mais aussi leur impact environnemental. Découvrez comment les dernières avancées technologiques révolutionnent le domaine des lubrifiants automobiles.",
     sections: [
       {

@@ -15,7 +15,8 @@
     "submit": "Submit",
     "back": "Back",
     "next": "Next",
-    "previous": "Previous"
+    "previous": "Previous",
+    "page": "Page"
   },
   "header": {
     "home": "Home",
@@ -54,6 +55,8 @@
     "activeFilters": "ACTIVE FILTERS:",
     "categoryPrefix": "Categories:",
     "displayRange": "Displaying {{start}}-{{end}} of {{total}} item(s)",
+    "gridView": "Grid view",
+    "listView": "List view",
     "sortBy": "SORT BY:",
     "sortDefault": "Default",
     "sortNameAsc": "Name (A-Z)",
@@ -82,12 +85,15 @@
       "all": "All types",
       "mineral": "Mineral",
       "semiSynthetic": "Semi-Synthetic",
-      "synthetic": "100% Synthetic"
+      "synthetic": "100% Synthetic",
+      "twoStroke": "2-Stroke Engine",
+      "multigrade": "Multigrade"
     },
     "packagingTypes": {
       "bidon4L": "4L Container",
       "bidon20L": "20L Container",
-      "bidon1L": "1L Container"
+      "bidon1L": "1L Container",
+      "bottle1L": "1L Bottle"
     },
     "specifications": "Specifications",
     "features": "Features",
@@ -140,7 +146,9 @@
     "qualityTitle": "Superior Quality",
     "qualityText": "We rigorously select our raw materials and control each production step to guarantee excellence products.",
     "environmentTitle": "Environmental Respect",
-    "environmentText": "Our formulations are designed to minimize environmental impact while maximizing your engines' performance."
+    "environmentText": "Our formulations are designed to minimize environmental impact while maximizing your engines' performance.",
+    "bannerTitle": "Excellence for your engine",
+    "bannerText": "For over 10 years, Poly-Oil HR has been innovating to bring you superior lubricants. Performance, durability and Tunisian expertise to protect your vehicles."
   },
   "blog": {
     "title": "Our Blog",

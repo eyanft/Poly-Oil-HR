@@ -15,7 +15,8 @@
     "submit": "إرسال",
     "back": "رجوع",
     "next": "التالي",
-    "previous": "السابق"
+    "previous": "السابق",
+    "page": "صفحة"
   },
   "header": {
     "home": "الرئيسية",
@@ -38,6 +39,7 @@
     "title": "منتجاتنا",
     "subtitle": "اكتشف مجموعتنا الكاملة من الزيوت عالية الجودة",
     "searchPlaceholder": "البحث عن منتج...",
+    "filter": "تصفية",
     "filterByCategory": "تصفية حسب الفئة",
     "filterByType": "تصفية حسب النوع",
     "filterByViscosity": "تصفية حسب اللزوجة",
@@ -53,6 +55,8 @@
     "activeFilters": "المرشحات النشطة:",
     "categoryPrefix": "الفئات:",
     "displayRange": "عرض {{start}}-{{end}} من {{total}} عنصر(ات)",
+    "gridView": "عرض شبكي",
+    "listView": "عرض قائمة",
     "sortBy": "ترتيب حسب:",
     "sortDefault": "افتراضي",
     "sortNameAsc": "الاسم (أ-ي)",
@@ -81,12 +85,15 @@
       "all": "جميع الأنواع",
       "mineral": "معدنية",
       "semiSynthetic": "شبه اصطناعية",
-      "synthetic": "100% اصطناعية"
+      "synthetic": "100% اصطناعية",
+      "twoStroke": "محرك ثنائي الأشواط",
+      "multigrade": "متعدد الدرجات"
     },
     "packagingTypes": {
       "bidon4L": "عبوة 4 لتر",
       "bidon20L": "عبوة 20 لتر",
-      "bidon1L": "عبوة 1 لتر"
+      "bidon1L": "عبوة 1 لتر",
+      "bottle1L": "زجاجة 1 لتر"
     },
     "specifications": "المواصفات",
     "features": "المميزات",
@@ -139,7 +146,9 @@
     "qualityTitle": "جودة فائقة",
     "qualityText": "نختار موادنا الخام بعناية فائقة ونتحكم في كل خطوة إنتاجية لضمان منتجات ممتازة.",
     "environmentTitle": "احترام البيئة",
-    "environmentText": "صيغنا مصممة لتقليل التأثير البيئي مع تعظيم أداء محركاتك."
+    "environmentText": "صيغنا مصممة لتقليل التأثير البيئي مع تعظيم أداء محركاتك.",
+    "bannerTitle": "التميز في خدمة محركك",
+    "bannerText": "منذ أكثر من 10 سنوات، Poly-Oil HR تبتكر لتقدم لكم زيوتاً عالية الجودة. أداء، متانة وخبرة تونسية لحماية مركباتكم."
   },
   "blog": {
     "title": "مدونتنا",

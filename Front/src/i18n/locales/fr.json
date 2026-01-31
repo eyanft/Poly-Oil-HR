@@ -15,7 +15,8 @@
     "submit": "Envoyer",
     "back": "Retour",
     "next": "Suivant",
-    "previous": "Précédent"
+    "previous": "Précédent",
+    "page": "Page"
   },
   "header": {
     "home": "Accueil",
@@ -54,6 +55,8 @@
     "activeFilters": "FILTRES ACTIFS:",
     "categoryPrefix": "Catégories:",
     "displayRange": "Affichage {{start}}-{{end}} de {{total}} article(s)",
+    "gridView": "Vue grille",
+    "listView": "Vue liste",
     "sortBy": "TRIER PAR:",
     "sortDefault": "Par défaut",
     "sortNameAsc": "Nom (A-Z)",
@@ -82,12 +85,15 @@
       "all": "Tous les types",
       "mineral": "Minérale",
       "semiSynthetic": "Semi-Synthèse",
-      "synthetic": "100% Synthèse"
+      "synthetic": "100% Synthèse",
+      "twoStroke": "Moteur 2 temps",
+      "multigrade": "Multigrade"
     },
     "packagingTypes": {
       "bidon4L": "Bidon 4L",
       "bidon20L": "Bidon 20L",
-      "bidon1L": "Bidon 1L"
+      "bidon1L": "Bidon 1L",
+      "bottle1L": "Bouteille 1L"
     },
     "specifications": "Spécifications",
     "features": "Caractéristiques",
@@ -140,7 +146,9 @@
     "qualityTitle": "Qualité supérieure",
     "qualityText": "Nous sélectionnons rigoureusement nos matières premières et contrôlons chaque étape de production pour garantir des produits d'excellence.",
     "environmentTitle": "Respect de l'environnement",
-    "environmentText": "Nos formulations sont conçues pour minimiser l'impact environnemental tout en maximisant les performances de vos moteurs."
+    "environmentText": "Nos formulations sont conçues pour minimiser l'impact environnemental tout en maximisant les performances de vos moteurs.",
+    "bannerTitle": "L'excellence au service de votre moteur",
+    "bannerText": "Depuis plus de 10 ans, Poly-Oil HR innove pour vous offrir des lubrifiants de qualité supérieure. Performance, durabilité et expertise tunisienne pour protéger vos véhicules."
   },
   "blog": {
     "title": "Notre Blog",

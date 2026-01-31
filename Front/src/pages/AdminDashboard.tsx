@@ -60,7 +60,14 @@ const EMPTY_FORM: ProductFormData = {
 };
 
 // Dropdown options based on static products
-const CATEGORY_OPTIONS = ['Huiles Moteur', 'Huiles de Boîte', 'Divers'];
+// Catégories alignées avec Products.tsx (staticProducts)
+const CATEGORY_OPTIONS = [
+  'Huile moteur',
+  'Huiles de Boîte',
+  'Liquide de Refroidissement',
+  'Lave glace',
+  'Divers',
+];
 const VOLUME_OPTIONS = ['1L', '4L', '5L', '20L'];
 const OIL_TYPE_OPTIONS = ['Minérale', 'Semi-Synthèse', '100% Synthèse'];
 
