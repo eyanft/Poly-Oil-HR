@@ -1,0 +1,46 @@
+# Netlify Configuration
+# Pour la documentation: https://docs.netlify.com/
+
+[build]
+  command = "npm run generate:sitemap && npm run build"
+  functions = "netlify/functions"
+  publish = "dist"
+
+# Redirection de racine
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Headers de sécurité
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Security headers
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    
+    # Performance
+    Cache-Control = "public, max-age=3600"
+
+# Compression
+[build.processing]
+  skip_processing = false
+
+[build.processing.html]
+  pretty_urls = true
+
+# Fonction pour servir le sitemap
+[[redirects]]
+  from = "/sitemap.xml"
+  to = "/sitemap.xml"
+  status = 200
+  headers = { Content-Type = "application/xml" }
+
+[[redirects]]
+  from = "/robots.txt"
+  to = "/robots.txt"
+  status = 200
+  headers = { Content-Type = "text/plain" }

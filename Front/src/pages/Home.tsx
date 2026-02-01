@@ -10,7 +10,7 @@ import SEO from '../components/SEO';
 import QuoteFormModal from '../components/QuoteFormModal';
 
 export default function HomePage() {
-  const siteUrl = 'https://polyoil-tunis.com';
+  const siteUrl = 'https://polyoil.com';
   const pageUrl = siteUrl;
   const [quoteModalOpen, setQuoteModalOpen] = useState(false);
   const [productForQuote, setProductForQuote] = useState<{ name: string } | null>(null);

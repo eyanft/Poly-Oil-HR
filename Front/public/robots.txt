@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://polyoil-tunis.com/sitemap.xml
+Sitemap: https://polyoil.com/sitemap.xml
 
 # Disallow admin pages
 Disallow: /admin

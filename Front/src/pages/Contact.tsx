@@ -4,7 +4,7 @@ import Contact from '../components/Contact';
 import SEO from '../components/SEO';
 
 export default function ContactPage() {
-  const siteUrl = 'https://polyoil-tunis.com';
+  const siteUrl = 'https://polyoil.com';
   const pageUrl = `${siteUrl}/contact`;
 
   // Schema LocalBusiness JSON-LD pour SEO local

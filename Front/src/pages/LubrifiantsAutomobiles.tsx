@@ -3,7 +3,7 @@ import Footer from '../components/Footer';
 import SEO from '../components/SEO';
 
 export default function LubrifiantsAutomobilesPage() {
-  const siteUrl = 'https://polyoil-tunis.com';
+  const siteUrl = 'https://polyoil.com';
   const pageUrl = `${siteUrl}/lubrifiants-automobiles`;
 
   const schema = {
