@@ -34,7 +34,7 @@ import CompareModal from './CompareModal';
 import ProductModal from './ProductModal';
 
 // Product translations object
-const productTranslations: { [key: number]: { [lang: string]: { [key: string]: any } } } = {
+const productTranslations: { [key: number]: { [lang: string]: Record<string, string | string[]> } } = {
   1: { en: { name: 'PO-5000 20W-50', category: 'Engine Oil', description: 'Multigrade petrol engine oil offering excellent protection', specifications: ['API SF/CD Standard', 'Multigrade 20W-50', 'For petrol engines'], features: ['Wear protection', 'Excellent thermal stability', 'Fuel consumption reduction'] }, ar: { name: 'بو-5000 20W-50', category: 'زيت المحرك', description: 'زيت محرك متعدد الدرجات يوفر حماية ممتازة', specifications: ['معيار API SF/CD', 'متعدد الدرجات 20W-50', 'لمحركات البنزين'], features: ['حماية من التآكل', 'استقرار حراري ممتاز', 'تقليل استهلاك الوقود'] } },
   2: { en: { name: 'PO Gold 20W-50', category: 'Engine Oil', description: 'Super high quality engine oil offering superior protection', specifications: ['API SL/CF Standard', 'Superior quality', 'Maximum protection'], features: ['Optimal performance', 'Engine cleaning', 'Increased longevity'] }, ar: { name: 'بو جولد 20W-50', category: 'زيت المحرك', description: 'زيت محرك عالي الجودة جداً يوفر حماية عالية', specifications: ['معيار API SL/CF', 'جودة عالية', 'حماية قصوى'], features: ['أداء أمثل', 'تنظيف المحرك', 'طول العمر المتزايد'] } },
   3: { en: { name: 'Flexi Oil HD 40', category: 'Engine Oil', description: 'High-performance diesel engine oil for heavy engines', specifications: ['API CB/SB Standard', 'For diesel engines', 'Industrial use'], features: ['High load resistance', 'Anti-corrosion protection', 'Exceptional durability'] }, ar: { name: 'فلكسي أويل إتش دي 40', category: 'زيت المحرك', description: 'زيت محرك ديزل عالي الأداء للمحركات الثقيلة', specifications: ['معيار API CB/SB', 'لمحركات الديزل', 'الاستخدام الصناعي'], features: ['مقاومة الأحمال العالية', 'حماية مضادة للتآكل', 'متانة استثنائية'] } },
@@ -88,6 +88,18 @@ type UnifiedProduct = {
   createdAt?: string;
   updatedAt?: string;
   isStatic?: boolean; // Flag to identify static products
+  translations?: {
+    en?: {
+      description: string;
+      specifications: string[];
+      features: string[];
+    };
+    ar?: {
+      description: string;
+      specifications: string[];
+      features: string[];
+    };
+  };
 };
 
 // Static products
@@ -536,28 +548,30 @@ function getLocalizedProduct(product: UnifiedProduct, language: string): Unified
   }
 
   // Vérifier les traductions de la base de données d'abord
-  if (product.translations && product.translations[language]) {
-    const dbTranslation = product.translations[language];
-    const price = language === 'en' ? 'On quote' : language === 'ar' ? 'عرض السعر' : 'Sur devis';
-    
-    return {
-      ...product,
-      description: dbTranslation.description || product.description,
-      specifications: dbTranslation.specifications || product.specifications,
-      features: dbTranslation.features || product.features,
-      price: price,
-    };
+  if (product.translations) {
+    const dbTranslation = language === 'en' ? product.translations.en : language === 'ar' ? product.translations.ar : undefined;
+    if (dbTranslation) {
+      const price = language === 'en' ? 'On quote' : language === 'ar' ? 'عرض السعر' : 'Sur devis';
+      
+      return {
+        ...product,
+        description: dbTranslation.description || product.description,
+        specifications: dbTranslation.specifications || product.specifications,
+        features: dbTranslation.features || product.features,
+        price: price,
+      };
+    }
   }
 
   // Fallback sur les traductions statiques (pour les produits anciens)
-  const productId = product.id || parseInt(product._id.replace('static-', ''));
+  const productId = product.id || Number.parseInt(product._id.replace('static-', ''));
   const translations = productTranslations[productId];
   
   if (!translations) {
     return product;
   }
   
-  const langTranslation = translations[language];
+  const langTranslation = translations[language] as Record<string, string | string[]> | undefined;
   if (!langTranslation) {
     return product;
   }
@@ -567,10 +581,10 @@ function getLocalizedProduct(product: UnifiedProduct, language: string): Unified
   
   return {
     ...product,
-    category: langTranslation.category || product.category,
-    description: langTranslation.description || product.description,
-    specifications: langTranslation.specifications || product.specifications,
-    features: langTranslation.features || product.features,
+    category: String(langTranslation.category) || product.category,
+    description: String(langTranslation.description) || product.description,
+    specifications: Array.isArray(langTranslation.specifications) ? langTranslation.specifications : product.specifications,
+    features: Array.isArray(langTranslation.features) ? langTranslation.features : product.features,
     price: price,
   };
 }

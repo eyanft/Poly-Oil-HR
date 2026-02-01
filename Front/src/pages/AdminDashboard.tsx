@@ -412,7 +412,7 @@ export default function AdminDashboardPage() {
     setFormError(null);
 
     try {
-      const payload: any = {
+      const payload: productService.ProductPayload = {
         name: formData.name.trim(),
         category: formData.category.trim(),
         description: formData.description.trim(),
@@ -429,15 +429,14 @@ export default function AdminDashboardPage() {
         price: formData.price.trim() || undefined,
         specifications: parseMultiline(formData.specifications),
         features: parseMultiline(formData.features),
-        autoTranslate: true, // Activer la traduction automatique
       };
 
-      // Ajouter les traductions manuelles si elles existent
-      if (Object.keys(translations).length > 0) {
-        payload.translations = translations;
-      }
-
-      console.log('Submitting product:', { formMode, payload: { ...payload, image: payload.image.substring(0, 50) + '...' } });
+      const imagePreview = formData.image.trim().substring(0, 50);
+      console.log('Submitting product:', { 
+        formMode, 
+        hasTranslations: Object.keys(translations).length > 0,
+        payload: { ...payload, image: imagePreview + '...' } 
+      });
 
       if (formMode === 'create') {
         await productService.createProduct(payload, accessToken);
@@ -825,7 +824,7 @@ export default function AdminDashboardPage() {
                     )}
 
                     {/* Translation Tabs */}
-                    {isFormOpen && <TranslationTabs currentLanguage={currentLanguage} onLanguageChange={setCurrentLanguage} translations={translations} />}
+                    {isFormOpen && <TranslationTabs currentLanguage={currentLanguage} onLanguageChange={setCurrentLanguage} />}
 
                     {/* Dynamic Form Fields */}
                     <ProductFormFields

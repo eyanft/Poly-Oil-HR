@@ -16,7 +16,7 @@ type TranslationTabsProps = {
   };
 };
 
-export function TranslationTabs({ currentLanguage, onLanguageChange, translations }: TranslationTabsProps) {
+export function TranslationTabs({ currentLanguage, onLanguageChange }: Omit<TranslationTabsProps, 'translations'>) {
   const languages = [
     { code: 'fr', label: 'Français', },
     { code: 'en', label: 'English', flag: '🇬🇧' },
