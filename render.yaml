@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: poly-oil-api
+    runtime: node
+    region: frankfurt
+    plan: free
+    
+    # Configuration de build
+    rootDir: Back
+    buildCommand: npm install
+    startCommand: node server.js
+    
+    # Health check
+    healthCheckPath: /
+    
+    # Auto-deploy
+    autoDeploy: true
