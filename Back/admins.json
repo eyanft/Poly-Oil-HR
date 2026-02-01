@@ -1,0 +1,15 @@
+[{
+  "_id": {
+    "$oid": "690df48bd8151a60a6b1be02"
+  },
+  "email": "admin@polyoil.com",
+  "passwordHash": "$2a$10$w1TOyKmF7JONHaNx3Yvw9O.TS/Q1ivjnw0kSFArECd9t6U.CZazlC",
+  "role": "admin",
+  "createdAt": {
+    "$date": "2025-11-07T13:30:51.231Z"
+  },
+  "updatedAt": {
+    "$date": "2025-11-07T13:30:51.231Z"
+  },
+  "__v": 0
+}]
