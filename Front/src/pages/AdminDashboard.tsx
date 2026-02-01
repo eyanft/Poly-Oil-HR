@@ -1,25 +1,26 @@
+import { removeBackground } from '@imgly/background-removal';
+import {
+  AlertCircle,
+  Edit,
+  Image as ImageIcon,
+  LayoutDashboard,
+  LogOut,
+  Menu,
+  Package,
+  Plus,
+  Trash2,
+  TrendingUp,
+  Upload,
+  User,
+  Wand2,
+  X
+} from 'lucide-react';
 import { FormEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import logo from '../assets/po.png';
+import { ProductFormFields, TranslationTabs } from '../components/TranslationTabs';
 import { useAuth } from '../contexts/AuthContext';
 import * as productService from '../services/products';
-import { 
-  LayoutDashboard, 
-  Package, 
-  Plus, 
-  Edit, 
-  Trash2, 
-  LogOut, 
-  Menu, 
-  X, 
-  User,
-  TrendingUp,
-  AlertCircle,
-  Upload,
-  Image as ImageIcon,
-  Wand2
-} from 'lucide-react';
-import logo from '../assets/po.png';
-import { removeBackground } from '@imgly/background-removal';
 
 type ProductFormData = {
   name: string;
@@ -38,6 +39,20 @@ type ProductFormData = {
   specifications: string;
   features: string;
   price: string;
+  autoTranslate?: boolean;
+};
+
+type ProductTranslations = {
+  en?: {
+    description: string;
+    specifications: string[];
+    features: string[];
+  };
+  ar?: {
+    description: string;
+    specifications: string[];
+    features: string[];
+  };
 };
 
 const EMPTY_FORM: ProductFormData = {
@@ -62,8 +77,8 @@ const EMPTY_FORM: ProductFormData = {
 // Dropdown options based on static products
 // Catégories alignées avec Products.tsx (staticProducts)
 const CATEGORY_OPTIONS = [
-  'Huile moteur',
-  'Huiles de Boîte',
+  'Huile Moteur',
+  'Huile de Boîte',
   'Liquide de Refroidissement',
   'Lave glace',
   'Divers',
@@ -117,6 +132,8 @@ export default function AdminDashboardPage() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [removeBgEnabled, setRemoveBgEnabled] = useState(true);
   const [isRemovingBg, setIsRemovingBg] = useState(false);
+  const [currentLanguage, setCurrentLanguage] = useState<'fr' | 'en' | 'ar'>('fr');
+  const [translations, setTranslations] = useState<ProductTranslations>({});
 
   useEffect(() => {
     if (user?.role !== 'admin') {
@@ -175,6 +192,8 @@ export default function AdminDashboardPage() {
     setFormData(toFormData(product));
     setFormError(null);
     setImagePreview(product.image || null);
+    setCurrentLanguage('fr');
+    setTranslations(product.translations || {});
     setIsFormOpen(true);
   };
 
@@ -184,11 +203,36 @@ export default function AdminDashboardPage() {
     setActiveProductId(null);
     setIsSubmitting(false);
     setImagePreview(null);
+    setCurrentLanguage('fr');
+    setTranslations({});
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (field: string, value: string) => {
+    if (currentLanguage === 'fr') {
+      // Pour le français, modifier directement formData
+      setFormData((prev) => ({ ...prev, [field]: value }));
+    } else {
+      // Pour EN/AR, modifier les traductions
+      const lang = currentLanguage as 'en' | 'ar';
+      setTranslations((prev) => {
+        const langTranslation = prev[lang] || { description: '', specifications: [], features: [] };
+        
+        if (field === 'description') {
+          return { ...prev, [lang]: { ...langTranslation, description: value } };
+        } else if (field === 'specifications') {
+          return { ...prev, [lang]: { ...langTranslation, specifications: parseMultiline(value) } };
+        } else if (field === 'features') {
+          return { ...prev, [lang]: { ...langTranslation, features: parseMultiline(value) } };
+        }
+        
+        return prev;
+      });
+    }
+  };
+
+  const handleEventChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = event.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    handleInputChange(name, value);
   };
 
   const compressImage = (file: File, maxWidth: number = 800, quality: number = 0.8): Promise<string> => {
@@ -368,7 +412,7 @@ export default function AdminDashboardPage() {
     setFormError(null);
 
     try {
-      const payload: productService.ProductPayload = {
+      const payload: any = {
         name: formData.name.trim(),
         category: formData.category.trim(),
         description: formData.description.trim(),
@@ -385,7 +429,13 @@ export default function AdminDashboardPage() {
         price: formData.price.trim() || undefined,
         specifications: parseMultiline(formData.specifications),
         features: parseMultiline(formData.features),
+        autoTranslate: true, // Activer la traduction automatique
       };
+
+      // Ajouter les traductions manuelles si elles existent
+      if (Object.keys(translations).length > 0) {
+        payload.translations = translations;
+      }
 
       console.log('Submitting product:', { formMode, payload: { ...payload, image: payload.image.substring(0, 50) + '...' } });
 
@@ -734,102 +784,112 @@ export default function AdminDashboardPage() {
                     </div>
                   )}
 
-                  <form className="grid grid-cols-1 md:grid-cols-2 gap-6" onSubmit={submitForm} noValidate>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-gray-700" htmlFor="name">
-                        Nom du produit <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        required
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-gray-700" htmlFor="category">
-                        Catégorie <span className="text-red-500">*</span>
-                      </label>
-                      <select
-                        id="category"
-                        name="category"
-                        value={formData.category}
-                        onChange={handleInputChange}
-                        className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        required
-                      >
-                        <option value="">Sélectionner une catégorie</option>
-                        {CATEGORY_OPTIONS.map((category) => (
-                          <option key={category} value={category}>
-                            {category}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div className="md:col-span-2 space-y-2">
-                      <label className="text-sm font-medium text-gray-700" htmlFor="description">
-                        Description <span className="text-red-500">*</span>
-                      </label>
-                      <textarea
-                        id="description"
-                        name="description"
-                        value={formData.description}
-                        onChange={handleInputChange}
-                        className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm h-28 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        required
-                      />
-                    </div>
-                    <div className="md:col-span-2 space-y-2">
-                      <div className="flex items-center justify-between">
-                        <label className="text-sm font-medium text-gray-700" htmlFor="image">
-                          Image du produit <span className="text-red-500">*</span>
-                        </label>
-                        <label className="flex items-center gap-2 cursor-pointer">
+                  <form className="space-y-6" onSubmit={submitForm} noValidate>
+                    {/* French Form (Main Language) */}
+                    {currentLanguage === 'fr' && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium text-gray-700" htmlFor="name">
+                            Nom du produit <span className="text-red-500">*</span>
+                          </label>
                           <input
-                            type="checkbox"
-                            checked={removeBgEnabled}
-                            onChange={(e) => setRemoveBgEnabled(e.target.checked)}
-                            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                            id="name"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleEventChange}
+                            className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            required
                           />
-                          <div className="flex items-center gap-1.5">
-                            <Wand2 className="w-4 h-4 text-gray-600" />
-                            <span className="text-sm text-gray-700">Supprimer le fond</span>
-                          </div>
-                        </label>
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium text-gray-700" htmlFor="category">
+                            Catégorie <span className="text-red-500">*</span>
+                          </label>
+                          <select
+                            id="category"
+                            name="category"
+                            value={formData.category}
+                            onChange={handleEventChange}
+                            className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            required
+                          >
+                            <option value="">Sélectionner une catégorie</option>
+                            {CATEGORY_OPTIONS.map((category) => (
+                              <option key={category} value={category}>
+                                {category}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
                       </div>
-                      
-                      {isRemovingBg && (
-                        <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                          <div className="flex items-center gap-3">
-                            <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-                            <p className="text-blue-700 text-sm font-medium">Suppression du fond en cours...</p>
-                          </div>
-                        </div>
-                      )}
-                      
-                      {/* Image Preview */}
-                      {imagePreview && (
-                        <div className="mb-4">
-                          <div className="relative inline-block">
-                            <img
-                              src={imagePreview}
-                              alt="Aperçu"
-                              className="w-48 h-48 object-contain border border-gray-300 rounded-lg bg-gray-50"
+                    )}
+
+                    {/* Translation Tabs */}
+                    {isFormOpen && <TranslationTabs currentLanguage={currentLanguage} onLanguageChange={setCurrentLanguage} translations={translations} />}
+
+                    {/* Dynamic Form Fields */}
+                    <ProductFormFields
+                      language={currentLanguage}
+                      formData={formData}
+                      isTranslated={!!(translations[currentLanguage as 'en' | 'ar'] && currentLanguage !== 'fr')}
+                      onFieldChange={handleInputChange}
+                      onRegenerateTranslations={(lang) => {
+                        // TODO: Implement translation regeneration
+                        console.log('Regenerate translations for', lang);
+                      }}
+                    />
+
+                    {/* Image Upload - Only in French Tab */}
+                    {currentLanguage === 'fr' && (
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <label className="text-sm font-medium text-gray-700" htmlFor="image">
+                            Image du produit <span className="text-red-500">*</span>
+                          </label>
+                          <label className="flex items-center gap-2 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={removeBgEnabled}
+                              onChange={(e) => setRemoveBgEnabled(e.target.checked)}
+                              className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                             />
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setImagePreview(null);
-                                setFormData((prev) => ({ ...prev, image: '' }));
-                              }}
-                              className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
-                            >
-                              <X className="w-4 h-4" />
-                            </button>
-                          </div>
+                            <div className="flex items-center gap-1.5">
+                              <Wand2 className="w-4 h-4 text-gray-600" />
+                              <span className="text-sm text-gray-700">Supprimer le fond</span>
+                            </div>
+                          </label>
                         </div>
+                        
+                        {isRemovingBg && (
+                          <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                            <div className="flex items-center gap-3">
+                              <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                              <p className="text-blue-700 text-sm font-medium">Suppression du fond en cours...</p>
+                            </div>
+                          </div>
+                        )}
+                        
+                        {/* Image Preview */}
+                        {imagePreview && (
+                          <div className="mb-4">
+                            <div className="relative inline-block">
+                              <img
+                                src={imagePreview}
+                                alt="Aperçu"
+                                className="w-48 h-48 object-contain border border-gray-300 rounded-lg bg-gray-50"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setImagePreview(null);
+                                  setFormData((prev) => ({ ...prev, image: '' }));
+                                }}
+                                className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </div>
                       )}
 
                       {/* Upload Input */}
@@ -886,6 +946,10 @@ export default function AdminDashboardPage() {
                         />
                       </div>
                     </div>
+                    )}
+
+                    {/* Additional Fields Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-gray-700" htmlFor="volume">
                         Volume <span className="text-red-500">*</span>
@@ -894,7 +958,7 @@ export default function AdminDashboardPage() {
                         id="volume"
                         name="volume"
                         value={formData.volume}
-                        onChange={handleInputChange}
+                        onChange={handleEventChange}
                         className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         required
                       >
@@ -914,7 +978,7 @@ export default function AdminDashboardPage() {
                         id="oilType"
                         name="oilType"
                         value={formData.oilType}
-                        onChange={handleInputChange}
+                        onChange={handleEventChange}
                         className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       >
                         <option value="">Sélectionner un type d'huile</option>
@@ -933,7 +997,7 @@ export default function AdminDashboardPage() {
                         id="viscosity"
                         name="viscosity"
                         value={formData.viscosity}
-                        onChange={handleInputChange}
+                        onChange={handleEventChange}
                         className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
@@ -945,7 +1009,7 @@ export default function AdminDashboardPage() {
                         id="apiStandard"
                         name="apiStandard"
                         value={formData.apiStandard}
-                        onChange={handleInputChange}
+                        onChange={handleEventChange}
                         className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
@@ -957,7 +1021,7 @@ export default function AdminDashboardPage() {
                         id="aceaStandard"
                         name="aceaStandard"
                         value={formData.aceaStandard}
-                        onChange={handleInputChange}
+                        onChange={handleEventChange}
                         className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
@@ -969,7 +1033,7 @@ export default function AdminDashboardPage() {
                         id="manufacturerStandards"
                         name="manufacturerStandards"
                         value={formData.manufacturerStandards}
-                        onChange={handleInputChange}
+                        onChange={handleEventChange}
                         className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
@@ -981,7 +1045,7 @@ export default function AdminDashboardPage() {
                         id="applications"
                         name="applications"
                         value={formData.applications}
-                        onChange={handleInputChange}
+                        onChange={handleEventChange}
                         className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
@@ -993,7 +1057,7 @@ export default function AdminDashboardPage() {
                         id="technology"
                         name="technology"
                         value={formData.technology}
-                        onChange={handleInputChange}
+                        onChange={handleEventChange}
                         className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
@@ -1005,7 +1069,7 @@ export default function AdminDashboardPage() {
                         id="packaging"
                         name="packaging"
                         value={formData.packaging}
-                        onChange={handleInputChange}
+                        onChange={handleEventChange}
                         className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
@@ -1017,7 +1081,7 @@ export default function AdminDashboardPage() {
                         id="specifications"
                         name="specifications"
                         value={formData.specifications}
-                        onChange={handleInputChange}
+                        onChange={handleEventChange}
                         className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm h-24 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
@@ -1029,7 +1093,7 @@ export default function AdminDashboardPage() {
                         id="features"
                         name="features"
                         value={formData.features}
-                        onChange={handleInputChange}
+                        onChange={handleEventChange}
                         className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm h-24 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
@@ -1041,9 +1105,10 @@ export default function AdminDashboardPage() {
                         id="price"
                         name="price"
                         value={formData.price}
-                        onChange={handleInputChange}
+                        onChange={handleEventChange}
                         className="w-full bg-gray-50 border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
+                    </div>
                     </div>
                     <div className="md:col-span-2 flex items-center justify-end gap-3 pt-4 border-t border-gray-200">
                       <button

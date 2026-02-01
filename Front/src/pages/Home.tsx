@@ -56,7 +56,7 @@ export default function HomePage() {
         canonicalUrl={pageUrl}
         schema={organizationSchema}
       />
-      <Header onRequestQuote={openQuoteForm} />
+      <Header onRequestQuote={() => openQuoteForm(null)} />
       <main>
         <Hero />
         <Products onRequestQuote={openQuoteForm} />

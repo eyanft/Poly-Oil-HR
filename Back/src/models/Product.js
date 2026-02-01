@@ -80,6 +80,38 @@ const productSchema = new mongoose.Schema(
       default: '',
       trim: true,
     },
+    translations: {
+      en: {
+        description: {
+          type: String,
+          default: '',
+          trim: true,
+        },
+        specifications: {
+          type: [String],
+          default: [],
+        },
+        features: {
+          type: [String],
+          default: [],
+        },
+      },
+      ar: {
+        description: {
+          type: String,
+          default: '',
+          trim: true,
+        },
+        specifications: {
+          type: [String],
+          default: [],
+        },
+        features: {
+          type: [String],
+          default: [],
+        },
+      },
+    },
   },
   {
     timestamps: true,
@@ -89,4 +121,3 @@ const productSchema = new mongoose.Schema(
 const Product = mongoose.model('Product', productSchema);
 
 export default Product;
-

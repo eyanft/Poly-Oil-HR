@@ -1,26 +1,23 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Search, ChevronLeft, ChevronRight, ChevronDown, ChevronUp, X, Grid3x3, List, Check } from 'lucide-react';
+import { Check, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Grid3x3, List, Search, X } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import ProductModal from './ProductModal';
-import CompareModal from './CompareModal';
-import { fetchProducts, type Product as ApiProduct } from '../services/products';
-import product1 from '../assets/20w504lb.png';
-import product2 from '../assets/20w504lgold.png';
-import product3 from '../assets/40fl20l.png';
-import product4 from '../assets/90fl20l.png';
 import product5 from '../assets/1040.png';
-import product6 from '../assets/2050p2.png';
-import product7 from '../assets/7580.png';
 import product8 from '../assets/10405l.png';
-import product9 from '../assets/atf.png';
 import product10 from '../assets/15405l.png';
 import product11 from '../assets/15w4020l.png';
 import product12 from '../assets/2050p1.png';
+import product6 from '../assets/2050p2.png';
+import product1 from '../assets/20w504lb.png';
+import product2 from '../assets/20w504lgold.png';
 import product13 from '../assets/2t20l.png';
 import product14 from '../assets/405l.png';
+import product3 from '../assets/40fl20l.png';
 import product15 from '../assets/4620l.png';
+import product7 from '../assets/7580.png';
 import product16 from '../assets/8090.png';
 import product17 from '../assets/9020l.png';
+import product4 from '../assets/90fl20l.png';
+import product9 from '../assets/atf.png';
 import product18 from '../assets/atf20l.png';
 import product19 from '../assets/eaunomalr.png';
 import product20 from '../assets/eaunormal.png';
@@ -32,6 +29,41 @@ import product25 from '../assets/g13.png';
 import product26 from '../assets/hd4020l..png';
 import product27 from '../assets/laveglace.png';
 import product28 from '../assets/vg46.png';
+import { fetchProducts, type Product as ApiProduct } from '../services/products';
+import CompareModal from './CompareModal';
+import ProductModal from './ProductModal';
+
+// Product translations object
+const productTranslations: { [key: number]: { [lang: string]: { [key: string]: any } } } = {
+  1: { en: { name: 'PO-5000 20W-50', category: 'Engine Oil', description: 'Multigrade petrol engine oil offering excellent protection', specifications: ['API SF/CD Standard', 'Multigrade 20W-50', 'For petrol engines'], features: ['Wear protection', 'Excellent thermal stability', 'Fuel consumption reduction'] }, ar: { name: 'بو-5000 20W-50', category: 'زيت المحرك', description: 'زيت محرك متعدد الدرجات يوفر حماية ممتازة', specifications: ['معيار API SF/CD', 'متعدد الدرجات 20W-50', 'لمحركات البنزين'], features: ['حماية من التآكل', 'استقرار حراري ممتاز', 'تقليل استهلاك الوقود'] } },
+  2: { en: { name: 'PO Gold 20W-50', category: 'Engine Oil', description: 'Super high quality engine oil offering superior protection', specifications: ['API SL/CF Standard', 'Superior quality', 'Maximum protection'], features: ['Optimal performance', 'Engine cleaning', 'Increased longevity'] }, ar: { name: 'بو جولد 20W-50', category: 'زيت المحرك', description: 'زيت محرك عالي الجودة جداً يوفر حماية عالية', specifications: ['معيار API SL/CF', 'جودة عالية', 'حماية قصوى'], features: ['أداء أمثل', 'تنظيف المحرك', 'طول العمر المتزايد'] } },
+  3: { en: { name: 'Flexi Oil HD 40', category: 'Engine Oil', description: 'High-performance diesel engine oil for heavy engines', specifications: ['API CB/SB Standard', 'For diesel engines', 'Industrial use'], features: ['High load resistance', 'Anti-corrosion protection', 'Exceptional durability'] }, ar: { name: 'فلكسي أويل إتش دي 40', category: 'زيت المحرك', description: 'زيت محرك ديزل عالي الأداء للمحركات الثقيلة', specifications: ['معيار API CB/SB', 'لمحركات الديزل', 'الاستخدام الصناعي'], features: ['مقاومة الأحمال العالية', 'حماية مضادة للتآكل', 'متانة استثنائية'] } },
+  4: { en: { name: 'Flexi Oil SAE 90', category: 'Engine Oil', description: 'API GL1 transmission oil for gearboxes', specifications: ['SAE 90', 'API GL1', 'For transmissions'], features: ['Smooth gear shifting', 'Gear protection', 'Noise reduction'] }, ar: { name: 'فلكسي أويل SAE 90', category: 'زيت المحرك', description: 'زيت ناقل حركة API GL1 لعلب التروس', specifications: ['SAE 90', 'API GL1', 'للناقلات'], features: ['تغيير سلس للسرعات', 'حماية التروس', 'تقليل الضوضاء'] } },
+  5: { en: { name: 'PO-5000 10W-40', category: 'Engine Oil', description: 'Semi-synthetic high-performance motor oil', specifications: ['API SL/CF', '10W-40', 'Semi-synthetic'], features: ['Easy cold start', 'All-season protection', 'Fuel economy'] }, ar: { name: 'بو-5000 10W-40', category: 'زيت المحرك', description: 'زيت محرك شبه اصطناعي عالي الأداء', specifications: ['API SL/CF', '10W-40', 'شبه اصطناعي'], features: ['تشغيل سهل في الطقس البارد', 'حماية في جميع الفصول', 'توفير الوقود'] } },
+  6: { en: { name: 'PO Gold P2 20W-50', category: 'Engine Oil', description: 'Premium motor oil for exceptional performance', specifications: ['Premium quality', 'API SL/CF', 'Advanced additives'], features: ['Superior performance', 'Maximum cleanliness', 'Long-lasting protection'] }, ar: { name: 'بو جولد P2 20W-50', category: 'زيت المحرك', description: 'زيت محرك فاخر لأداء استثنائية', specifications: ['جودة فاخرة', 'API SL/CF', 'إضافات متقدمة'], features: ['أداء عالية', 'نظافة قصوى', 'حماية طويلة الأجل'] } },
+  7: { en: { name: 'Geartec G2 75W-80', category: 'Engine Oil', description: 'Oil for manual transmission and AT housing', specifications: ['API GL4', '75W-80', 'Multi-purpose'], features: ['Precise gear changes', 'Oxidation resistance', 'Anti-wear protection'] }, ar: { name: 'جيرتيك G2 75W-80', category: 'زيت المحرك', description: 'زيت لناقل الحركة اليدوي وعلبة AT', specifications: ['API GL4', '75W-80', 'متعدد الاستخدامات'], features: ['تغيير سرعات دقيق', 'مقاومة الأكسدة', 'حماية مضادة للتآكل'] } },
+  8: { en: { name: 'PO-9000 10W-40', category: 'Engine Oil', description: 'Petrol and diesel semi-synthetic motor oil', specifications: ['API SL/CF', 'Petrol and diesel', '10W-40'], features: ['Maximum versatility', 'Economical', 'High protection'] }, ar: { name: 'بو-9000 10W-40', category: 'زيت المحرك', description: 'زيت محرك شبه اصطناعي للبنزين والديزل', specifications: ['API SL/CF', 'بنزين وديزل', '10W-40'], features: ['تعدد استخدامات أقصى', 'اقتصادي', 'حماية عالية'] } },
+  9: { en: { name: 'ATF A2 Dexron II', category: 'Engine Oil', description: 'Automatic transmission fluid', specifications: ['Dexron II', 'Automatic transmission', 'ATF fluid'], features: ['Smooth shifting', 'Hydraulic protection', 'Transmission longevity'] }, ar: { name: 'ATF A2 Dexron II', category: 'زيت المحرك', description: 'سائل ناقل الحركة الآلي', specifications: ['Dexron II', 'ناقل حركة آلي', 'سائل ATF'], features: ['تغيير سلس', 'حماية هيدروليكية', 'طول عمر الناقل'] } },
+  10: { en: { name: 'PO-5000 15W-40', category: 'Engine Oil', description: 'Petrol and diesel multigrade semi-synthetic motor oil', specifications: ['API SL/CF', '15W-40', 'Semi-synthetic'], features: ['Optimal engine protection', 'Thermal resistance', 'Fuel economy'] }, ar: { name: 'بو-5000 15W-40', category: 'زيت المحرك', description: 'زيت محرك متعدد الدرجات شبه اصطناعي للبنزين والديزل', specifications: ['API SL/CF', '15W-40', 'شبه اصطناعي'], features: ['حماية محرك أمثل', 'مقاومة حرارية', 'توفير الوقود'] } },
+  11: { en: { name: 'PO-5000 15W-40', category: 'Engine Oil', description: 'Multigrade semi-synthetic motor oil industrial format', specifications: ['API SL/CF', '15W-40', 'Semi-synthetic', 'Industrial format'], features: ['Optimal engine protection', 'Thermal resistance', 'Fuel economy', 'Large format'] }, ar: { name: 'بو-5000 15W-40', category: 'زيت المحرك', description: 'زيت محرك متعدد الدرجات شبه اصطناعي بصيغة صناعية', specifications: ['API SL/CF', '15W-40', 'شبه اصطناعي', 'تنسيق صناعي'], features: ['حماية محرك أمثل', 'مقاومة حرارية', 'توفير الوقود', 'تنسيق كبير'] } },
+  12: { en: { name: 'PO-5000 P1 20W-50', category: 'Engine Oil', description: 'Petrol multigrade motor oil', specifications: ['API SF/CD', 'Premium quality', '20W-50'], features: ['Superior performance', 'Maximum protection', 'Exceptional longevity'] }, ar: { name: 'بو-5000 P1 20W-50', category: 'زيت المحرك', description: 'زيت محرك متعدد الدرجات للبنزين', specifications: ['API SF/CD', 'جودة فاخرة', '20W-50'], features: ['أداء عالية', 'حماية قصوى', 'طول العمر الاستثنائي'] } },
+  13: { en: { name: 'Oil 2-Stroke', category: 'Engine Oil', description: 'Technosynthesis 2-stroke engine oil for scooters and motorcycles', specifications: ['API TB', '2-Stroke', 'For scooters and motorcycles'], features: ['2-stroke engine protection', 'Clean burning', 'Economical format'] }, ar: { name: 'زيت ثنائي الأشواط', category: 'زيت المحرك', description: 'زيت محرك تكنو تخليقي ثنائي الأشواط للدراجات والدراجات النارية', specifications: ['API TB', 'ثنائي الأشواط', 'للدراجات والدراجات النارية'], features: ['حماية محرك ثنائي الأشواط', 'احتراق نظيف', 'تنسيق اقتصادي'] } },
+  14: { en: { name: 'HD 40', category: 'Engine Oil', description: 'High-performance diesel engine oil standard format', specifications: ['HD 40', 'API CB/SB Standard', 'For diesel engines', 'Industrial use'], features: ['High load resistance', 'Anti-corrosion protection', 'Exceptional durability'] }, ar: { name: 'إتش دي 40', category: 'زيت المحرك', description: 'زيت محرك ديزل عالي الأداء بصيغة قياسية', specifications: ['HD 40', 'معيار API CB/SB', 'لمحركات الديزل', 'الاستخدام الصناعي'], features: ['مقاومة الأحمال العالية', 'حماية مضادة للتآكل', 'متانة استثنائية'] } },
+  15: { en: { name: 'HD 10 VG 46', category: 'Engine Oil', description: 'High viscosity hydraulic oil for heavy applications', specifications: ['VG 46', 'For diesel engines', 'Heavy industrial use'], features: ['High viscosity', 'Maximum protection', 'For severe applications'] }, ar: { name: 'إتش دي 10 VG 46', category: 'زيت المحرك', description: 'زيت هيدروليكي عالي اللزوجة للتطبيقات الثقيلة', specifications: ['VG 46', 'لمحركات الديزل', 'استخدام صناعي ثقيل'], features: ['لزوجة عالية', 'حماية قصوى', 'للتطبيقات الشديدة'] } },
+  16: { en: { name: 'Geartec G1 80W-90', category: 'Engine Oil', description: 'Transmission oil for gearboxes and differentials', specifications: ['API GL4', '80W-90', 'For transmissions'], features: ['Gear protection', 'Wear resistance', 'Optimal performance'] }, ar: { name: 'جيرتيك G1 80W-90', category: 'زيت المحرك', description: 'زيت ناقل حركة لعلب التروس والفروقات', specifications: ['API GL4', '80W-90', 'للناقلات'], features: ['حماية التروس', 'مقاومة التآكل', 'أداء أمثل'] } },
+  17: { en: { name: 'SAE 90', category: 'Engine Oil', description: 'API GL1 transmission oil for gearboxes industrial format', specifications: ['SAE 90', 'API GL1', 'For transmissions', 'Industrial format'], features: ['Smooth gear shifting', 'Gear protection', 'Noise reduction'] }, ar: { name: 'SAE 90', category: 'زيت المحرك', description: 'زيت ناقل حركة API GL1 لعلب التروس بصيغة صناعية', specifications: ['SAE 90', 'API GL1', 'للناقلات', 'تنسيق صناعي'], features: ['تغيير سلس للسرعات', 'حماية التروس', 'تقليل الضوضاء'] } },
+  18: { en: { name: 'ATF', category: 'Engine Oil', description: 'Automatic transmission fluid industrial format', specifications: ['Dexron II', 'Automatic transmission', 'ATF fluid', 'Industrial format'], features: ['Smooth shifting', 'Hydraulic protection', 'Transmission longevity'] }, ar: { name: 'ATF', category: 'زيت المحرك', description: 'سائل ناقل الحركة الآلي بصيغة صناعية', specifications: ['Dexron II', 'ناقل حركة آلي', 'سائل ATF', 'تنسيق صناعي'], features: ['تغيير سلس', 'حماية هيدروليكية', 'طول عمر الناقل'] } },
+  19: { en: { name: 'Coolant', category: 'Coolant', description: 'Demineralized water for cooling system', specifications: ['Demineralized water', 'Cooling system'], features: ['Pure', 'Antifreeze compatible', 'Engine protection', 'Direct use without water addition'] }, ar: { name: 'سائل التبريد', category: 'سائل التبريد', description: 'ماء مقطر لنظام التبريد', specifications: ['ماء مقطر', 'نظام التبريد'], features: ['نقي', 'متوافق مع مانع التجمد', 'حماية المحرك', 'الاستخدام المباشر بدون إضافة ماء'] } },
+  20: { en: { name: 'Coolant', category: 'Coolant', description: 'Demineralized water for cooling system', specifications: ['Demineralized water', 'Cooling system'], features: ['Pure', 'Antifreeze compatible', 'Engine protection', 'Direct use without water addition'] }, ar: { name: 'سائل التبريد', category: 'سائل التبريد', description: 'ماء مقطر لنظام التبريد', specifications: ['ماء مقطر', 'نظام التبريد'], features: ['نقي', 'متوافق مع مانع التجمد', 'حماية المحرك', 'الاستخدام المباشر بدون إضافة ماء'] } },
+  21: { en: { name: 'Coolant', category: 'Coolant', description: 'Demineralized water with additives for cooling system', specifications: ['Demineralized water', 'With additives', 'Cooling system'], features: ['Anti-corrosion protection', 'Antifreeze compatible', 'System longevity', 'Direct use without water addition'] }, ar: { name: 'سائل التبريد', category: 'سائل التبريد', description: 'ماء مقطر مع إضافات لنظام التبريد', specifications: ['ماء مقطر', 'مع إضافات', 'نظام التبريد'], features: ['حماية مضادة للتآكل', 'متوافق مع مانع التجمد', 'طول عمر النظام', 'الاستخدام المباشر بدون إضافة ماء'] } },
+  22: { en: { name: 'Frezol', category: 'Coolant', description: 'Concentrated coolant fluid industrial format', specifications: ['Coolant fluid', 'Concentrated', 'Industrial format', '4 seasons'], features: ['Freeze protection', 'Anti-corrosion protection', 'Economical'] }, ar: { name: 'فريزول', category: 'سائل التبريد', description: 'سائل تبريد مركز بصيغة صناعية', specifications: ['سائل التبريد', 'مركز', 'تنسيق صناعي', '4 فصول'], features: ['حماية من التجمد', 'حماية مضادة للتآكل', 'اقتصادي'] } },
+  23: { en: { name: 'Frezol', category: 'Coolant', description: 'Concentrated coolant fluid pink color', specifications: ['Coolant fluid', 'Concentrated', 'Pink color'], features: ['Freeze protection', 'Anti-corrosion protection', 'High performance'] }, ar: { name: 'فريزول', category: 'سائل التبريد', description: 'سائل تبريد مركز باللون الوردي', specifications: ['سائل التبريد', 'مركز', 'اللون الوردي'], features: ['حماية من التجمد', 'حماية مضادة للتآكل', 'أداء عالية'] } },
+  24: { en: { name: 'G12', category: 'Coolant', description: 'Coolant fluid compliant with G12 standard', specifications: ['G12 Standard', 'Coolant fluid', 'Antifreeze'], features: ['Freeze protection', 'Manufacturer standard', 'Long lasting', 'Limestone protection'] }, ar: { name: 'G12', category: 'سائل التبريد', description: 'سائل تبريد متوافق مع معيار G12', specifications: ['معيار G12', 'سائل التبريد', 'مانع التجمد'], features: ['حماية من التجمد', 'معيار الشركة المصنعة', 'طويل الأجل', 'حماية الكلس'] } },
+  25: { en: { name: 'G13', category: 'Coolant', description: 'Coolant fluid compliant with G13 standard', specifications: ['G13 Standard', 'Coolant fluid', 'Antifreeze'], features: ['Freeze protection', 'Manufacturer standard', 'Eco-friendly'] }, ar: { name: 'G13', category: 'سائل التبريد', description: 'سائل تبريد متوافق مع معيار G13', specifications: ['معيار G13', 'سائل التبريد', 'مانع التجمد'], features: ['حماية من التجمد', 'معيار الشركة المصنعة', 'صديق للبيئة'] } },
+  26: { en: { name: 'HD 40', category: 'Engine Oil', description: 'High-performance diesel engine oil industrial format', specifications: ['SAE 40', 'For diesel engines', 'Industrial use'], features: ['High load resistance', 'Anti-corrosion protection', 'Exceptional durability'] }, ar: { name: 'إتش دي 40', category: 'زيت المحرك', description: 'زيت محرك ديزل عالي الأداء بصيغة صناعية', specifications: ['SAE 40', 'لمحركات الديزل', 'الاستخدام الصناعي'], features: ['مقاومة الأحمال العالية', 'حماية مضادة للتآكل', 'متانة استثنائية'] } },
+  27: { en: { name: 'Washer Fluid', category: 'Washer Fluid', description: 'Concentrated windshield washer fluid', specifications: ['Washer fluid', 'Concentrated', 'Quick action'], features: ['Effective cleaning', 'Protection against organic contaminants', 'Optimal visibility', 'Effective against stains and external aggression'] }, ar: { name: 'ماء غسيل الزجاج', category: 'ماء غسيل الزجاج', description: 'سائل غسيل زجاج مركز', specifications: ['سائل الغسيل', 'مركز', 'عمل سريع'], features: ['تنظيف فعال', 'حماية ضد الملوثات العضوية', 'رؤية مثالية', 'فعال ضد البقع والعدوان الخارجي'] } },
+  28: { en: { name: 'Flexi Oil VG 46', category: 'Engine Oil', description: 'Viscosity 46 hydraulic oil for hydraulic systems', specifications: ['VG 46', 'Hydraulic oil', 'Industrial use'], features: ['Hydraulic systems protection', 'High stability', 'Longevity'] }, ar: { name: 'فلكسي أويل VG 46', category: 'زيت المحرك', description: 'زيت هيدروليكي VG 46 لأنظمة هيدروليكية', specifications: ['VG 46', 'زيت هيدروليكي', 'الاستخدام الصناعي'], features: ['حماية الأنظمة الهيدروليكية', 'استقرار عالي', 'طول العمر'] } },
+};
 
 // Unified Product type that can handle both static and API products
 type UnifiedProduct = {
@@ -101,7 +133,7 @@ const staticProducts: Omit<UnifiedProduct, '_id'>[] = [
   {
     id: 3,
     name: 'Flexi Oil HD 40',
-    category: 'Huile moteur',
+    category: 'Huile Moteur',
     description: 'Huile moteur diesel haute performance pour moteurs lourds',
     image: product3,
     volume: '20L',
@@ -121,7 +153,7 @@ const staticProducts: Omit<UnifiedProduct, '_id'>[] = [
   {
     id: 4,
     name: 'Flexi Oil SAE 90',
-    category: 'Huile moteur',
+    category: 'Huile Moteur',
     description: 'Huile de transmission API GL1 pour boîtes de vitesses',
     image: product4,
     volume: '20L',
@@ -136,7 +168,7 @@ const staticProducts: Omit<UnifiedProduct, '_id'>[] = [
     id: 5,
     name: 'PO-5000 10W-40',
     category: 'Huile Moteur',
-    description: 'Huile moteur semi-synthétique haute performance',
+    description: 'Huile Moteur semi-synthétique haute performance',
     image: product5,
     volume: '1L',
     oilType: 'Semi-Synthèse',
@@ -168,7 +200,7 @@ const staticProducts: Omit<UnifiedProduct, '_id'>[] = [
   {
     id: 7,
     name: 'Geartec G2 75W-80',
-    category: 'Huile moteur',
+    category: 'Huile Moteur',
     description: 'Huile pour transmission manuelle et boîtier AT',
     image: product7,
     volume: '1L',
@@ -200,7 +232,7 @@ const staticProducts: Omit<UnifiedProduct, '_id'>[] = [
   {
     id: 9,
     name: 'ATF A2 Dexron II',
-    category: 'Huile moteur',
+    category: 'Huile Moteur',
     description: 'Huile pour transmission automatique',
     image: product9,
     volume: '1L',
@@ -277,7 +309,7 @@ const staticProducts: Omit<UnifiedProduct, '_id'>[] = [
   {
     id: 14,
     name: 'HD 40',
-    category: 'Huile moteur',
+    category: 'Huile Moteur',
     description: 'Huile moteur diesel haute performance format standard',
     image: product14,
     volume: '5L',
@@ -293,7 +325,7 @@ const staticProducts: Omit<UnifiedProduct, '_id'>[] = [
   {
     id: 15,
     name: 'HD 10 VG 46',
-    category: 'Huile moteur',
+    category: 'Huile Moteur',
     description: 'Huile hydraulique haute viscosité pour applications lourdes',
     image: product15,
     volume: '20L',
@@ -308,7 +340,7 @@ const staticProducts: Omit<UnifiedProduct, '_id'>[] = [
   {
     id: 16,
     name: 'Geartec G1 80W-90',
-    category: 'Huile moteur',
+    category: 'Huile Moteur',
     description: 'Huile de transmission pour boîtes de vitesses et différentiels',
     image: product16,
     volume: '1L',
@@ -324,7 +356,7 @@ const staticProducts: Omit<UnifiedProduct, '_id'>[] = [
   {
     id: 17,
     name: 'SAE 90',
-    category: 'Huile moteur',
+    category: 'Huile Moteur',
     description: 'Huile de transmission API GL1 pour boîtes de vitesses format industriel',
     image: product17,
     volume: '20L',
@@ -339,7 +371,7 @@ const staticProducts: Omit<UnifiedProduct, '_id'>[] = [
   {
     id: 18,
     name: 'ATF',
-    category: 'Huile moteur',
+    category: 'Huile Moteur',
     description: 'Huile pour transmission automatique format industriel',
     image: product18,
     volume: '20L',
@@ -443,7 +475,7 @@ const staticProducts: Omit<UnifiedProduct, '_id'>[] = [
   {
     id: 26,
     name: 'HD 40',
-    category: 'Huile moteur',
+    category: 'Huile Moteur',
     description: 'Huile moteur diesel haute performance format industriel',
     image: product26,
     volume: '20L',
@@ -472,7 +504,7 @@ const staticProducts: Omit<UnifiedProduct, '_id'>[] = [
   {
     id: 28,
     name: 'Flexi Oil VG 46',
-    category: 'Huile moteur',
+    category: 'Huile Moteur',
     description: 'Huile hydraulique viscosité 46 pour systèmes hydrauliques',
     image: product28,
     volume: '20L',
@@ -488,19 +520,69 @@ const staticProducts: Omit<UnifiedProduct, '_id'>[] = [
 
 ];
 
-// Helper function to normalize products (convert API products to UnifiedProduct)
-function normalizeApiProduct(apiProduct: ApiProduct): UnifiedProduct {
-  return {
-    ...apiProduct,
-    isStatic: false,
-  };
-}
-
-// Helper function to normalize static products (add _id)
+// Helper function to normalize static products
 function normalizeStaticProduct(staticProduct: Omit<UnifiedProduct, '_id'>, index: number): UnifiedProduct {
   return {
     ...staticProduct,
     _id: `static-${staticProduct.id || index}`,
+  };
+}
+
+// Helper function to translate product content based on language
+function getLocalizedProduct(product: UnifiedProduct, language: string): UnifiedProduct {
+  if (language === 'fr') {
+    // Return original French product
+    return product;
+  }
+
+  // Vérifier les traductions de la base de données d'abord
+  if (product.translations && product.translations[language]) {
+    const dbTranslation = product.translations[language];
+    const price = language === 'en' ? 'On quote' : language === 'ar' ? 'عرض السعر' : 'Sur devis';
+    
+    return {
+      ...product,
+      description: dbTranslation.description || product.description,
+      specifications: dbTranslation.specifications || product.specifications,
+      features: dbTranslation.features || product.features,
+      price: price,
+    };
+  }
+
+  // Fallback sur les traductions statiques (pour les produits anciens)
+  const productId = product.id || parseInt(product._id.replace('static-', ''));
+  const translations = productTranslations[productId];
+  
+  if (!translations) {
+    return product;
+  }
+  
+  const langTranslation = translations[language];
+  if (!langTranslation) {
+    return product;
+  }
+  
+  // Apply translations to product (but keep original product names)
+  const price = language === 'en' ? 'On quote' : language === 'ar' ? 'عرض السعر' : 'Sur devis';
+  
+  return {
+    ...product,
+    category: langTranslation.category || product.category,
+    description: langTranslation.description || product.description,
+    specifications: langTranslation.specifications || product.specifications,
+    features: langTranslation.features || product.features,
+    price: price,
+  };
+}
+
+// Function to translate packaging name
+
+// Helper function to normalize products (convert API products to UnifiedProduct)
+function normalizeApiProduct(apiProduct: ApiProduct): UnifiedProduct {
+  return {
+    ...apiProduct,
+    _id: apiProduct._id,
+    isStatic: false,
   };
 }
 
@@ -595,10 +677,11 @@ export default function Products({ onRequestQuote }: ProductsProps) {
     // Category translations
     if (type === 'category') {
       const categoryMap: { [key: string]: string } = {
-        'Huiles Moteur': t('products.categories.engineOil'),
-        'Huile moteur': t('products.categories.engineOil'),
+        'Huile Moteur': t('products.categories.engineOil'),
+        'Liquide de Refroidissement': t('products.categories.coolant'),
+        'Lave glace': t('products.categories.washerFluid'),
         'Divers': t('products.categories.other'),
-        'Huiles de Boîte': t('products.categories.gearboxOil'),
+        'Huile de Boîte': t('products.categories.gearboxOil'),
       };
       return categoryMap[value] || value;
     }
@@ -618,9 +701,10 @@ export default function Products({ onRequestQuote }: ProductsProps) {
     // Packaging translations
     if (type === 'packaging') {
       const packagingMap: { [key: string]: string } = {
-        'Bidon 4L': t('products.packagingTypes.bidon4L'),
-        'Bidon 20L': t('products.packagingTypes.bidon20L'),
         'Bidon 1L': t('products.packagingTypes.bidon1L'),
+        'Bidon 4L': t('products.packagingTypes.bidon4L'),
+        'Bidon 5L': t('products.packagingTypes.bidon5L'),
+        'Bidon 20L': t('products.packagingTypes.bidon20L'),
         'Bouteille 1L': t('products.packagingTypes.bottle1L'),
       };
       return packagingMap[value] || value;
@@ -658,12 +742,15 @@ export default function Products({ onRequestQuote }: ProductsProps) {
     loadProducts();
   }, [t]);
 
-  // Combine static and API products
+  // Combine static and API products with localization
   const allProducts = useMemo(() => {
     const normalizedStatic = staticProducts.map((p, i) => normalizeStaticProduct(p, i));
     const normalizedApi = apiProducts.map(normalizeApiProduct);
-    return [...normalizedStatic, ...normalizedApi];
-  }, [apiProducts]);
+    const combined = [...normalizedStatic, ...normalizedApi];
+    
+    // Apply language localization
+    return combined.map(product => getLocalizedProduct(product, i18n.language));
+  }, [apiProducts, i18n.language]);
 
   // Calculate filter counts from all products
   const filterCounts = useMemo(() => calculateFilterCounts(allProducts), [allProducts]);

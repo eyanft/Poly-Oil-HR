@@ -31,7 +31,7 @@
     "mobileNavigation": "Mobile navigation"
   },
   "hero": {
-    "title": "Performance, Protection and Longevity for your engine",
+    "title": "Engine Oil & Automotive Lubricants in Tunisia",
     "subtitle": "High-quality lubricants to optimize your vehicle's performance",
     "cta": "View our products"
   },
@@ -77,11 +77,12 @@
     "hideFilters": "Hide filters",
     "categories": {
       "all": "All categories",
-      "engineOil": "Engine Oils",
+      "engineOil": "Engine Oil",
       "brakeFluid": "Brake Fluid",
       "coolant": "Coolant",
       "other": "Other",
-      "gearboxOil": "Gearbox Oils"
+      "gearboxOil": "Gearbox Oils",
+      "washerFluid": "Washer Fluid"
     },
     "oilTypes": {
       "all": "All types",
@@ -92,9 +93,10 @@
       "multigrade": "Multigrade"
     },
     "packagingTypes": {
-      "bidon4L": "4L Container",
-      "bidon20L": "20L Container",
       "bidon1L": "1L Container",
+      "bidon4L": "4L Container",
+      "bidon5L": "5L Container",
+      "bidon20L": "20L Container",
       "bottle1L": "1L Bottle"
     },
     "specifications": "Specifications",
@@ -115,7 +117,7 @@
     "availableVolume": "Available Volume",
     "indicativePrice": "Indicative Price",
     "specifications": "Specifications",
-    "features": "Advantages",
+    "features": "Features",
     "guaranteedQuality": "Guaranteed Quality",
     "qualityDescription": "All our products comply with international standards and are rigorously tested to guarantee optimal performance and maximum protection for your engine.",
     "requestQuote": "Request a Quote",
@@ -248,7 +250,7 @@
     "quickLinks": "Quick Links",
     "categories": "Categories",
     "followUs": "Follow Us",
-    "engineOil": "Engine oils",
+    "engineOil": "Engine oil",
     "brakeFluid": "Brake fluids",
     "washerFluid": "Washer fluids",
     "industrialGrease": "Industrial greases",

@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const carouselImages = [
@@ -64,7 +64,7 @@ export default function Hero() {
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center py-20">
           <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight animate-fade-in-up">
-            Huile Moteur & Lubrifiants Automobiles en Tunisie 
+            {t('hero.title')}
           </h1>
           <p className="text-xl md:text-2xl mb-8 text-blue-100 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
             {t('hero.subtitle')}

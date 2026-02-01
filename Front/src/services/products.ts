@@ -101,6 +101,18 @@ export type Product = ProductPayload & {
   _id: string;
   createdAt: string;
   updatedAt: string;
+  translations?: {
+    en?: {
+      description: string;
+      specifications: string[];
+      features: string[];
+    };
+    ar?: {
+      description: string;
+      specifications: string[];
+      features: string[];
+    };
+  };
 };
 
 export function fetchProducts() {

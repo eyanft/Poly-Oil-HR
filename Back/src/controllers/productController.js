@@ -1,20 +1,19 @@
-import Product from '../models/Product.js';
 import { translate } from '../i18n/index.js';
+import Product from '../models/Product.js';
+import { translateProductData } from '../services/translationService.js';
 
 const ARRAY_FIELDS = ['specifications', 'features'];
 
 function normalizeArrayField(value) {
   if (Array.isArray(value)) {
-    return value
-      .map((item) => (typeof item === 'string' ? item.trim() : String(item)))
-      .filter((item) => item.length > 0);
+    return value.map(item => (typeof item === 'string' ? item.trim() : String(item))).filter(item => item.length > 0);
   }
 
   if (typeof value === 'string') {
     return value
       .split(/[\n;,]+/)
-      .map((item) => item.trim())
-      .filter((item) => item.length > 0);
+      .map(item => item.trim())
+      .filter(item => item.length > 0);
   }
 
   return undefined;
@@ -42,11 +41,11 @@ function extractProductData(payload) {
 
   const data = {};
 
-  scalarFields.forEach((field) => {
+  scalarFields.forEach(field => {
     if (payload[field] !== undefined) data[field] = payload[field];
   });
 
-  ARRAY_FIELDS.forEach((field) => {
+  ARRAY_FIELDS.forEach(field => {
     if (payload[field] !== undefined) {
       const normalized = normalizeArrayField(payload[field]);
       if (normalized !== undefined) data[field] = normalized;
@@ -80,6 +79,16 @@ export async function getProduct(req, res) {
 export async function createProduct(req, res) {
   try {
     const data = extractProductData(req.body);
+
+    // Générer automatiquement les traductions si demandé
+    if (req.body.autoTranslate !== false) {
+      const translations = {
+        en: await translateProductData(data.description, data.specifications, data.features, 'en'),
+        ar: await translateProductData(data.description, data.specifications, data.features, 'ar'),
+      };
+      data.translations = translations;
+    }
+
     const product = await Product.create(data);
     return res.status(201).json(product);
   } catch (err) {
@@ -93,6 +102,16 @@ export async function createProduct(req, res) {
 export async function updateProduct(req, res) {
   try {
     const data = extractProductData(req.body);
+
+    // Régénérer les traductions si demandé
+    if (req.body.autoTranslate !== false && (data.description || data.specifications || data.features)) {
+      const translations = {
+        en: await translateProductData(data.description, data.specifications, data.features, 'en'),
+        ar: await translateProductData(data.description, data.specifications, data.features, 'ar'),
+      };
+      data.translations = translations;
+    }
+
     const product = await Product.findByIdAndUpdate(req.params.id, data, {
       new: true,
       runValidators: true,
@@ -122,3 +141,26 @@ export async function deleteProduct(req, res) {
   }
 }
 
+// Régénérer les traductions d'un produit
+export async function regenerateTranslations(req, res) {
+  try {
+    const product = await Product.findById(req.params.id);
+
+    if (!product) {
+      return res.status(404).json({ message: translate(req, 'products.notFound') });
+    }
+
+    // Générer les traductions automatiquement
+    const translations = {
+      en: await translateProductData(product.description, product.specifications, product.features, 'en'),
+      ar: await translateProductData(product.description, product.specifications, product.features, 'ar'),
+    };
+
+    product.translations = translations;
+    await product.save();
+
+    return res.json(product);
+  } catch (err) {
+    return res.status(500).json({ message: translate(req, 'products.updateFailed') });
+  }
+}

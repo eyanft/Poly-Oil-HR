@@ -31,7 +31,7 @@
     "mobileNavigation": "Navigation mobile"
   },
   "hero": {
-    "title": "Performance, Protection et Longévité pour votre moteur",
+    "title": "Huile Moteur & Lubrifiants Automobiles en Tunisie",
     "subtitle": "Des lubrifiants de haute qualité pour optimiser les performances de votre véhicule",
     "cta": "Voir nos produits"
   },
@@ -77,11 +77,12 @@
     "hideFilters": "Masquer les filtres",
     "categories": {
       "all": "Toutes les catégories",
-      "engineOil": "Huiles Moteur",
+      "engineOil": "Huile Moteur",
       "brakeFluid": "Liquide de Frein",
       "coolant": "Liquide Refroidissement",
       "other": "Divers",
-      "gearboxOil": "Huiles de Boîte"
+      "gearboxOil": "Huiles de Boîte",
+      "washerFluid": "Lave-Glace"
     },
     "oilTypes": {
       "all": "Tous les types",
@@ -92,9 +93,10 @@
       "multigrade": "Multigrade"
     },
     "packagingTypes": {
-      "bidon4L": "Bidon 4L",
-      "bidon20L": "Bidon 20L",
       "bidon1L": "Bidon 1L",
+      "bidon4L": "Bidon 4L",
+      "bidon5L": "Bidon 5L",
+      "bidon20L": "Bidon 20L",
       "bottle1L": "Bouteille 1L"
     },
     "specifications": "Spécifications",
@@ -248,7 +250,7 @@
     "quickLinks": "Liens rapides",
     "categories": "Catégories",
     "followUs": "Suivez-nous",
-    "engineOil": "Huiles moteur",
+    "engineOil": "Huile Moteur",
     "brakeFluid": "Liquides de frein",
     "washerFluid": "Lave-glaces",
     "industrialGrease": "Graisses industrielles",
