@@ -57,12 +57,12 @@ const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 ${pages
   .map(
-    (page) => `  <url>
+    page => `  <url>
     <loc>${domain}${page.path}</loc>
     <lastmod>${page.lastmod}</lastmod>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
-  </url>`
+  </url>`,
   )
   .join('\n')}
 </urlset>`;

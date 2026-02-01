@@ -3,17 +3,17 @@ services:
     name: poly-oil-api
     runtime: node
     plan: free
-    
+
     # Build
     buildCommand: npm install
     startCommand: node server.js
-    
+
     # Environment
     region: frankfurt
-    
+
     # Health check
     healthCheckPath: /api/health
-    
+
     # Environment variables - ajouter dans Render dashboard
     envVars:
       - key: NODE_ENV
@@ -22,10 +22,10 @@ services:
         value: 4000
       - key: LOG_LEVEL
         value: warn
-    
+
     # Scaling
     numInstances: 1
-    
+
     # Deploy hook (optional)
     # Redéployer automatiquement à chaque push sur main
     autoDeploy: true
