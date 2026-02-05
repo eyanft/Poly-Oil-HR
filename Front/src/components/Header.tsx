@@ -37,7 +37,7 @@ export default function Header({ onRequestQuote }: HeaderProps) {
             <img 
               src={logo} 
               alt="Poly Oil Logo" 
-              className="h-32 w-auto -my-12" 
+              className="h-16 sm:h-24 lg:h-32 w-auto sm:-my-4 lg:-my-12" 
               width="120" 
               height="120" 
             />
@@ -102,11 +102,11 @@ export default function Header({ onRequestQuote }: HeaderProps) {
               {t('header.contact')}
             </button>
           
-            <div className="flex items-center space-x-3">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3">
               <LanguageSelector />
               <button
                 onClick={handleRequestQuote}
-                className="bg-gradient-to-r from-blue-600 to-red-600 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300 font-medium"
+                className="bg-gradient-to-r from-blue-600 to-red-600 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300 font-medium w-full sm:w-auto"
               >
                 {t('header.requestQuote')}
               </button>

@@ -1145,12 +1145,12 @@ export default function Products({ onRequestQuote }: ProductsProps) {
 
             {/* Products Header */}
             {!error && (
-              <div className="mb-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="text-sm text-gray-600">
                   {t('products.displayRange', { start: startIndex + 1, end: Math.min(endIndex, sortedProducts.length), total: sortedProducts.length })}
                 </div>
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-2 border border-gray-300 rounded-lg p-1">
+                <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+                  <div className="flex items-center gap-2 border border-gray-300 rounded-lg p-1 flex-shrink-0">
                     <button
                       onClick={() => setViewMode('grid')}
                       className={`p-2 rounded min-w-[44px] min-h-[44px] flex items-center justify-center ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
@@ -1168,12 +1168,12 @@ export default function Products({ onRequestQuote }: ProductsProps) {
                       <List className="h-5 w-5" aria-hidden="true" />
                     </button>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-700">{t('products.sortBy')}</span>
+                  <div className="flex items-center gap-2 w-full sm:w-auto">
+                    <span className="text-sm text-gray-700 whitespace-nowrap">{t('products.sortBy')}</span>
                     <select
                       value={sortBy}
                       onChange={(e) => setSortBy(e.target.value)}
-                      className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-auto"
                     >
                       <option value="default">{t('products.sortDefault')}</option>
                       <option value="name">{t('products.sortNameAsc')}</option>
@@ -1183,7 +1183,7 @@ export default function Products({ onRequestQuote }: ProductsProps) {
                   <button
                     onClick={handleCompare}
                     disabled={productsToCompare.length !== 2}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors min-h-[44px] ${productsToCompare.length === 2
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors min-h-[44px] w-full sm:w-auto ${productsToCompare.length === 2
                       ? 'bg-gradient-to-r from-blue-600 to-red-600 text-white hover:from-blue-700 hover:to-red-700 cursor-pointer'
                       : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                       }`}
