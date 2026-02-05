@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import HomePage from './pages/Home';
+import SplashScreen from './components/SplashScreen';
 import HuileMoteurTunisiePage from './pages/HuileMoteurTunisie';
 import LubrifiantsAutomobilesPage from './pages/LubrifiantsAutomobiles';
 import EauLaveGlacePage from './pages/EauLaveGlace';
@@ -31,7 +32,8 @@ function PrivateRoute({ children }: { children: JSX.Element }) {
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
+      <Route path="/" element={<SplashScreen />} />
+      <Route path="/home" element={<HomePage />} />
       <Route path="/huile-moteur-tunisie" element={<HuileMoteurTunisiePage />} />
       <Route path="/lubrifiants-automobiles" element={<LubrifiantsAutomobilesPage />} />
       <Route path="/eau-lave-glace" element={<EauLaveGlacePage />} />
@@ -45,7 +47,7 @@ export default function App() {
           </PrivateRoute>
         }
       />
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<Navigate to="/home" replace />} />
     </Routes>
   );
 }
