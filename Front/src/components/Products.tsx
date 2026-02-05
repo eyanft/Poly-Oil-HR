@@ -921,9 +921,11 @@ export default function Products({ onRequestQuote }: ProductsProps) {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    const productsSection = document.getElementById('produits');
-    if (productsSection) {
-      productsSection.scrollIntoView({ behavior: 'smooth' });
+    const productsTop = document.getElementById('products-top');
+    if (productsTop) {
+      const headerOffset = 100;
+      const top = productsTop.getBoundingClientRect().top + window.scrollY - headerOffset;
+      window.scrollTo({ top, behavior: 'smooth' });
     }
   };
 
@@ -934,6 +936,8 @@ export default function Products({ onRequestQuote }: ProductsProps) {
           <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-3">{t('products.title')}</h2>
           <p className="text-xl text-gray-600">{t('products.subtitle')}</p>
         </div>
+
+        <div id="products-top"></div>
 
         {/* Mobile Filter Toggle Button */}
         <div className="lg:hidden mb-4">
