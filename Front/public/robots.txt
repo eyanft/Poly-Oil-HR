@@ -8,12 +8,6 @@ Sitemap: https://polyoil.com/sitemap.xml
 Disallow: /admin
 Disallow: /admin/
 
-# Allow all other pages
-Allow: /huile-moteur-tunisie
-Allow: /lubrifiants-automobiles
-Allow: /eau-lave-glace
-Allow: /contact
-
 # Crawl-delay (optionnel, pour éviter de surcharger le serveur)
 Crawl-delay: 1
 
