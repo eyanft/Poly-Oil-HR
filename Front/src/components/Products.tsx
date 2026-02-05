@@ -923,7 +923,7 @@ export default function Products({ onRequestQuote }: ProductsProps) {
     setCurrentPage(page);
     const productsTop = document.getElementById('products-top');
     if (productsTop) {
-      const headerOffset = 100;
+      const headerOffset = window.innerWidth < 640 ? 140 : 100;
       const top = productsTop.getBoundingClientRect().top + window.scrollY - headerOffset;
       window.scrollTo({ top, behavior: 'smooth' });
     }
