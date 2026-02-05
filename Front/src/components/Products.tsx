@@ -727,7 +727,7 @@ export default function Products({ onRequestQuote }: ProductsProps) {
     return value;
   }, [t]);
   const [apiProducts, setApiProducts] = useState<ApiProduct[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -1144,7 +1144,7 @@ export default function Products({ onRequestQuote }: ProductsProps) {
             )}
 
             {/* Products Header */}
-            {!loading && !error && (
+            {!error && (
               <div className="mb-4 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="text-sm text-gray-600">
                   {t('products.displayRange', { start: startIndex + 1, end: Math.min(endIndex, sortedProducts.length), total: sortedProducts.length })}
@@ -1197,29 +1197,22 @@ export default function Products({ onRequestQuote }: ProductsProps) {
 
             {/* Loading State */}
             {loading && (
-              <div className="text-center py-12">
-                <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+              <div className="text-center py-6">
+                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-2"></div>
                 <p className="text-gray-600">{t('products.loading')}</p>
               </div>
             )}
 
             {/* Error State */}
-            {error && !loading && (
-              <div className="text-center py-12">
-                <div className="text-6xl mb-3">⚠️</div>
-                <p className="text-2xl font-bold text-gray-700 mb-2">{t('products.errorTitle')}</p>
-                <p className="text-gray-500 mb-4">{error}</p>
-                <button
-                  onClick={() => window.location.reload()}
-                  className="bg-gradient-to-r from-blue-600 to-red-600 text-white px-6 py-3 rounded-full hover:shadow-lg transition-all duration-300 font-medium"
-                >
-                  {t('products.retry')}
-                </button>
+            {error && (
+              <div className="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                <span className="font-semibold">{t('products.errorTitle')}: </span>
+                {error}
               </div>
             )}
 
             {/* Products Grid */}
-            {!loading && !error && currentProducts.length > 0 ? (
+            {!error && currentProducts.length > 0 ? (
               <div className={viewMode === 'grid'
                 ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8'
                 : 'space-y-4 mb-8'
