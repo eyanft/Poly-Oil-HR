@@ -83,7 +83,7 @@ export default function Hero() {
 
       <button
         onClick={prevSlide}
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm p-3 rounded-full transition-all duration-300 min-w-[44px] min-h-[44px] flex items-center justify-center"
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm p-3 rounded-full transition-all duration-300 min-w-[44px] min-h-[44px] hidden md:flex items-center justify-center"
         aria-label={t('hero.previousSlide') || "Previous slide"}
       >
         <ChevronLeft className="h-6 w-6 text-white" aria-hidden="true" />
