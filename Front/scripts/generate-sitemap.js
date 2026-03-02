@@ -77,10 +77,17 @@ function collectImages(dir, rootDir) {
 }
 
 const imagePaths = collectImages(outputDir, outputDir);
+function encodePathForUrl(p) {
+  return p
+    .split('/')
+    .map(segment => encodeURIComponent(segment))
+    .join('/');
+}
+
 const imageTags = imagePaths
   .map(
     p =>
-      `    <image:image>\n      <image:loc>${domain}/${encodeURI(p)}</image:loc>\n    </image:image>`,
+      `    <image:image>\n      <image:loc>${domain}/${encodePathForUrl(p)}</image:loc>\n    </image:image>`,
   )
   .join('\n');
 
