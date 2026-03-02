@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import logo from '../assets/po.png';
 import LanguageSelector from './LanguageSelector';
@@ -31,15 +31,15 @@ export default function Header({ onRequestQuote }: HeaderProps) {
 
   return (
     <header className="bg-white shadow-md fixed w-full top-0 z-50">
-      <div className="container mx-auto px-4 py-3">
+      <div className="container mx-auto px-4 py-2">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 h-16 overflow-visible">
             <img 
               src={logo} 
               alt="Poly Oil Logo" 
-              className="h-20 sm:h-24 lg:h-32 w-auto -my-2 sm:-my-4 lg:-my-12" 
-              width="140" 
-              height="140" 
+              className="h-24 sm:h-24 lg:h-32 w-auto -my-4 sm:-my-4 lg:-my-12" 
+              width="160" 
+              height="160" 
             />
           </div>
 
