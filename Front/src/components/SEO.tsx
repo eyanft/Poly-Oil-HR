@@ -12,7 +12,7 @@ interface SEOProps {
 
 export default function SEO({ title, description, keywords, canonicalUrl, ogImage, schema }: SEOProps) {
   const fullTitle = title.includes('Polyoil') ? title : `${title} | Poly Oil`;
-  const imageUrl = ogImage || `${siteUrl}/Huiles%20%26%20Lubrifiants%20Automobiles.png`;
+  const imageUrl = ogImage || `${siteUrl}/og-image.png`;
 
   return (
     <Helmet>
