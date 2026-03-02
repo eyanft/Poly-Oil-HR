@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://polyoil.com/sitemap.xml
+Sitemap: https://polyoil.netlify.app/sitemap.xml
 
 # Disallow admin pages
 Disallow: /admin
