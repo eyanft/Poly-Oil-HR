@@ -37,9 +37,9 @@ export default function Header({ onRequestQuote }: HeaderProps) {
             <img 
               src={logo} 
               alt="Poly Oil Logo" 
-              className="h-16 sm:h-24 lg:h-32 w-auto sm:-my-4 lg:-my-12" 
-              width="120" 
-              height="120" 
+              className="h-20 sm:h-24 lg:h-32 w-auto sm:-my-4 lg:-my-12" 
+              width="140" 
+              height="140" 
             />
           </div>
 

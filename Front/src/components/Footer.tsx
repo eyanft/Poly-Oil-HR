@@ -1,6 +1,6 @@
 import { Facebook, Instagram, Linkedin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import logo from '../assets/po.png';
+import logo from '../assets/pofooter.png';
 
 export default function Footer() {
   const { t, i18n } = useTranslation();
