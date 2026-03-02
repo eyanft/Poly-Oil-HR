@@ -1,9 +1,9 @@
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import SEO from '../components/SEO';
+import { siteUrl } from '../config/site';
 
 export default function LubrifiantsAutomobilesPage() {
-  const siteUrl = 'https://polyoil.com';
   const pageUrl = `${siteUrl}/lubrifiants-automobiles`;
 
   const schema = {
@@ -178,4 +178,3 @@ export default function LubrifiantsAutomobilesPage() {
     </div>
   );
 }
-

@@ -1,9 +1,9 @@
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import SEO from '../components/SEO';
+import { siteUrl } from '../config/site';
 
 export default function HuileMoteurTunisiePage() {
-  const siteUrl = 'https://polyoil.com';
   const pageUrl = `${siteUrl}/huile-moteur-tunisie`;
 
   const schema = {
@@ -173,4 +173,3 @@ export default function HuileMoteurTunisiePage() {
     </div>
   );
 }
-

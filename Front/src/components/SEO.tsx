@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { siteUrl } from '../config/site';
 
 interface SEOProps {
   title: string;
@@ -10,9 +11,8 @@ interface SEOProps {
 }
 
 export default function SEO({ title, description, keywords, canonicalUrl, ogImage, schema }: SEOProps) {
-  const siteUrl = 'https://polyoil.tn'; // À remplacer par votre URL réelle
   const fullTitle = title.includes('Polyoil') ? title : `${title} | Poly Oil`;
-  const imageUrl = ogImage || `${siteUrl}/og-image.jpg`;
+  const imageUrl = ogImage || `${siteUrl}/Huiles%20%26%20Lubrifiants%20Automobiles.png`;
 
   return (
     <Helmet>
@@ -55,4 +55,3 @@ export default function SEO({ title, description, keywords, canonicalUrl, ogImag
     </Helmet>
   );
 }
-

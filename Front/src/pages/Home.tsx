@@ -8,9 +8,9 @@ import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import SEO from '../components/SEO';
 import QuoteFormModal from '../components/QuoteFormModal';
+import { siteUrl } from '../config/site';
 
 export default function HomePage() {
-  const siteUrl = 'https://polyoil.com';
   const pageUrl = siteUrl;
   const [quoteModalOpen, setQuoteModalOpen] = useState(false);
   const [productForQuote, setProductForQuote] = useState<{ name: string } | null>(null);
@@ -27,7 +27,7 @@ export default function HomePage() {
     '@id': `${siteUrl}/#organization`,
     name: 'Polyoil Tunis',
     url: siteUrl,
-    logo: `${siteUrl}/logo.png`,
+    logo: `${siteUrl}/favicon.png`,
     contactPoint: {
       '@type': 'ContactPoint',
       telephone: '+216-97-864-022',
@@ -73,4 +73,3 @@ export default function HomePage() {
     </div>
   );
 }
-

@@ -1,9 +1,9 @@
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import SEO from '../components/SEO';
+import { siteUrl } from '../config/site';
 
 export default function EauLaveGlacePage() {
-  const siteUrl = 'https://polyoil.com';
   const pageUrl = `${siteUrl}/eau-lave-glace`;
 
   const schema = {
@@ -177,4 +177,3 @@ export default function EauLaveGlacePage() {
     </div>
   );
 }
-

@@ -2,9 +2,9 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Contact from '../components/Contact';
 import SEO from '../components/SEO';
+import { siteUrl } from '../config/site';
 
 export default function ContactPage() {
-  const siteUrl = 'https://polyoil.com';
   const pageUrl = `${siteUrl}/contact`;
 
   // Schema LocalBusiness JSON-LD pour SEO local
@@ -13,7 +13,7 @@ export default function ContactPage() {
     '@type': 'LocalBusiness',
     '@id': `${siteUrl}/#organization`,
     name: 'Polyoil Tunis',
-    image: `${siteUrl}/logo.png`,
+    image: `${siteUrl}/favicon.png`,
     url: siteUrl,
     telephone: '+21697864022',
     email: 'polyoilhr@gmail.com',
@@ -173,4 +173,3 @@ export default function ContactPage() {
     </div>
   );
 }
-
