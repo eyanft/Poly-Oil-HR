@@ -11,7 +11,8 @@ interface SEOProps {
 }
 
 export default function SEO({ title, description, keywords, canonicalUrl, ogImage, schema }: SEOProps) {
-  const fullTitle = title.includes('Polyoil') ? title : `${title} | Poly Oil`;
+  const hasBrand = /poly[\s-]?oil/i.test(title);
+  const fullTitle = hasBrand ? title : `${title} | Poly Oil`;
   const imageUrl = ogImage || `${siteUrl}/og-image.png`;
 
   return (
@@ -22,6 +23,7 @@ export default function SEO({ title, description, keywords, canonicalUrl, ogImag
       <meta name="description" content={description} />
       {keywords && <meta name="keywords" content={keywords} />}
       <meta name="robots" content="index, follow" />
+      <meta name="googlebot-image" content="index,follow" />
       <meta name="language" content="French" />
       <meta name="geo.region" content="TN" />
       <meta name="geo.placename" content="Tunis, Tunisie" />
@@ -36,8 +38,9 @@ export default function SEO({ title, description, keywords, canonicalUrl, ogImag
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={imageUrl} />
+      <meta property="og:image:alt" content="Poly Oil Tunisie - Huiles moteur et lubrifiants automobiles" />
       <meta property="og:locale" content="fr_TN" />
-      <meta property="og:site_name" content="Polyoil Tunis" />
+      <meta property="og:site_name" content="Poly Oil Tunisie" />
 
       {/* Twitter */}
       <meta property="twitter:card" content="summary_large_image" />
@@ -45,6 +48,7 @@ export default function SEO({ title, description, keywords, canonicalUrl, ogImag
       <meta property="twitter:title" content={fullTitle} />
       <meta property="twitter:description" content={description} />
       <meta property="twitter:image" content={imageUrl} />
+      <meta property="twitter:image:alt" content="Poly Oil Tunisie - Huiles moteur et lubrifiants automobiles" />
 
       {/* Schema.org JSON-LD */}
       {schema && (

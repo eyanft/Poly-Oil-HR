@@ -25,9 +25,9 @@ export default function HomePage() {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     '@id': `${siteUrl}/#organization`,
-    name: 'Polyoil Tunis',
+    name: 'Poly Oil Tunisie',
     url: siteUrl,
-    logo: `${siteUrl}/favicon.png`,
+    logo: `${siteUrl}/og-image.png`,
     contactPoint: {
       '@type': 'ContactPoint',
       telephone: '+216-97-864-022',
@@ -50,9 +50,9 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       <SEO
-        title="Polyoil Tunis - Huile Moteur & Lubrifiants Automobiles en Tunisie"
-        description="Polyoil Tunis est votre spécialiste en huiles moteur, lubrifiants automobiles et eau lave-glace en Tunisie. Découvrez notre gamme complète de produits de qualité à Tunis. Livraison disponible dans toute la région."
-        keywords="huile moteur Tunisie, lubrifiants automobiles Tunis, eau lave-glace Tunisie, huile moteur Tunis, Polyoil Tunis, produits automobiles Tunisie"
+        title="Poly Oil Tunisie - Huile Moteur & Lubrifiants Automobiles en Tunisie"
+        description="Poly Oil Tunisie est votre spécialiste en huiles moteur, lubrifiants automobiles et eau lave-glace en Tunisie. Découvrez notre gamme complète de produits de qualité à Tunis. Livraison disponible dans toute la région."
+        keywords="huile moteur Tunisie, lubrifiants automobiles Tunis, eau lave-glace Tunisie, huile moteur Tunis, Poly Oil Tunisie, produits automobiles Tunisie"
         canonicalUrl={pageUrl}
         schema={organizationSchema}
       />

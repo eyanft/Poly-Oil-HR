@@ -9,7 +9,7 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://polyoil.netlify.app/favicon.png</image:loc>
+      <image:loc>https://polyoil.netlify.app/og-image.png</image:loc>
     </image:image>
     <image:image>
       <image:loc>https://polyoil.netlify.app/Huiles%20%26%20Lubrifiants%20Automobiles.png</image:loc>
