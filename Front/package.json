@@ -9,6 +9,9 @@
     "postbuild": "node scripts/generate-sitemap.js",
     "lint": "eslint .",
     "preview": "vite preview",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:ui": "playwright test --ui",
     "typecheck": "tsc --noEmit -p tsconfig.app.json",
     "generate:sitemap": "node scripts/generate-sitemap.js",
     "test:deploy": "node scripts/test-deploy.js"
